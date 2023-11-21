@@ -1,7 +1,9 @@
 package com.paymybuddy;
 
+import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.Relation;
 import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.BalanceByCurrencyRepository;
 import com.paymybuddy.repository.RelationRepository;
 import com.paymybuddy.repository.UserAccountRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 public class PayMyBuddyAppApplication {
@@ -21,26 +24,48 @@ public class PayMyBuddyAppApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserAccountRepository userAccountRepository, RelationRepository relationRepository) {
+    CommandLineRunner commandLineRunner(
+            UserAccountRepository userAccountRepository,
+            RelationRepository relationRepository,
+            BalanceByCurrencyRepository balanceByCurrencyRepository) {
         return args -> {
-            UserAccount leo = new UserAccount(
-                    "Léo",
-                    "Minot",
-                    "leo.minot@email.com",
-                    "leo123",
-                    "PoPoZ"
+            //testCreateUser(userAccountRepository, relationRepository);
+//            UserAccount leo = new UserAccount(
+//                    "Léo",
+//                    "Minot",
+//                    "leo.minot.pas.riche@email.com",
+//                    "leo123",
+//                    "PoPoZPasRiche"
+//            );
+            UserAccount leo = userAccountRepository.findById(UUID.fromString("57ae3e38-3a0c-4675-98b0-d1627e4b4f09")).get();
+            System.out.println(leo);
+            BalanceByCurrency balanceByCurrencyLeoEuro = new BalanceByCurrency(
+                    1000.,
+                    "USD",
+                    leo
             );
-            UserAccount victor = new UserAccount(
-                    "Victor",
-                    "Minot",
-                    "victor@email.com",
-                    "victor123",
-                    "miniPoPoZ"
-            );
-            userAccountRepository.saveAll(List.of(leo, victor));
-            Relation relationLeoVictor = new Relation(leo, victor, LocalDateTime.now());
-            relationRepository.save(relationLeoVictor);
+            balanceByCurrencyRepository.save(balanceByCurrencyLeoEuro);
         };
+    }
+
+    private void testCreateUser(UserAccountRepository userAccountRepository, RelationRepository relationRepository) {
+        UserAccount leo = new UserAccount(
+                "Léo",
+                "Minot",
+                "leo.minot@email.com",
+                "leo123",
+                "PoPoZ"
+        );
+        UserAccount victor = new UserAccount(
+                "Victor",
+                "Minot",
+                "victor@email.com",
+                "victor123",
+                "miniPoPoZ"
+        );
+        userAccountRepository.saveAll(List.of(leo, victor));
+        Relation relationLeoVictor = new Relation(leo, victor, LocalDateTime.now());
+        relationRepository.save(relationLeoVictor);
     }
 
 }
