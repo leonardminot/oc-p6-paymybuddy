@@ -6,6 +6,7 @@ import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.BalanceByCurrencyRepository;
 import com.paymybuddy.repository.RelationRepository;
 import com.paymybuddy.repository.UserAccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,7 @@ public class PayMyBuddyAppApplication {
     }
 
     @Bean
+    @Transactional
     CommandLineRunner commandLineRunner(
             UserAccountRepository userAccountRepository,
             RelationRepository relationRepository,
@@ -38,13 +40,14 @@ public class PayMyBuddyAppApplication {
 //                    "PoPoZPasRiche"
 //            );
             UserAccount leo = userAccountRepository.findById(UUID.fromString("57ae3e38-3a0c-4675-98b0-d1627e4b4f09")).get();
-            System.out.println(leo);
-            BalanceByCurrency balanceByCurrencyLeoEuro = new BalanceByCurrency(
-                    1000.,
-                    "USD",
-                    leo
-            );
-            balanceByCurrencyRepository.save(balanceByCurrencyLeoEuro);
+//            System.out.println(leo);
+//            BalanceByCurrency balanceByCurrencyLeoEuro = new BalanceByCurrency(
+//                    1000.,
+//                    "USD",
+//                    leo
+//            );
+//            balanceByCurrencyRepository.save(balanceByCurrencyLeoEuro);
+            leo.getBalanceByCurrencyList().forEach(balanceByCurrency -> System.out.println(balanceByCurrency.getCurrency()));
         };
     }
 

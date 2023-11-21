@@ -1,10 +1,7 @@
 package com.paymybuddy.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -41,5 +38,15 @@ public class BalanceByCurrency {
         this.balance = balance;
         this.currency = currency;
         this.userAccount = userAccount;
+    }
+
+    @Override
+    public String toString() {
+        return "BalanceByCurrency{" +
+                "balanceID=" + balanceID +
+                ", balance=" + balance +
+                ", currency='" + currency + '\'' +
+                ", userAccount=" + userAccount +
+                '}';
     }
 }
