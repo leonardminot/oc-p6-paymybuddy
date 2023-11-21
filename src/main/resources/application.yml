@@ -3,9 +3,13 @@ spring:
     username: postgres
     password: ''
     url: jdbc:postgresql://localhost:5432/paymybuddy
+
+  sql:
+    init:
+      mode: always
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
