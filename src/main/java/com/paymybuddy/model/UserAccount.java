@@ -58,6 +58,14 @@ public class UserAccount {
     )
     private List<BalanceByCurrency> balanceByCurrencyList = new ArrayList<>();
 
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "userAccount",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private List<BankAccount> bankAccounts = new ArrayList<>();
+
     public UserAccount(String firstName, String lastName, String email, String password, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -81,6 +89,20 @@ public class UserAccount {
         if (this.balanceByCurrencyList.contains(balanceByCurrency)) {
             this.balanceByCurrencyList.remove(balanceByCurrency);
             balanceByCurrency.setUserAccount(null);
+        }
+    }
+
+    public void addBankAccount(BankAccount bankAccount) {
+        if (!this.bankAccounts.contains(bankAccount)) {
+            bankAccounts.add(bankAccount);
+            bankAccount.setUserAccount(this);
+        }
+    }
+
+    public void removeBankAccount(BankAccount bankAccount) {
+        if (this.bankAccounts.contains(bankAccount)) {
+            this.bankAccounts.remove(bankAccount);
+            bankAccount.setUserAccount(null);
         }
     }
 }
