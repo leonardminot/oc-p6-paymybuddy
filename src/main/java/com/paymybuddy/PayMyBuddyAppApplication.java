@@ -53,16 +53,16 @@ public class PayMyBuddyAppApplication {
 //            BankTransaction firstTransaction = new BankTransaction(100.0, "EUR", LocalDateTime.now(), creditAgricoleLeo);
 //            BankTransaction secondTransaction = new BankTransaction(150.0, "EUR", LocalDateTime.now(), creditAgricoleLeo);
 
-            BankAccount creditAgricoleLeo = bankAccountRepository.findById(UUID.fromString("01b007dc-bf90-46d4-85bb-a0bb00d99597")).get();
-
-            Transaction transaction = new Transaction("Pour l'avenir", 100.0, "EUR", LocalDateTime.now());
-
-            transactionRepository.save(transaction);
+//            BankAccount creditAgricoleLeo = bankAccountRepository.findById(UUID.fromString("01b007dc-bf90-46d4-85bb-a0bb00d99597")).get();
+//
+//            Transaction transaction = new Transaction("Pour l'avenir", 100.0, "EUR", LocalDateTime.now());
+//
+//            transactionRepository.save(transaction);
 
             Transfer transfer = new Transfer(
                     leo,
                     victor,
-                    transaction
+                    new Transaction("Pour mettre du beurre dans les épinards", 50.0, "EUR", LocalDateTime.now())
             );
 
             transferRepository.save(transfer);
