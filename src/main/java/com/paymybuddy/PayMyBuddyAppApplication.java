@@ -1,9 +1,6 @@
 package com.paymybuddy;
 
-import com.paymybuddy.model.BankAccount;
-import com.paymybuddy.model.BankTransaction;
-import com.paymybuddy.model.Relation;
-import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.model.*;
 import com.paymybuddy.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
@@ -29,7 +26,9 @@ public class PayMyBuddyAppApplication {
             RelationRepository relationRepository,
             BalanceByCurrencyRepository balanceByCurrencyRepository,
             BankAccountRepository bankAccountRepository,
-            BankTransactionRepository bankTransactionRepository) {
+            BankTransactionRepository bankTransactionRepository,
+            TransactionRepository transactionRepository,
+            TransferRepository transferRepository) {
         return args -> {
             //testCreateUser(userAccountRepository, relationRepository);
 //            UserAccount leo = new UserAccount(
@@ -40,6 +39,7 @@ public class PayMyBuddyAppApplication {
 //                    "PoPoZPasRiche"
 //            );
             UserAccount leo = userAccountRepository.findById(UUID.fromString("57ae3e38-3a0c-4675-98b0-d1627e4b4f09")).get();
+            UserAccount victor = userAccountRepository.findById(UUID.fromString("3f03d4ef-3cce-4583-80e4-b749802a09e3")).get();
 //            System.out.println(leo);
 //            BalanceByCurrency balanceByCurrencyLeoEuro = new BalanceByCurrency(
 //                    1000.,
@@ -47,7 +47,7 @@ public class PayMyBuddyAppApplication {
 //                    leo
 //            );
 //            balanceByCurrencyRepository.save(balanceByCurrencyLeoEuro);
-            leo.getBalanceByCurrencyList().forEach(balanceByCurrency -> System.out.println(balanceByCurrency.getCurrency()));
+//            leo.getBalanceByCurrencyList().forEach(balanceByCurrency -> System.out.println(balanceByCurrency.getCurrency()));
 
 //            BankAccount creditAgricoleLeo = new BankAccount("123456789", "FR", leo);
 //            BankTransaction firstTransaction = new BankTransaction(100.0, "EUR", LocalDateTime.now(), creditAgricoleLeo);
@@ -55,13 +55,27 @@ public class PayMyBuddyAppApplication {
 
             BankAccount creditAgricoleLeo = bankAccountRepository.findById(UUID.fromString("01b007dc-bf90-46d4-85bb-a0bb00d99597")).get();
 
+            Transaction transaction = new Transaction("Pour l'avenir", 100.0, "EUR", LocalDateTime.now());
 
-            creditAgricoleLeo.addTransaction(new BankTransaction(50.0, "EUR", LocalDateTime.now()));
-            bankAccountRepository.save(creditAgricoleLeo);
+            transactionRepository.save(transaction);
+
+            Transfer transfer = new Transfer(
+                    leo,
+                    victor,
+                    transaction
+            );
+
+            transferRepository.save(transfer);
+
+
+//            creditAgricoleLeo.addTransaction(new BankTransaction(50.0, "EUR", LocalDateTime.now()));
+//            bankAccountRepository.save(creditAgricoleLeo);
 
 //            bankAccountRepository.save(creditAgricoleLeo);
 //            bankTransactionRepository.save(firstTransaction);
 //            bankTransactionRepository.save(secondTransaction);
+
+
         };
     }
 
