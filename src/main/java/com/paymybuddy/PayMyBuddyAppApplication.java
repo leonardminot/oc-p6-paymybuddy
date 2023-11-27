@@ -1,18 +1,16 @@
 package com.paymybuddy;
 
-import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.model.Relation;
 import com.paymybuddy.model.UserAccount;
-import com.paymybuddy.repository.BalanceByCurrencyRepository;
-import com.paymybuddy.repository.RelationRepository;
-import com.paymybuddy.repository.UserAccountRepository;
+import com.paymybuddy.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +27,9 @@ public class PayMyBuddyAppApplication {
     CommandLineRunner commandLineRunner(
             UserAccountRepository userAccountRepository,
             RelationRepository relationRepository,
-            BalanceByCurrencyRepository balanceByCurrencyRepository) {
+            BalanceByCurrencyRepository balanceByCurrencyRepository,
+            BankAccountRepository bankAccountRepository,
+            BankTransactionRepository bankTransactionRepository) {
         return args -> {
             //testCreateUser(userAccountRepository, relationRepository);
 //            UserAccount leo = new UserAccount(
@@ -48,6 +48,20 @@ public class PayMyBuddyAppApplication {
 //            );
 //            balanceByCurrencyRepository.save(balanceByCurrencyLeoEuro);
             leo.getBalanceByCurrencyList().forEach(balanceByCurrency -> System.out.println(balanceByCurrency.getCurrency()));
+
+//            BankAccount creditAgricoleLeo = new BankAccount("123456789", "FR", leo);
+//            BankTransaction firstTransaction = new BankTransaction(100.0, "EUR", LocalDateTime.now(), creditAgricoleLeo);
+//            BankTransaction secondTransaction = new BankTransaction(150.0, "EUR", LocalDateTime.now(), creditAgricoleLeo);
+
+            BankAccount creditAgricoleLeo = bankAccountRepository.findById(UUID.fromString("01b007dc-bf90-46d4-85bb-a0bb00d99597")).get();
+
+
+            creditAgricoleLeo.addTransaction(new BankTransaction(50.0, "EUR", LocalDateTime.now()));
+            bankAccountRepository.save(creditAgricoleLeo);
+
+//            bankAccountRepository.save(creditAgricoleLeo);
+//            bankTransactionRepository.save(firstTransaction);
+//            bankTransactionRepository.save(secondTransaction);
         };
     }
 

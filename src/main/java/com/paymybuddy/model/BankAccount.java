@@ -3,6 +3,8 @@ package com.paymybuddy.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -41,6 +43,28 @@ public class BankAccount {
             referencedColumnName = "user_id"
     )
     private UserAccount userAccount;
+
+    @OneToMany(
+            mappedBy = "bankAccount",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    private List<BankTransaction> bankTransactions = new ArrayList<>();
+
+    public void addTransaction(BankTransaction bankTransaction) {
+        if (!bankTransactions.contains(bankTransaction)) {
+            bankTransactions.add(bankTransaction);
+            bankTransaction.setBankAccount(this);
+        }
+    }
+
+    public void removeTransaction(BankTransaction bankTransaction) {
+        if (bankTransactions.contains(bankTransaction)) {
+            bankTransactions.remove(bankTransaction);
+            bankTransaction.setBankAccount(null);
+        }
+    }
 
     public BankAccount(String iban, String country, UserAccount userAccount) {
         this.iban = iban;
