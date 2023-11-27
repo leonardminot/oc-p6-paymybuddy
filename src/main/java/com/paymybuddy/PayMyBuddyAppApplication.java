@@ -22,7 +22,7 @@ public class PayMyBuddyAppApplication {
     @Bean
     @Transactional
     CommandLineRunner commandLineRunner(
-            UserAccountRepository userAccountRepository,
+            UserAccountRepositoryJpa userAccountRepositoryJpa,
             RelationRepository relationRepository,
             BalanceByCurrencyRepository balanceByCurrencyRepository,
             BankAccountRepository bankAccountRepository,
@@ -38,8 +38,8 @@ public class PayMyBuddyAppApplication {
 //                    "leo123",
 //                    "PoPoZPasRiche"
 //            );
-            UserAccount leo = userAccountRepository.findById(UUID.fromString("57ae3e38-3a0c-4675-98b0-d1627e4b4f09")).get();
-            UserAccount victor = userAccountRepository.findById(UUID.fromString("3f03d4ef-3cce-4583-80e4-b749802a09e3")).get();
+            UserAccount leo = userAccountRepositoryJpa.findById(UUID.fromString("57ae3e38-3a0c-4675-98b0-d1627e4b4f09")).get();
+            UserAccount victor = userAccountRepositoryJpa.findById(UUID.fromString("3f03d4ef-3cce-4583-80e4-b749802a09e3")).get();
 //            System.out.println(leo);
 //            BalanceByCurrency balanceByCurrencyLeoEuro = new BalanceByCurrency(
 //                    1000.,
@@ -79,7 +79,7 @@ public class PayMyBuddyAppApplication {
         };
     }
 
-    private void testCreateUser(UserAccountRepository userAccountRepository, RelationRepository relationRepository) {
+    private void testCreateUser(UserAccountRepositoryJpa userAccountRepositoryJpa, RelationRepository relationRepository) {
         UserAccount leo = new UserAccount(
                 "Léo",
                 "Minot",
@@ -94,7 +94,7 @@ public class PayMyBuddyAppApplication {
                 "victor123",
                 "miniPoPoZ"
         );
-        userAccountRepository.saveAll(List.of(leo, victor));
+        userAccountRepositoryJpa.saveAll(List.of(leo, victor));
         Relation relationLeoVictor = new Relation(leo, victor, LocalDateTime.now());
         relationRepository.save(relationLeoVictor);
     }
