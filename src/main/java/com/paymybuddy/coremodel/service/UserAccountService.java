@@ -1,7 +1,7 @@
 package com.paymybuddy.coremodel.service;
 
 import com.paymybuddy.coremodel.dto.UserRequestCommandDTO;
-import com.paymybuddy.application.model.UserAccount;
+import com.paymybuddy.coremodel.model.UserAccountModel;
 import com.paymybuddy.coremodel.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,13 @@ public class UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public UserAccount createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
+    public UserAccountModel createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
         throwIsUserInputIsEmpty(userRequestCommandDTO);
         throwIfEmailAlreadyExists(userRequestCommandDTO);
         throwIfUserNameAlreadyExists(userRequestCommandDTO);
 
-        UserAccount newUserAccount =  new UserAccount(
+        UserAccountModel newUserAccount =  new UserAccountModel(
+                null,
                 userRequestCommandDTO.firstName(),
                 userRequestCommandDTO.lastName(),
                 userRequestCommandDTO.email(),

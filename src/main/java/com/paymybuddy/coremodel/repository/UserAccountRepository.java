@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface UserAccountRepository {
-    void save(UserAccount userAccount);
+    void save(UserAccountModel userAccount);
     boolean isEmailExists(String email);
     boolean isUserNameExists(String userName);
-    UserAccount get(UserAccount userAccount);
+    UserAccountModel get(UserAccountModel userAccount);
     List<UserAccountModel> getAllUsers();
 }
