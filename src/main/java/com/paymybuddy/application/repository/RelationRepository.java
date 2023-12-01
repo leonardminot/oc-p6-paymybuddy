@@ -1,7 +1,7 @@
-package com.paymybuddy.repository;
+package com.paymybuddy.application.repository;
 
-import com.paymybuddy.model.Relation;
-import com.paymybuddy.model.RelationId;
+import com.paymybuddy.application.model.Relation;
+import com.paymybuddy.application.model.RelationId;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

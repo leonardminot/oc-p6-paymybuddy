@@ -1,4 +1,4 @@
-package com.paymybuddy.dto;
+package com.paymybuddy.coremodel.dto;
 
 public record UserRequestCommandDTO(
         String username,

@@ -1,7 +1,10 @@
 package com.paymybuddy;
 
-import com.paymybuddy.model.*;
-import com.paymybuddy.repository.*;
+import com.paymybuddy.application.model.Relation;
+import com.paymybuddy.application.model.Transaction;
+import com.paymybuddy.application.model.Transfer;
+import com.paymybuddy.application.model.UserAccount;
+import com.paymybuddy.application.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

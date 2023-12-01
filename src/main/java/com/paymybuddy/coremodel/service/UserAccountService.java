@@ -1,8 +1,8 @@
-package com.paymybuddy.service;
+package com.paymybuddy.coremodel.service;
 
-import com.paymybuddy.dto.UserRequestCommandDTO;
-import com.paymybuddy.model.UserAccount;
-import com.paymybuddy.repository.UserAccountRepositoryJpa;
+import com.paymybuddy.coremodel.dto.UserRequestCommandDTO;
+import com.paymybuddy.application.model.UserAccount;
+import com.paymybuddy.coremodel.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +11,17 @@ import java.util.function.Supplier;
 
 @Service
 public class UserAccountService {
-    private final UserAccountRepositoryJpa userAccountRepositoryJpa;
+    private final UserAccountRepository userAccountRepository;
 
     @Autowired
-    public UserAccountService(UserAccountRepositoryJpa userAccountRepositoryJpa) {
-        this.userAccountRepositoryJpa = userAccountRepositoryJpa;
+    public UserAccountService(UserAccountRepository userAccountRepository) {
+        this.userAccountRepository = userAccountRepository;
     }
 
     public UserAccount createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
         throwIsUserInputIsEmpty(userRequestCommandDTO);
-
+        throwIfEmailAlreadyExists(userRequestCommandDTO);
+        throwIfUserNameAlreadyExists(userRequestCommandDTO);
 
         UserAccount newUserAccount =  new UserAccount(
                 userRequestCommandDTO.firstName(),
@@ -30,9 +31,21 @@ public class UserAccountService {
                 userRequestCommandDTO.username()
         );
 
-        userAccountRepositoryJpa.save(newUserAccount);
+        userAccountRepository.save(newUserAccount);
 
         return newUserAccount;
+    }
+
+    private void throwIfUserNameAlreadyExists(UserRequestCommandDTO userRequestCommandDTO) {
+        if (userAccountRepository.isUserNameExists(userRequestCommandDTO.username())) {
+            throw new RuntimeException("UserName already exists.");
+        }
+    }
+
+    private void throwIfEmailAlreadyExists(UserRequestCommandDTO userRequestCommandDTO) {
+        if (userAccountRepository.isEmailExists(userRequestCommandDTO.email())) {
+            throw new RuntimeException("Email already exists.");
+        }
     }
 
     private void throwIsUserInputIsEmpty(UserRequestCommandDTO userRequestCommandDTO) {

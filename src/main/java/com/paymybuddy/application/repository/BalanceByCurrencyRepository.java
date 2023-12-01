@@ -1,6 +1,6 @@
-package com.paymybuddy.repository;
+package com.paymybuddy.application.repository;
 
-import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.application.model.BalanceByCurrency;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
