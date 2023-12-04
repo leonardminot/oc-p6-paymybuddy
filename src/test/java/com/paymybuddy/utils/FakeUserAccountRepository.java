@@ -1,10 +1,11 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.coremodel.model.UserAccountModel;
-import com.paymybuddy.coremodel.repository.UserAccountRepository;
+import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.domain.repository.UserAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FakeUserAccountRepository implements UserAccountRepository {
 
@@ -26,8 +27,8 @@ public class FakeUserAccountRepository implements UserAccountRepository {
     }
 
     @Override
-    public UserAccountModel get(UserAccountModel userAccount) {
-        return users.stream().filter(user -> user.equals(userAccount)).findAny().orElse(null);
+    public Optional<UserAccountModel> get(UserAccountModel userAccount) {
+        return users.stream().filter(user -> user.equals(userAccount)).findAny();
     }
 
     @Override

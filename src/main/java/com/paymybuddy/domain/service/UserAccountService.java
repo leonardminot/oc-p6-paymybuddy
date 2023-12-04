@@ -1,8 +1,8 @@
-package com.paymybuddy.coremodel.service;
+package com.paymybuddy.domain.service;
 
-import com.paymybuddy.coremodel.dto.UserRequestCommandDTO;
-import com.paymybuddy.coremodel.model.UserAccountModel;
-import com.paymybuddy.coremodel.repository.UserAccountRepository;
+import com.paymybuddy.domain.dto.UserRequestCommandDTO;
+import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.domain.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

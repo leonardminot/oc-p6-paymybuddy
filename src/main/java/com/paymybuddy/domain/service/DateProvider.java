@@ -1,4 +1,4 @@
-package com.paymybuddy.coremodel.service;
+package com.paymybuddy.domain.service;
 
 import java.time.LocalDateTime;
 

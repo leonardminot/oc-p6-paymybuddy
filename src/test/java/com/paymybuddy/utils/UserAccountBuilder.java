@@ -1,6 +1,6 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.coremodel.model.UserAccountModel;
+import com.paymybuddy.domain.model.UserAccountModel;
 
 import java.util.UUID;
 

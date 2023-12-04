@@ -1,7 +1,7 @@
-package com.paymybuddy.coremodel.service;
+package com.paymybuddy.domain.service;
 
-import com.paymybuddy.coremodel.model.UserAccountModel;
-import com.paymybuddy.coremodel.repository.UserRelationRepository;
+import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.domain.repository.UserRelationRepository;
 
 public class UserRelationService {
     private final UserRelationRepository userRelationRepository;

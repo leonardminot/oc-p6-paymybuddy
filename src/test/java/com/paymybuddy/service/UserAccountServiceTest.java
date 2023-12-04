@@ -1,23 +1,14 @@
 package com.paymybuddy.service;
 
-import com.paymybuddy.coremodel.dto.UserRequestCommandDTO;
-import com.paymybuddy.coremodel.model.UserAccountModel;
-import com.paymybuddy.coremodel.model.UserRelationModel;
-import com.paymybuddy.coremodel.repository.UserAccountRepository;
-import com.paymybuddy.coremodel.repository.UserRelationRepository;
-import com.paymybuddy.coremodel.service.DateProvider;
-import com.paymybuddy.coremodel.service.UserAccountService;
-import com.paymybuddy.coremodel.service.UserRelationService;
-import com.paymybuddy.utils.FakeUserAccountRepository;
-import com.paymybuddy.utils.FakeUserRelationRepository;
+import com.paymybuddy.domain.dto.UserRequestCommandDTO;
+import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.domain.model.UserRelationModel;
+import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Tag("UnitTest")
 class UserAccountServiceTest {
@@ -233,69 +224,6 @@ class UserAccountServiceTest {
                 // Then
                 fixture.thenARelationHasToBeCreateAndEqualTo(new UserRelationModel(userWithSmallestID, userWithHighestId, now));
             }
-        }
-    }
-
-
-    static class StubDateProvider implements DateProvider {
-        LocalDateTime now;
-        @Override
-        public LocalDateTime getNow() {
-            return now;
-        }
-    }
-
-    class Fixture {
-        private final UserAccountRepository userAccountRepository = new FakeUserAccountRepository();
-
-        private final UserRelationRepository userRelationRepository = new FakeUserRelationRepository();
-        private final StubDateProvider dateProvider = new StubDateProvider();
-
-        private UserAccountModel userAccountToCreate;
-        private UserRequestCommandDTO userRequestCommandDTO;
-
-        private final UserAccountService userAccountService = new UserAccountService(userAccountRepository);
-        private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
-
-
-        public void givenUserInDatabase(UserAccountModel userInDB) {
-            userAccountRepository.save(userInDB);
-        }
-
-        public void givenNowIs(LocalDateTime now) {
-            dateProvider.now = now;
-        }
-
-        public void whenRequestForCreateUser(UserRequestCommandDTO userRequestCommandDTO) {
-            userAccountToCreate = userAccountService.createUserAccount(userRequestCommandDTO);
-        }
-
-        public void whenRequestForCreateUserThatThrow(UserRequestCommandDTO userRequestCommandDTO) {
-            this.userRequestCommandDTO = userRequestCommandDTO;
-        }
-
-        public void whenRequestACreationOfARelationBetween(UserAccountModel user1, UserAccountModel user2) {
-            userRelationService.createRelation(user1, user2);
-        }
-
-        public void thenTheUserShouldBeAndSaved(UserAccountModel expectedUserAccount) {
-            assertThat(userAccountRepository.get(userAccountToCreate)).isEqualTo(expectedUserAccount);
-        }
-
-        public void thenItShouldThrowAnException(RuntimeException e) {
-            assertThatThrownBy(() -> userAccountService.createUserAccount(this.userRequestCommandDTO))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessageContaining(e.getMessage());
-        }
-
-        public void thenARelationHasToBeCreateAndEqualTo(UserRelationModel expectedRelation) {
-            assertThat(userRelationRepository.getRelation(expectedRelation.user1(), expectedRelation.user2())).isEqualTo(expectedRelation);
-        }
-
-        public void whenRequestACreationOfARelationBetweenThenThrow(UserAccountModel user1, UserAccountModel user2, String message) {
-            assertThatThrownBy(() -> userRelationService.createRelation(user1, user2))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessageContaining(message);
         }
     }
 

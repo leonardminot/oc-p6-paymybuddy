@@ -1,4 +1,4 @@
-package com.paymybuddy.coremodel.model;
+package com.paymybuddy.domain.model;
 
 import java.util.UUID;
 

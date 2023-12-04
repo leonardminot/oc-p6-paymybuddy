@@ -1,7 +1,7 @@
-package com.paymybuddy.coremodel.repository;
+package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.coremodel.model.UserAccountModel;
-import com.paymybuddy.coremodel.model.UserRelationModel;
+import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.domain.model.UserRelationModel;
 
 import java.time.LocalDateTime;
 
