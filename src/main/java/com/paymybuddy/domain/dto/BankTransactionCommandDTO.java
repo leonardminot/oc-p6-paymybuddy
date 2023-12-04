@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public record BankTransactionCommandDTO(
         BankAccountModel bankAccount,
         double amount,
-        String currency,
-        LocalDateTime date
+        String currency
 ) {
 }

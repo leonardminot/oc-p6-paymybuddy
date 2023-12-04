@@ -26,12 +26,12 @@ public class PayMyBuddyAppApplication {
     @Transactional
     CommandLineRunner commandLineRunner(
             UserAccountRepositoryJpa userAccountRepositoryJpa,
-            RelationRepository relationRepository,
-            BalanceByCurrencyRepository balanceByCurrencyRepository,
-            BankAccountRepository bankAccountRepository,
-            BankTransactionRepository bankTransactionRepository,
-            TransactionRepository transactionRepository,
-            TransferRepository transferRepository) {
+            RelationRepositoryJpa relationRepositoryJpa,
+            BalanceByCurrencyRepositoryJpa balanceByCurrencyRepositoryJpa,
+            BankAccountRepositoryJpa bankAccountRepositoryJpa,
+            BankTransactionRepositoryJpa bankTransactionRepositoryJpa,
+            TransactionRepositoryJpa transactionRepositoryJpa,
+            TransferRepositoryJpa transferRepositoryJpa) {
         return args -> {
             //testCreateUser(userAccountRepository, relationRepository);
 //            UserAccount leo = new UserAccount(
@@ -68,7 +68,7 @@ public class PayMyBuddyAppApplication {
                     new Transaction("Pour mettre du beurre dans les épinards", 50.0, "EUR", LocalDateTime.now())
             );
 
-            transferRepository.save(transfer);
+            transferRepositoryJpa.save(transfer);
 
 
 //            creditAgricoleLeo.addTransaction(new BankTransaction(50.0, "EUR", LocalDateTime.now()));
@@ -82,7 +82,7 @@ public class PayMyBuddyAppApplication {
         };
     }
 
-    private void testCreateUser(UserAccountRepositoryJpa userAccountRepositoryJpa, RelationRepository relationRepository) {
+    private void testCreateUser(UserAccountRepositoryJpa userAccountRepositoryJpa, RelationRepositoryJpa relationRepositoryJpa) {
         UserAccount leo = new UserAccount(
                 "Léo",
                 "Minot",
@@ -99,7 +99,7 @@ public class PayMyBuddyAppApplication {
         );
         userAccountRepositoryJpa.saveAll(List.of(leo, victor));
         Relation relationLeoVictor = new Relation(leo, victor, LocalDateTime.now());
-        relationRepository.save(relationLeoVictor);
+        relationRepositoryJpa.save(relationLeoVictor);
     }
 
 }
