@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: postgres
+    password: ''
+    url: jdbc:postgresql://localhost:5432/paymybuddy
+
+
+  sql:
+    init:
+      mode: always
+      platform: test
+      schema-locations: classpath:schema-test.sql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true

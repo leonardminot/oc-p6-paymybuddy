@@ -3,17 +3,13 @@ package com.paymybuddy.domain.service;
 import com.paymybuddy.domain.dto.UserRequestCommandDTO;
 import com.paymybuddy.domain.model.UserAccountModel;
 import com.paymybuddy.domain.repository.UserAccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Service
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
 
-    @Autowired
     public UserAccountService(UserAccountRepository userAccountRepository) {
         this.userAccountRepository = userAccountRepository;
     }
