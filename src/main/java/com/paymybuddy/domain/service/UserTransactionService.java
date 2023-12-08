@@ -8,7 +8,6 @@ import com.paymybuddy.domain.repository.BalanceByCurrencyRepository;
 import com.paymybuddy.domain.repository.UserTransactionRepository;
 import com.paymybuddy.domain.repository.UserTransferRepository;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class UserTransactionService {
@@ -25,10 +24,35 @@ public class UserTransactionService {
     }
 
     public void performTransaction(UserTransactionCommand userTransactionCommand) {
+        //TODO: Refactoring de la méthode
+        //   A vérifier : redondance avec Bank Transaction a supprimer
+
         // WARNING: To work properly, Spring Data JPA need to save first the transaction in the database and then create the new transfer entity
         // so, the UserTransactionRepository::save need to return the new entity with the completed id.
         throwIfNullFields(userTransactionCommand);
         throwIfAmountIsNegative(userTransactionCommand);
+
+        Optional<BalanceByCurrencyModel> fromUserBalanceByCurrency = balanceByCurrencyRepository.getByUserAccountAndCurrency(
+                userTransactionCommand.fromUser(),
+                userTransactionCommand.currency()
+        );
+
+        if (fromUserBalanceByCurrency.isPresent()) {
+            BalanceByCurrencyModel currentBalanceByCurrency = fromUserBalanceByCurrency.get();
+
+            if (currentBalanceByCurrency.balance() < userTransactionCommand.amount()) {
+                throw new RuntimeException("Insufficient balance for From User");
+            }
+
+            balanceByCurrencyRepository.save(new BalanceByCurrencyModel(
+                    currentBalanceByCurrency.id(),
+                    currentBalanceByCurrency.userAccount(),
+                    currentBalanceByCurrency.balance() - userTransactionCommand.amount(),
+                    currentBalanceByCurrency.currency()
+            ));
+        } else {
+            throw new RuntimeException("No BalanceByCurrency for From User found");
+        }
 
         TransactionModel transaction = userTransactionRepository.save(new TransactionModel(
                 null,

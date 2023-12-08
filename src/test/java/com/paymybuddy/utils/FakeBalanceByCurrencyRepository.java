@@ -23,7 +23,7 @@ public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyReposit
             BalanceByCurrencyModel updatedBalance = new BalanceByCurrencyModel(
                     existingBalance.id(),
                     existingBalance.userAccount(),
-                    existingBalance.balance() + balanceByCurrency.balance(),
+                    balanceByCurrency.balance(),
                     existingBalance.currency()
             );
 

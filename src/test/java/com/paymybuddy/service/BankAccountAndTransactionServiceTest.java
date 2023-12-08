@@ -178,8 +178,8 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(null, userInDB, 100, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, 100, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(null, userInDB, 100.0, "EUR"));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, 100.0, "EUR", now));
             }
 
             @Test
@@ -274,7 +274,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100.0, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150, "EUR"));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150.0, "EUR"));
                 fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, 100, "EUR", now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);
@@ -336,7 +336,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, -20.0, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30, "EUR"));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30.0, "EUR"));
                 fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, -20.0, "EUR", now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);

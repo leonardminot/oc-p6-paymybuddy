@@ -138,6 +138,12 @@ public class Fixture {
 
     public void thenBalanceByCurrencyShouldBe(BalanceByCurrencyModel balanceByCurrency) {
         assertThat(balanceByCurrencyRepository.get(balanceByCurrency)).isEqualTo(balanceByCurrency);
+        System.out.println(balanceByCurrencyRepository.get(balanceByCurrency));
+    }
+
+    public void thenBalanceByCurrencyShouldBeWithAmountVerification(BalanceByCurrencyModel balanceByCurrency) {
+        assertThat(balanceByCurrencyRepository.get(balanceByCurrency)).isEqualTo(balanceByCurrency);
+        assertThat(balanceByCurrencyRepository.get(balanceByCurrency).balance()).isEqualTo(balanceByCurrency.balance());
     }
 
     public void thenABankTransactionShouldBeRegister(BankTransactionModel bankTransaction) {

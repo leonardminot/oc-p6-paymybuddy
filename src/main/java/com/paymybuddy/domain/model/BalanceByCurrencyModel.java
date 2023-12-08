@@ -10,10 +10,10 @@ public record BalanceByCurrencyModel(
         String currency
 ) {
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        BalanceByCurrencyModel that = (BalanceByCurrencyModel) object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BalanceByCurrencyModel that = (BalanceByCurrencyModel) o;
         return Objects.equals(id, that.id) && Objects.equals(userAccount, that.userAccount) && Objects.equals(currency, that.currency);
     }
 
