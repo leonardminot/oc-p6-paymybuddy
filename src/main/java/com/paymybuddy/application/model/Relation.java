@@ -1,10 +1,7 @@
 package com.paymybuddy.application.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 @Entity(name = "Relation")
 @Table(name = "relation")
 public class Relation {
@@ -36,4 +34,6 @@ public class Relation {
         this.user2 = user2;
         this.createdAt = createdAt;
     }
+
+
 }

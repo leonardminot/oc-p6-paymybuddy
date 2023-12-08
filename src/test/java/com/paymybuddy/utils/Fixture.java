@@ -3,6 +3,7 @@ package com.paymybuddy.utils;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
 import com.paymybuddy.domain.dto.UserRequestCommandDTO;
+import com.paymybuddy.domain.dto.UserTransactionCommand;
 import com.paymybuddy.domain.model.*;
 import com.paymybuddy.domain.repository.*;
 import com.paymybuddy.domain.service.*;
@@ -25,23 +26,28 @@ public class Fixture {
         }
 
 
+
+
+
+
     }
     private final UserAccountRepository userAccountRepository = new FakeUserAccountRepository();
     private final UserRelationRepository userRelationRepository = new FakeUserRelationRepository();
-
     private final BankAccountRepository bankAccountRepository = new FakeBankAccountRepository();
-
     private final BalanceByCurrencyRepository balanceByCurrencyRepository = new FakeBalanceByCurrencyRepository();
     private final BankTransactionRepository bankTransactionRepository = new FakeBankTransactionRepository();
+    private final UserTransactionRepository userTransactionRepository = new FakeUserTransactionRepository();
+    private final UserTransferRepository userTransferRepository = new FakeUserTransferRepository();
     private final StubDateProvider dateProvider = new StubDateProvider();
-
     private UserAccountModel userAccountToCreate;
+
     private UserRequestCommandDTO userRequestCommandDTO;
     private final UserAccountService userAccountService = new UserAccountService(userAccountRepository);
     private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
-    private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
 
+    private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
     private final BankTransactionService bankTransactionService = new BankTransactionService(bankTransactionRepository, balanceByCurrencyRepository, dateProvider);
+    private final UserTransactionService userTransactionService = new UserTransactionService(userTransactionRepository, userTransferRepository, balanceByCurrencyRepository, dateProvider);
     public void givenUserInDatabase(UserAccountModel userInDB) {
         userAccountRepository.save(userInDB);
     }
@@ -56,15 +62,12 @@ public class Fixture {
         bankTransactionRepository.save(existingBankTransaction);
 
     }
-
     public void givenTheBalanceByCurrencyInDataBase(BalanceByCurrencyModel existingBalanceByCurrency) {
         balanceByCurrencyRepository.save(existingBalanceByCurrency);
     }
-
     public void whenRequestForCreateBankAccount(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         bankAccountService.create(bankAccountCreationCommandDTO);
     }
-
     public void whenRequestForCreateUser(UserRequestCommandDTO userRequestCommandDTO) {
         userAccountToCreate = userAccountService.createUserAccount(userRequestCommandDTO);
     }
@@ -105,6 +108,16 @@ public class Fixture {
                 .hasMessageContaining(exceptionToThrow.getMessage());
     }
 
+    public void whenCreateATransactionBetweenUsers(UserAccountModel fromUser, UserAccountModel toUser, String description, String currency, double amount) {
+        userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency,amount));
+    }
+
+    public void whenCreateATransactionBetweenUsersAndThenThrow(UserAccountModel fromUser, UserAccountModel toUser, String description, String currency, double amount, RuntimeException exceptionThrown) {
+        assertThatThrownBy(() -> userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency, amount)))
+                .isInstanceOf(exceptionThrown.getClass())
+                .hasMessageContaining(exceptionThrown.getMessage());
+    }
+
     public void thenTheUserShouldBeAndSaved(UserAccountModel expectedUserAccount) {
         assertThat(userAccountRepository.get(userAccountToCreate).get()).isEqualTo(expectedUserAccount);
     }
@@ -137,6 +150,14 @@ public class Fixture {
 
     public void thenBalanceByCurrencyShouldHaveLengthOf(int size) {
         assertThat(balanceByCurrencyRepository.getAll()).hasSize(size);
+    }
+
+    public void thenItShouldCreateATransactionOf(TransactionModel transactionModel) {
+        assertThat(userTransactionRepository.get(transactionModel)).isEqualTo(transactionModel);
+    }
+
+    public void thenItShouldCreateATransferOf(TransferModel transferModel) {
+        assertThat(userTransferRepository.get(transferModel)).isEqualTo(transferModel);
     }
 }
 

@@ -1,27 +1,24 @@
 package com.paymybuddy.application.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "Transaction")
-@Table(name = "transaction")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
+@Entity(name = "Transaction")
+@Table(name = "transaction")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "transaction_id")
     private UUID transactionID;
-
     @Column(
             name = "description",
             nullable = false
@@ -53,3 +50,5 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 }
+
+

@@ -1,14 +1,13 @@
 package com.paymybuddy.application.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "Transfer")
 @Table(name = "transfer")
 @Getter
+@ToString
+@EqualsAndHashCode
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
