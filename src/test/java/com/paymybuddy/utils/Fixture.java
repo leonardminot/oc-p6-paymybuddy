@@ -42,12 +42,13 @@ public class Fixture {
     private UserAccountModel userAccountToCreate;
 
     private UserRequestCommandDTO userRequestCommandDTO;
+    private final BalanceByCurrencyService balanceByCurrencyService = new BalanceByCurrencyService(balanceByCurrencyRepository);
     private final UserAccountService userAccountService = new UserAccountService(userAccountRepository);
     private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
 
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
-    private final BankTransactionService bankTransactionService = new BankTransactionService(bankTransactionRepository, balanceByCurrencyRepository, dateProvider);
-    private final UserTransactionService userTransactionService = new UserTransactionService(userTransactionRepository, userTransferRepository, balanceByCurrencyRepository, dateProvider);
+    private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankTransactionRepository, dateProvider);
+    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, balanceByCurrencyRepository, dateProvider);
     public void givenUserInDatabase(UserAccountModel userInDB) {
         userAccountRepository.save(userInDB);
     }

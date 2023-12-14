@@ -424,7 +424,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new RuntimeException("Insufficient balance for From User"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new RuntimeException("Amount can not go beyond 0"));
             }
         }
     }
