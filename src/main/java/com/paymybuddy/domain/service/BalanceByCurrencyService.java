@@ -37,7 +37,7 @@ public class BalanceByCurrencyService {
         }
     }
 
-    public void createOrUpdateAssociatedBalanceByCurrency(BankTransactionCommandDTO bankTransactionCommand) {
+    public void createOrUpdateAssociatedBalanceByCurrencyForBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         Optional<BalanceByCurrencyModel> existingBalanceByCurrency = getByUserAccountAndCurrency(
                 bankTransactionCommand.bankAccount().userAccount(),
                 bankTransactionCommand.currency());

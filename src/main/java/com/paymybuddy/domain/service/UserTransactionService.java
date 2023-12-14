@@ -3,7 +3,6 @@ package com.paymybuddy.domain.service;
 import com.paymybuddy.domain.dto.UserTransactionCommand;
 import com.paymybuddy.domain.model.TransactionModel;
 import com.paymybuddy.domain.model.TransferModel;
-import com.paymybuddy.domain.repository.BalanceByCurrencyRepository;
 import com.paymybuddy.domain.repository.UserTransactionRepository;
 import com.paymybuddy.domain.repository.UserTransferRepository;
 
@@ -11,14 +10,12 @@ public class UserTransactionService {
     private final BalanceByCurrencyService balanceByCurrencyService;
     private final UserTransactionRepository userTransactionRepository;
     private final UserTransferRepository userTransferRepository;
-    private final BalanceByCurrencyRepository balanceByCurrencyRepository;
     private final DateProvider dateProvider;
 
-    public UserTransactionService(BalanceByCurrencyService balanceByCurrencyService, UserTransactionRepository userTransactionRepository, UserTransferRepository userTransferRepository, BalanceByCurrencyRepository balanceByCurrencyRepository, DateProvider dateProvider) {
+    public UserTransactionService(BalanceByCurrencyService balanceByCurrencyService, UserTransactionRepository userTransactionRepository, UserTransferRepository userTransferRepository, DateProvider dateProvider) {
         this.balanceByCurrencyService = balanceByCurrencyService;
         this.userTransactionRepository = userTransactionRepository;
         this.userTransferRepository = userTransferRepository;
-        this.balanceByCurrencyRepository = balanceByCurrencyRepository;
         this.dateProvider = dateProvider;
     }
 

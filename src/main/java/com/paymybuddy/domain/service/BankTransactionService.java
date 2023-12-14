@@ -17,7 +17,7 @@ public class BankTransactionService {
 
     public void newTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         throwIfNullData(bankTransactionCommand);
-        balanceByCurrencyService.createOrUpdateAssociatedBalanceByCurrency(bankTransactionCommand);
+        balanceByCurrencyService.createOrUpdateAssociatedBalanceByCurrencyForBankTransaction(bankTransactionCommand);
         saveANewTransaction(bankTransactionCommand);
     }
 

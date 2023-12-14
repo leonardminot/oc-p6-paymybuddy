@@ -48,7 +48,7 @@ public class Fixture {
 
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
     private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankTransactionRepository, dateProvider);
-    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, balanceByCurrencyRepository, dateProvider);
+    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, dateProvider);
     public void givenUserInDatabase(UserAccountModel userInDB) {
         userAccountRepository.save(userInDB);
     }
