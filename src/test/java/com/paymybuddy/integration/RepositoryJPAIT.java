@@ -54,7 +54,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
 
         // When
@@ -73,7 +74,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user1);
 
@@ -82,7 +84,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "victor@email.com",
                 "Welcome123",
-                "VicM"
+                "VicM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user2);
 
@@ -104,7 +107,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user1);
 
@@ -137,7 +141,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user1);
 
@@ -162,7 +167,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user1);
 
@@ -195,7 +201,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "leo@email.com",
                 "Welcome123",
-                "leoM"
+                "leoM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user1);
 
@@ -204,7 +211,8 @@ public class RepositoryJPAIT {
                 "Minot",
                 "victor@email.com",
                 "Welcome123",
-                "VicM"
+                "VicM",
+                "USER"
         );
         userAccountRepositoryJpa.save(user2);
 

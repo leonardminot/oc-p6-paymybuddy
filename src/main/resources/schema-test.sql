@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS user_account (
     password TEXT NOT NULL,
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
-    username TEXT UNIQUE NOT NULL
+    username TEXT UNIQUE NOT NULL,
+    role VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS relation (

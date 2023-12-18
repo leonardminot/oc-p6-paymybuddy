@@ -50,6 +50,12 @@ public class UserAccount {
     )
     private String username;
 
+    @Column(
+            name = "role",
+            nullable = false
+    )
+    private String role;
+
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "userAccount",
@@ -66,12 +72,13 @@ public class UserAccount {
     )
     private List<BankAccount> bankAccounts = new ArrayList<>();
 
-    public UserAccount(String firstName, String lastName, String email, String password, String username) {
+    public UserAccount(String firstName, String lastName, String email, String password, String username, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.role = role;
     }
 
     public UserAccount() {
