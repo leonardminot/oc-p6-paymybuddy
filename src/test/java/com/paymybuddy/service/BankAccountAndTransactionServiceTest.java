@@ -1,11 +1,11 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.application.model.BalanceByCurrency;
+import com.paymybuddy.application.model.BankAccount;
+import com.paymybuddy.application.model.BankTransaction;
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
-import com.paymybuddy.domain.model.BalanceByCurrencyModel;
-import com.paymybuddy.domain.model.BankAccountModel;
-import com.paymybuddy.domain.model.BankTransactionModel;
-import com.paymybuddy.domain.model.UserAccountModel;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
@@ -33,7 +33,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldCreateABankAccount() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -45,13 +45,13 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenRequestForCreateBankAccount(new BankAccountCreationCommandDTO(userInDB, "123456789", "FR"));
 
                 // Then
-                fixture.thenItShouldSaveTheBankAccount(new BankAccountModel(null, userInDB, "123456789", "FR"));
+                fixture.thenItShouldSaveTheBankAccount(new BankAccount(UUID.fromString("00000000-0000-0000-0000-000000000000"), userInDB, "123456789", "FR"));
             }
 
             @Test
             void itShouldThrowIfUserNotInDB() {
                 // Given
-                UserAccountModel userNotInDB = new UserAccountBuilder()
+                UserAccount userNotInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -73,7 +73,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfIbanIsEmpty() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -88,7 +88,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfCountryIsEmpty() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -114,7 +114,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfIBANExists() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -122,8 +122,8 @@ public class BankAccountAndTransactionServiceTest {
 
                 fixture.givenUserInDatabase(userInDB);
 
-                BankAccountModel bankAccountModel = new BankAccountModel(
-                        null,
+                BankAccount bankAccountModel = new BankAccount(
+                        UUID.fromString("00000000-0000-0000-0000-000000000000"),
                         userInDB,
                         "123456789",
                         "FR"
@@ -154,7 +154,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldCreateABalanceByCurrencyIfATransactionISDoneWithUnknownCurrencyForUser() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -165,7 +165,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",
@@ -178,8 +178,8 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(null, userInDB, 100.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, 100.0, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(UUID.fromString("00000000-0000-0000-0000-000000000000"), userInDB, 100.0, "EUR"));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, "EUR", now));
             }
 
             @Test
@@ -193,7 +193,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfCurrencyIsNull() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -204,7 +204,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",
@@ -231,7 +231,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldIncreaseTheBalance() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -242,7 +242,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",
@@ -251,21 +251,21 @@ public class BankAccountAndTransactionServiceTest {
 
                 fixture.givenBankAccountInDatabase(bankAccount);
 
-                BankTransactionModel existingBankTransaction = new BankTransactionModel(
+                BankTransaction existingBankTransaction = new BankTransaction(
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
-                        50,
+                        50.0,
                         "EUR",
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
                 fixture.givenTheTransactionInDatabase(existingBankTransaction);
 
-                BalanceByCurrencyModel existingBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency existingBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"),
-                        existingBankTransaction.bankAccount().userAccount(),
-                        existingBankTransaction.amount(),
-                        existingBankTransaction.currency()
+                        existingBankTransaction.getBankAccount().getUserAccount(),
+                        existingBankTransaction.getAmount(),
+                        existingBankTransaction.getCurrency()
                 );
 
                 fixture.givenTheBalanceByCurrencyInDataBase(existingBalanceByCurrency);
@@ -274,8 +274,8 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100.0, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, 100, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150.0, "EUR"));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, "EUR", now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);
             }
@@ -293,7 +293,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldDecreaseTheBalance() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -304,7 +304,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",
@@ -313,21 +313,21 @@ public class BankAccountAndTransactionServiceTest {
 
                 fixture.givenBankAccountInDatabase(bankAccount);
 
-                BankTransactionModel existingBankTransaction = new BankTransactionModel(
+                BankTransaction existingBankTransaction = new BankTransaction(
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
-                        50,
+                        50.0,
                         "EUR",
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
                 fixture.givenTheTransactionInDatabase(existingBankTransaction);
 
-                BalanceByCurrencyModel existingBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency existingBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"),
-                        existingBankTransaction.bankAccount().userAccount(),
-                        existingBankTransaction.amount(),
-                        existingBankTransaction.currency()
+                        existingBankTransaction.getBankAccount().getUserAccount(),
+                        existingBankTransaction.getAmount(),
+                        existingBankTransaction.getCurrency()
                 );
 
                 fixture.givenTheBalanceByCurrencyInDataBase(existingBalanceByCurrency);
@@ -336,8 +336,8 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, -20.0, "EUR"));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrencyModel(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransactionModel(null, bankAccount, -20.0, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30.0, "EUR"));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, -20.0, "EUR", now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);
             }
@@ -345,7 +345,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfBalanceBecameNegativeWithExistingBalanceByCurrency() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -356,7 +356,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",
@@ -365,21 +365,21 @@ public class BankAccountAndTransactionServiceTest {
 
                 fixture.givenBankAccountInDatabase(bankAccount);
 
-                BankTransactionModel existingBankTransaction = new BankTransactionModel(
+                BankTransaction existingBankTransaction = new BankTransaction(
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
-                        50,
+                        50.0,
                         "EUR",
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
                 fixture.givenTheTransactionInDatabase(existingBankTransaction);
 
-                BalanceByCurrencyModel existingBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency existingBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"),
-                        existingBankTransaction.bankAccount().userAccount(),
-                        existingBankTransaction.amount(),
-                        existingBankTransaction.currency()
+                        existingBankTransaction.getBankAccount().getUserAccount(),
+                        existingBankTransaction.getAmount(),
+                        existingBankTransaction.getCurrency()
                 );
 
                 fixture.givenTheBalanceByCurrencyInDataBase(existingBalanceByCurrency);
@@ -393,7 +393,7 @@ public class BankAccountAndTransactionServiceTest {
             @Test
             void itShouldThrowIfBalanceBecameNegativeWithNoExistingBalanceByCurrency() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder()
+                UserAccount userInDB = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -404,7 +404,7 @@ public class BankAccountAndTransactionServiceTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BankAccountModel bankAccount = new BankAccountModel(
+                BankAccount bankAccount = new BankAccount(
                         UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
                         userInDB,
                         "123456789",

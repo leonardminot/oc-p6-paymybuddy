@@ -1,6 +1,6 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.repository.UserAccountRepository;
 
 import java.util.ArrayList;
@@ -9,30 +9,30 @@ import java.util.Optional;
 
 public class FakeUserAccountRepository implements UserAccountRepository {
 
-    private final List<UserAccountModel> users = new ArrayList<>();
+    private final List<UserAccount> users = new ArrayList<>();
 
     @Override
-    public void save(UserAccountModel userAccount) {
+    public void save(UserAccount userAccount) {
        users.add(userAccount);
     }
 
     @Override
     public boolean isEmailExists(String email) {
-        return users.stream().anyMatch(user -> user.email().equals(email));
+        return users.stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
     @Override
     public boolean isUserNameExists(String userName) {
-        return users.stream().anyMatch(user -> user.username().equals(userName));
+        return users.stream().anyMatch(user -> user.getUsername().equals(userName));
     }
 
     @Override
-    public Optional<UserAccountModel> get(UserAccountModel userAccount) {
+    public Optional<UserAccount> get(UserAccount userAccount) {
         return users.stream().filter(user -> user.equals(userAccount)).findAny();
     }
 
     @Override
-    public List<UserAccountModel> getAllUsers() {
+    public List<UserAccount> getAllUsers() {
         return users;
     }
 }

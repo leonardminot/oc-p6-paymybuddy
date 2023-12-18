@@ -1,14 +1,13 @@
 package com.paymybuddy.domain.service;
 
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.dto.UserRequestCommandDTO;
-import com.paymybuddy.domain.model.UserAccountModel;
 import com.paymybuddy.domain.repository.UserAccountRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
-@Service
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
 
@@ -16,13 +15,13 @@ public class UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public UserAccountModel createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
+    public UserAccount createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
         throwIsUserInputIsEmpty(userRequestCommandDTO);
         throwIfEmailAlreadyExists(userRequestCommandDTO);
         throwIfUserNameAlreadyExists(userRequestCommandDTO);
 
-        UserAccountModel newUserAccount =  new UserAccountModel(
-                null,
+        UserAccount newUserAccount =  new UserAccount(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 userRequestCommandDTO.firstName(),
                 userRequestCommandDTO.lastName(),
                 userRequestCommandDTO.email(),

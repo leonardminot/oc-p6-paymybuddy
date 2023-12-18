@@ -52,6 +52,13 @@ public class BankAccount {
     )
     private List<BankTransaction> bankTransactions = new ArrayList<>();
 
+    public BankAccount(UUID bankAccountId, UserAccount userAccount, String iban, String country) {
+        this.bankAccountId = bankAccountId;
+        this.iban = iban;
+        this.country = country;
+        this.userAccount = userAccount;
+    }
+
     public void addTransaction(BankTransaction bankTransaction) {
         if (!bankTransactions.contains(bankTransaction)) {
             bankTransactions.add(bankTransaction);

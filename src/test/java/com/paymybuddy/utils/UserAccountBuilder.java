@@ -1,6 +1,6 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.UserAccount;
 
 import java.util.UUID;
 
@@ -90,8 +90,8 @@ public class UserAccountBuilder {
         );
     }
 
-    public UserAccountModel build() {
-        return new UserAccountModel(
+    public UserAccount build() {
+        return new UserAccount(
                 this.userId,
                 this.firstName,
                 this.lastName,

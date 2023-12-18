@@ -1,10 +1,10 @@
 package com.paymybuddy.domain.dto;
 
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.UserAccount;
 
 public record UserTransactionCommand(
-        UserAccountModel fromUser,
-        UserAccountModel toUser,
+        UserAccount fromUser,
+        UserAccount toUser,
         String description,
         String currency,
         double amount

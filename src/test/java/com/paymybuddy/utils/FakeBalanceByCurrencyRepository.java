@@ -1,7 +1,7 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.BalanceByCurrencyModel;
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.BalanceByCurrency;
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.repository.BalanceByCurrencyRepository;
 
 import java.util.ArrayList;
@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.Optional;
 
 public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyRepository {
-    List<BalanceByCurrencyModel> balanceByCurrencies = new ArrayList<>();
+    List<BalanceByCurrency> balanceByCurrencies = new ArrayList<>();
 
     @Override
-    public void save(BalanceByCurrencyModel balanceByCurrency) {
-        Optional<BalanceByCurrencyModel> existingBalanceByCurrency = balanceByCurrencies.stream()
-                .filter(bbc -> bbc.id().equals(balanceByCurrency.id()))
+    public void save(BalanceByCurrency balanceByCurrency) {
+        Optional<BalanceByCurrency> existingBalanceByCurrency = balanceByCurrencies.stream()
+                .filter(bbc -> bbc.getBalanceID().equals(balanceByCurrency.getBalanceID()))
                 .findAny();
 
         if (existingBalanceByCurrency.isPresent()) {
-            BalanceByCurrencyModel existingBalance = existingBalanceByCurrency.get();
+            BalanceByCurrency existingBalance = existingBalanceByCurrency.get();
 
-            BalanceByCurrencyModel updatedBalance = new BalanceByCurrencyModel(
-                    existingBalance.id(),
-                    existingBalance.userAccount(),
-                    balanceByCurrency.balance(),
-                    existingBalance.currency()
+            BalanceByCurrency updatedBalance = new BalanceByCurrency(
+                    existingBalance.getBalanceID(),
+                    existingBalance.getUserAccount(),
+                    balanceByCurrency.getBalance(),
+                    existingBalance.getCurrency()
             );
 
             balanceByCurrencies.set(balanceByCurrencies.indexOf(existingBalance), updatedBalance);
@@ -34,7 +34,7 @@ public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyReposit
     }
 
     @Override
-    public BalanceByCurrencyModel get(BalanceByCurrencyModel balanceByCurrency) {
+    public BalanceByCurrency get(BalanceByCurrency balanceByCurrency) {
         return balanceByCurrencies.stream()
                 .filter(bbc -> bbc.equals(balanceByCurrency))
                 .findAny()
@@ -42,14 +42,14 @@ public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyReposit
     }
 
     @Override
-    public Optional<BalanceByCurrencyModel> getByUserAccountAndCurrency(UserAccountModel userAccountModel, String currency) {
+    public Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccountModel, String currency) {
         return balanceByCurrencies.stream()
-                .filter(bbc -> bbc.userAccount().equals(userAccountModel) && bbc.currency().equals(currency))
+                .filter(bbc -> bbc.getUserAccount().equals(userAccountModel) && bbc.getCurrency().equals(currency))
                 .findAny();
     }
 
     @Override
-    public List<BalanceByCurrencyModel> getAll() {
+    public List<BalanceByCurrency> getAll() {
         return balanceByCurrencies;
     }
 }

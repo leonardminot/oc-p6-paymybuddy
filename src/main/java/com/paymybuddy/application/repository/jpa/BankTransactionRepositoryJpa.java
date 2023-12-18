@@ -1,4 +1,4 @@
-package com.paymybuddy.application.repository;
+package com.paymybuddy.application.repository.jpa;
 
 import com.paymybuddy.application.model.BankTransaction;
 import org.springframework.data.repository.CrudRepository;

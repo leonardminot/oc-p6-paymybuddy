@@ -1,8 +1,8 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.application.model.Relation;
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.dto.UserRequestCommandDTO;
-import com.paymybuddy.domain.model.UserAccountModel;
-import com.paymybuddy.domain.model.UserRelationModel;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
@@ -32,7 +32,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUser(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", "Minot"));
 
                 // Then
-                fixture.thenTheUserShouldBeAndSaved(new UserAccountModel(null,"Léo", "Minot", "leo@email.com", "123", "LeoM"));
+                fixture.thenTheUserShouldBeAndSaved(new UserAccount(UUID.fromString("00000000-0000-0000-0000-000000000000"),"Léo", "Minot", "leo@email.com", "123", "LeoM"));
             }
 
             @Test
@@ -99,7 +99,7 @@ class UserAccountServiceTest {
             @Test
             void itShouldThrowIlTheSameEmailIsAlreadyInDatabase() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder().withEmail("leo@email.com").build();
+                UserAccount userInDB = new UserAccountBuilder().withEmail("leo@email.com").build();
                 fixture.givenUserInDatabase(userInDB);
                 // When
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", "Minot"));
@@ -120,7 +120,7 @@ class UserAccountServiceTest {
             @Test
             void itShouldThrowIfUsernameIsAlreadyInDatabase() {
                 // Given
-                UserAccountModel userInDB = new UserAccountBuilder().withUsername("LeoM").build();
+                UserAccount userInDB = new UserAccountBuilder().withUsername("LeoM").build();
                 fixture.givenUserInDatabase(userInDB);
                 // When
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", "Minot"));
@@ -146,20 +146,20 @@ class UserAccountServiceTest {
             @Test
             void itShouldCreateANewRelation() {
                 // Given
-                UserAccountModel leo = new UserAccountBuilder().withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69")).withFirstName("Léo").withUsername("LeoM").build();
-                UserAccountModel victor = new UserAccountBuilder().withId(UUID.fromString("2124d9e8-6266-4bcf-8035-37a02ba75c69")).withFirstName("Victor").withUsername("VictorM").build();
+                UserAccount leo = new UserAccountBuilder().withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69")).withFirstName("Léo").withUsername("LeoM").build();
+                UserAccount victor = new UserAccountBuilder().withId(UUID.fromString("2124d9e8-6266-4bcf-8035-37a02ba75c69")).withFirstName("Victor").withUsername("VictorM").build();
 
                 fixture.givenNowIs(LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0));
                 // When
                 fixture.whenRequestACreationOfARelationBetween(leo, victor);
                 // Then
-                fixture.thenARelationHasToBeCreateAndEqualTo(new UserRelationModel(leo, victor, LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0)));
+                fixture.thenARelationHasToBeCreateAndEqualTo(new Relation(leo, victor, LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0)));
             }
 
             @Test
             void itShouldThrowIfUser1IsEmpty() {
                 // Given
-                UserAccountModel user = new UserAccountBuilder().build();
+                UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
                 fixture.whenRequestACreationOfARelationBetweenThenThrow(null, user, "Users should not be empty");
@@ -168,7 +168,7 @@ class UserAccountServiceTest {
             @Test
             void itShouldThrowIfUser2IsEmpty() {
                 // Given
-                UserAccountModel user = new UserAccountBuilder().build();
+                UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
                 fixture.whenRequestACreationOfARelationBetweenThenThrow(user, null, "Users should not be empty");
@@ -186,7 +186,7 @@ class UserAccountServiceTest {
             @Test
             void itShouldThrowIfIntentToCreateARelationWithTheSameUser() {
                 // Given
-                UserAccountModel user = new UserAccountBuilder().build();
+                UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
                 fixture.whenRequestACreationOfARelationBetweenThenThrow(user, user, "Users must be different");
@@ -205,13 +205,13 @@ class UserAccountServiceTest {
             @Test
             void itShouldOrderedTheRelationByUUID() {
                 // Given
-                UserAccountModel userWithSmallestID = new UserAccountBuilder()
+                UserAccount userWithSmallestID = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
                         .build();
 //
-                UserAccountModel userWithHighestId = new UserAccountBuilder()
+                UserAccount userWithHighestId = new UserAccountBuilder()
                         .withId(UUID.fromString("2124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -222,7 +222,7 @@ class UserAccountServiceTest {
                 // When
                 fixture.whenRequestACreationOfARelationBetween(userWithHighestId, userWithSmallestID); // Victor has a UUID superior in the alphabetical order. At the end, Leo should be first
                 // Then
-                fixture.thenARelationHasToBeCreateAndEqualTo(new UserRelationModel(userWithSmallestID, userWithHighestId, now));
+                fixture.thenARelationHasToBeCreateAndEqualTo(new Relation(userWithSmallestID, userWithHighestId, now));
             }
         }
     }

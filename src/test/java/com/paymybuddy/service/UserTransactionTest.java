@@ -1,9 +1,9 @@
 package com.paymybuddy.service;
 
-import com.paymybuddy.domain.model.BalanceByCurrencyModel;
-import com.paymybuddy.domain.model.TransactionModel;
-import com.paymybuddy.domain.model.TransferModel;
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.BalanceByCurrency;
+import com.paymybuddy.application.model.Transaction;
+import com.paymybuddy.application.model.Transfer;
+import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
@@ -29,7 +29,7 @@ public class UserTransactionTest {
             @Test
             void itShouldCreateANewTransaction() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -41,7 +41,7 @@ public class UserTransactionTest {
                 fixture.givenNowIs(now);
 
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -49,20 +49,20 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrencyModel(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
 
 
                 // When
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "EUR", 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransactionOf(new TransactionModel(null, "test transaction", 100.0, "EUR", now));
+                fixture.thenItShouldCreateATransactionOf(new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, "EUR", now));
             }
 
             @Test
             void itShouldThrowIfDescriptionIsNull() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -72,7 +72,7 @@ public class UserTransactionTest {
 
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -90,7 +90,7 @@ public class UserTransactionTest {
             @Test
             void itShouldThrowIfCurrencyIsNull() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -100,7 +100,7 @@ public class UserTransactionTest {
 
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -120,7 +120,7 @@ public class UserTransactionTest {
                 // Given
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -137,7 +137,7 @@ public class UserTransactionTest {
 
             @Test
             void itShouldThrowIfToUserIsNull() {
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -154,7 +154,7 @@ public class UserTransactionTest {
 
             @Test
             void itShouldThrowIfAmountIsNegative() {
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -165,7 +165,7 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -183,7 +183,7 @@ public class UserTransactionTest {
             @Test
             void itShouldCreateATransferBetweenUser() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -195,7 +195,7 @@ public class UserTransactionTest {
                 fixture.givenNowIs(now);
 
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -203,13 +203,13 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrencyModel(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
 
                 // When
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "EUR", 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransferOf(new TransferModel(fromUser, toUser, new TransactionModel(null, "test transaction", 100.0, "EUR", now)));
+                fixture.thenItShouldCreateATransferOf(new Transfer(fromUser, toUser, new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, "EUR", now)));
             }
         }
     }
@@ -230,7 +230,7 @@ public class UserTransactionTest {
             @Test
             void itShouldCreateABalanceByCurrencyForToUser() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -240,7 +240,7 @@ public class UserTransactionTest {
 
 
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -251,13 +251,13 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrencyModel(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD"));
                 // When
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", "USD", 100.0);
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(
-                        null,
+                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
+                        UUID.fromString("00000000-0000-0000-0000-000000000000"),
                         toUser,
                         100.0,
                         "USD"
@@ -268,7 +268,7 @@ public class UserTransactionTest {
             @Test
             void itShouldUpdateABalanceByCurrencyForTheToUser() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -276,7 +276,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(fromUser);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -287,7 +287,7 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BalanceByCurrencyModel toUserBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency toUserBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("33333333-6266-4bcf-8035-37a02ba75c69"),
                         toUser,
                         50.0,
@@ -295,7 +295,7 @@ public class UserTransactionTest {
                 );
                 fixture.givenTheBalanceByCurrencyInDataBase(toUserBalanceByCurrency);
 
-                BalanceByCurrencyModel fromUserBalanceByCurrency = new BalanceByCurrencyModel(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD");
+                BalanceByCurrency fromUserBalanceByCurrency = new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD");
                 fixture.givenTheBalanceByCurrencyInDataBase(fromUserBalanceByCurrency);
 
 
@@ -303,8 +303,8 @@ public class UserTransactionTest {
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", "USD", 100.0);
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrencyModel(
-                        toUserBalanceByCurrency.id(),
+                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
+                        toUserBalanceByCurrency.getBalanceID(),
                         toUser,
                         150.0,
                         "USD"
@@ -325,7 +325,7 @@ public class UserTransactionTest {
             @Test
             void itShouldUpdateFromUserBalanceByCurrency() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -333,7 +333,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(fromUser);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -344,7 +344,7 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BalanceByCurrencyModel fromUserBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency fromUserBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         50.0,
@@ -356,7 +356,7 @@ public class UserTransactionTest {
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "USD", 30.0);
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrencyModel(
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         20.0,
@@ -368,7 +368,7 @@ public class UserTransactionTest {
             @Test
             void itShouldThrowIfFromUserBalanceByCurrencyIsUnknown() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -376,7 +376,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(fromUser);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -395,7 +395,7 @@ public class UserTransactionTest {
             @Test
             void itShouldThrowIfFromUserBalanceByCurrencyBecameNegative() {
                 // Given
-                UserAccountModel fromUser = new UserAccountBuilder()
+                UserAccount fromUser = new UserAccountBuilder()
                         .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Léo")
                         .withLastName("Minot")
@@ -403,7 +403,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(fromUser);
 
-                UserAccountModel toUser = new UserAccountBuilder()
+                UserAccount toUser = new UserAccountBuilder()
                         .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
                         .withFirstName("Victor")
                         .withLastName("Minot")
@@ -414,7 +414,7 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                BalanceByCurrencyModel fromUserBalanceByCurrency = new BalanceByCurrencyModel(
+                BalanceByCurrency fromUserBalanceByCurrency = new BalanceByCurrency(
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         50.0,

@@ -1,16 +1,15 @@
 package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.domain.model.UserAccountModel;
-import org.springframework.stereotype.Repository;
+import com.paymybuddy.application.model.UserAccount;
 
 import java.util.List;
 import java.util.Optional;
 
 
 public interface UserAccountRepository {
-    void save(UserAccountModel userAccount);
+    void save(UserAccount userAccount);
     boolean isEmailExists(String email);
     boolean isUserNameExists(String userName);
-    Optional<UserAccountModel> get(UserAccountModel userAccount);
-    List<UserAccountModel> getAllUsers();
+    Optional<UserAccount> get(UserAccount userAccount);
+    List<UserAccount> getAllUsers();
 }

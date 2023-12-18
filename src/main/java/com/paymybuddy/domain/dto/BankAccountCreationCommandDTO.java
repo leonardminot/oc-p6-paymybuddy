@@ -1,9 +1,9 @@
 package com.paymybuddy.domain.dto;
 
-import com.paymybuddy.domain.model.UserAccountModel;
+import com.paymybuddy.application.model.UserAccount;
 
 public record BankAccountCreationCommandDTO(
-        UserAccountModel userAccount,
+        UserAccount userAccount,
         String iban,
         String country
 ) { }

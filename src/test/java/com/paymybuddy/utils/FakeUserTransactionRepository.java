@@ -1,26 +1,26 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.TransactionModel;
+import com.paymybuddy.application.model.Transaction;
 import com.paymybuddy.domain.repository.UserTransactionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeUserTransactionRepository implements UserTransactionRepository {
-    List<TransactionModel> transactions = new ArrayList<>();
+    List<Transaction> transactions = new ArrayList<>();
     @Override
-    public TransactionModel save(TransactionModel transactionModel) {
+    public Transaction save(Transaction transactionModel) {
         transactions.add(transactionModel);
         return transactionModel;
     }
 
     @Override
-    public List<TransactionModel> getAll() {
+    public List<Transaction> getAll() {
         return transactions;
     }
 
     @Override
-    public TransactionModel get(TransactionModel transaction) {
+    public Transaction get(Transaction transaction) {
         return transactions.stream()
                 .filter(tr -> tr.equals(transaction))
                 .findAny()

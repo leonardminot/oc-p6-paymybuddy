@@ -1,20 +1,20 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.BankAccountModel;
+import com.paymybuddy.application.model.BankAccount;
 import com.paymybuddy.domain.repository.BankAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeBankAccountRepository implements BankAccountRepository {
-    List<BankAccountModel> bankAccounts = new ArrayList<>();
+    List<BankAccount> bankAccounts = new ArrayList<>();
     @Override
-    public void save(BankAccountModel bankAccount) {
+    public void save(BankAccount bankAccount) {
         bankAccounts.add(bankAccount);
     }
 
     @Override
-    public BankAccountModel get(BankAccountModel bankAccount) {
+    public BankAccount get(BankAccount bankAccount) {
         return bankAccounts.stream()
                 .filter(ba -> ba.equals(bankAccount))
                 .findAny()
@@ -24,6 +24,6 @@ public class FakeBankAccountRepository implements BankAccountRepository {
     @Override
     public boolean isIBANExists(String iban) {
         return bankAccounts.stream()
-                .anyMatch(ba -> ba.IBAN().equals(iban));
+                .anyMatch(ba -> ba.getIban().equals(iban));
     }
 }

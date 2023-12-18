@@ -43,6 +43,14 @@ public class Transaction {
     )
     private LocalDateTime transactionDate;
 
+    public Transaction(UUID transactionID, String description, Double amount, String currency, LocalDateTime transactionDate) {
+        this.transactionID = transactionID;
+        this.description = description;
+        this.amount = amount;
+        this.currency = currency;
+        this.transactionDate = transactionDate;
+    }
+
     public Transaction(String description, Double amount, String currency, LocalDateTime transactionDate) {
         this.description = description;
         this.amount = amount;

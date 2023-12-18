@@ -1,11 +1,11 @@
 package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.domain.model.UserAccountModel;
-import com.paymybuddy.domain.model.UserRelationModel;
+import com.paymybuddy.application.model.Relation;
+import com.paymybuddy.application.model.UserAccount;
 
 import java.time.LocalDateTime;
 
 public interface UserRelationRepository {
-    UserRelationModel getRelation(UserAccountModel user1, UserAccountModel user2);
-    void saveRelation(UserAccountModel user1, UserAccountModel user2, LocalDateTime createdAt);
+    Relation getRelation(UserAccount user1, UserAccount user2);
+    void saveRelation(UserAccount user1, UserAccount user2, LocalDateTime createdAt);
 }

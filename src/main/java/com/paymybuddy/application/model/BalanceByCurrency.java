@@ -34,6 +34,13 @@ public class BalanceByCurrency {
     )
     private UserAccount userAccount;
 
+    public BalanceByCurrency(UUID balanceID, UserAccount userAccount, Double balance, String currency) {
+        this.balanceID = balanceID;
+        this.balance = balance;
+        this.currency = currency;
+        this.userAccount = userAccount;
+    }
+
     public BalanceByCurrency(Double balance, String currency, UserAccount userAccount) {
         this.balance = balance;
         this.currency = currency;

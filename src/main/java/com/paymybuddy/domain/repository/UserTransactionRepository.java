@@ -1,11 +1,11 @@
 package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.domain.model.TransactionModel;
+import com.paymybuddy.application.model.Transaction;
 
 import java.util.List;
 
 public interface UserTransactionRepository {
-    TransactionModel save(TransactionModel transactionModel);
-    List<TransactionModel> getAll();
-    TransactionModel get(TransactionModel transaction);
+    Transaction save(Transaction transactionModel);
+    List<Transaction> getAll();
+    Transaction get(Transaction transaction);
 }

@@ -1,7 +1,6 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
-import com.paymybuddy.domain.model.BankTransactionModel;
+import com.paymybuddy.application.model.BankTransaction;
 import com.paymybuddy.domain.repository.BankTransactionRepository;
 
 import java.util.ArrayList;
@@ -9,14 +8,14 @@ import java.util.List;
 
 public class FakeBankTransactionRepository implements BankTransactionRepository {
 
-    List<BankTransactionModel> bankTransactions = new ArrayList<>();
+    List<BankTransaction> bankTransactions = new ArrayList<>();
     @Override
-    public void save(BankTransactionModel bankTransaction) {
+    public void save(BankTransaction bankTransaction) {
         bankTransactions.add(bankTransaction);
     }
 
     @Override
-    public BankTransactionModel get(BankTransactionModel bankTransaction) {
+    public BankTransaction get(BankTransaction bankTransaction) {
         return bankTransactions.stream()
                 .filter(bt -> bt.equals(bankTransaction))
                 .findAny()
@@ -24,7 +23,7 @@ public class FakeBankTransactionRepository implements BankTransactionRepository 
     }
 
     @Override
-    public List<BankTransactionModel> getAll() {
+    public List<BankTransaction> getAll() {
         return bankTransactions;
     }
 }

@@ -1,13 +1,12 @@
 package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
-import com.paymybuddy.domain.model.BankTransactionModel;
+import com.paymybuddy.application.model.BankTransaction;
 
 import java.util.List;
 
 public interface BankTransactionRepository {
-    void save(BankTransactionModel bankTransactionCommand);
-    BankTransactionModel get(BankTransactionModel bankTransaction);
+    void save(BankTransaction bankTransactionCommand);
+    BankTransaction get(BankTransaction bankTransaction);
 
-    List<BankTransactionModel> getAll();
+    List<BankTransaction> getAll();
 }

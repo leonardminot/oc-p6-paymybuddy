@@ -1,11 +1,9 @@
 package com.paymybuddy.domain.dto;
 
-import com.paymybuddy.domain.model.BankAccountModel;
-
-import java.time.LocalDateTime;
+import com.paymybuddy.application.model.BankAccount;
 
 public record BankTransactionCommandDTO(
-        BankAccountModel bankAccount,
+        BankAccount bankAccount,
         double amount,
         String currency
 ) {

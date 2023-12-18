@@ -1,10 +1,12 @@
 package com.paymybuddy.domain.service;
 
+import com.paymybuddy.application.model.Transaction;
+import com.paymybuddy.application.model.Transfer;
 import com.paymybuddy.domain.dto.UserTransactionCommand;
-import com.paymybuddy.domain.model.TransactionModel;
-import com.paymybuddy.domain.model.TransferModel;
 import com.paymybuddy.domain.repository.UserTransactionRepository;
 import com.paymybuddy.domain.repository.UserTransferRepository;
+
+import java.util.UUID;
 
 public class UserTransactionService {
     private final BalanceByCurrencyService balanceByCurrencyService;
@@ -29,8 +31,8 @@ public class UserTransactionService {
         balanceByCurrencyService.updateOrCreateToUserBalanceByCurrency(userTransactionCommand);
 
 
-        TransactionModel transaction = userTransactionRepository.save(new TransactionModel(
-                null,
+        Transaction transaction = userTransactionRepository.save(new Transaction(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 userTransactionCommand.description(),
                 userTransactionCommand.amount(),
                 userTransactionCommand.currency(),
@@ -38,7 +40,7 @@ public class UserTransactionService {
         ));
 
 
-        userTransferRepository.save(new TransferModel(
+        userTransferRepository.save(new Transfer(
                 userTransactionCommand.fromUser(),
                 userTransactionCommand.toUser(),
                 transaction

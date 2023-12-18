@@ -1,25 +1,25 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.domain.model.TransferModel;
+import com.paymybuddy.application.model.Transfer;
 import com.paymybuddy.domain.repository.UserTransferRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeUserTransferRepository implements UserTransferRepository {
-    private final List<TransferModel> transfers = new ArrayList<>();
+    private final List<Transfer> transfers = new ArrayList<>();
     @Override
-    public void save(TransferModel transfer) {
+    public void save(Transfer transfer) {
         transfers.add(transfer);
     }
 
     @Override
-    public List<TransferModel> getAll() {
+    public List<Transfer> getAll() {
         return transfers;
     }
 
     @Override
-    public TransferModel get(TransferModel transferModel) {
+    public Transfer get(Transfer transferModel) {
         return transfers.stream()
                 .filter(tra -> tra.equals(transferModel))
                 .findAny()

@@ -1,8 +1,10 @@
 package com.paymybuddy.domain.service;
 
+import com.paymybuddy.application.model.BankTransaction;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
-import com.paymybuddy.domain.model.BankTransactionModel;
 import com.paymybuddy.domain.repository.BankTransactionRepository;
+
+import java.util.UUID;
 
 public class BankTransactionService {
     private final BalanceByCurrencyService balanceByCurrencyService;
@@ -37,8 +39,8 @@ public class BankTransactionService {
     }
 
     private void saveANewTransaction(BankTransactionCommandDTO bankTransactionCommand) {
-        bankTransactionRepository.save(new BankTransactionModel(
-                null,
+        bankTransactionRepository.save(new BankTransaction(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 bankTransactionCommand.bankAccount(),
                 bankTransactionCommand.amount(),
                 bankTransactionCommand.currency(),

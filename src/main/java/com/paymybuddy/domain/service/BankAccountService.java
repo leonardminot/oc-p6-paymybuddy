@@ -1,9 +1,11 @@
 package com.paymybuddy.domain.service;
 
+import com.paymybuddy.application.model.BankAccount;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
-import com.paymybuddy.domain.model.BankAccountModel;
 import com.paymybuddy.domain.repository.BankAccountRepository;
 import com.paymybuddy.domain.repository.UserAccountRepository;
+
+import java.util.UUID;
 
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
@@ -21,8 +23,8 @@ public class BankAccountService {
         throwIfUserIsUnknown(bankAccountCreationCommandDTO);
         throwIfIBANAlreadyExists(bankAccountCreationCommandDTO);
 
-        this.bankAccountRepository.save(new BankAccountModel(
-                null,
+        this.bankAccountRepository.save(new BankAccount(
+                UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 bankAccountCreationCommandDTO.userAccount(),
                 bankAccountCreationCommandDTO.iban(),
                 bankAccountCreationCommandDTO.country()

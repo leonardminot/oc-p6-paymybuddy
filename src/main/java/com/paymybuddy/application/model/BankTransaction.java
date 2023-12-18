@@ -47,6 +47,14 @@ public class BankTransaction {
     )
     private BankAccount bankAccount;
 
+    public BankTransaction(UUID bankTransactionID, BankAccount bankAccount, Double amount, String currency, LocalDateTime date) {
+        this.bankTransactionID = bankTransactionID;
+        this.amount = amount;
+        this.currency = currency;
+        this.date = date;
+        this.bankAccount = bankAccount;
+    }
+
     public BankTransaction(Double amount, String currency, LocalDateTime date, BankAccount bankAccount) {
         this.amount = amount;
         this.currency = currency;

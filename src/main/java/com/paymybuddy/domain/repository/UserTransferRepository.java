@@ -1,11 +1,11 @@
 package com.paymybuddy.domain.repository;
 
-import com.paymybuddy.domain.model.TransferModel;
+import com.paymybuddy.application.model.Transfer;
 
 import java.util.List;
 
 public interface UserTransferRepository {
-    void save(TransferModel transfer);
-    List<TransferModel> getAll();
-    TransferModel get(TransferModel transferModel);
+    void save(Transfer transfer);
+    List<Transfer> getAll();
+    Transfer get(Transfer transferModel);
 }
