@@ -4,14 +4,18 @@ import com.paymybuddy.application.model.BankAccount;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.domain.repository.BankAccountRepository;
 import com.paymybuddy.domain.repository.UserAccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
 
     private final UserAccountRepository userAccountRepository;
 
+    @Autowired
     public BankAccountService(BankAccountRepository bankAccountRepository, UserAccountRepository userAccountRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.userAccountRepository = userAccountRepository;
