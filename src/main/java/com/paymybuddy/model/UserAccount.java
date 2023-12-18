@@ -79,6 +79,7 @@ public class UserAccount {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.role = "USER";
     }
 
     public UserAccount(String firstName, String lastName, String email, String password, String username, String role) {

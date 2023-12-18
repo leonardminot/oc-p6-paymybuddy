@@ -1,5 +1,8 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.EmailException;
+import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.Exception.UsernameException;
 import com.paymybuddy.model.Relation;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.UserRequestCommandDTO;
@@ -42,7 +45,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("", "leo@email.com", "123", "Léo", "Minot"));
 
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Username shouldn't be empty."));
+                fixture.thenItShouldThrowAnException(new EmptyFieldException("Username shouldn't be empty."));
             }
 
             @Test
@@ -52,7 +55,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "", "Minot"));
 
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Firstname shouldn't be empty."));
+                fixture.thenItShouldThrowAnException(new EmptyFieldException("Firstname shouldn't be empty."));
             }
 
             @Test
@@ -62,7 +65,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", ""));
 
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Lastname shouldn't be empty."));
+                fixture.thenItShouldThrowAnException(new EmptyFieldException("Lastname shouldn't be empty."));
             }
 
             @Test
@@ -72,7 +75,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "", "Léo", "Minot"));
 
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Password shouldn't be empty."));
+                fixture.thenItShouldThrowAnException(new EmptyFieldException("Password shouldn't be empty."));
             }
 
             @Test
@@ -82,7 +85,7 @@ class UserAccountServiceTest {
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "", "123", "Léo", "Minot"));
 
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Email shouldn't be empty."));
+                fixture.thenItShouldThrowAnException(new EmptyFieldException("Email shouldn't be empty."));
             }
         }
 
@@ -104,7 +107,7 @@ class UserAccountServiceTest {
                 // When
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", "Minot"));
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("Email already exists."));
+                fixture.thenItShouldThrowAnException(new EmailException("Email already exists."));
             }
         }
 
@@ -125,7 +128,7 @@ class UserAccountServiceTest {
                 // When
                 fixture.whenRequestForCreateUserThatThrow(new UserRequestCommandDTO("LeoM", "leo@email.com", "123", "Léo", "Minot"));
                 // Then
-                fixture.thenItShouldThrowAnException(new RuntimeException("UserName already exists."));
+                fixture.thenItShouldThrowAnException(new UsernameException("UserName already exists."));
             }
         }
 

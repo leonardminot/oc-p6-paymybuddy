@@ -24,6 +24,10 @@
     </div>
 </nav>
 
+<div class="container w-50 mt-2">
+    <div class="alert alert-success" th:if="${accountCreationSuccess}">Compte créé avec succès</div>
+</div>
+
 <div class="container w-50 mt-4">
 
     <div class="card shadow">
@@ -49,7 +53,7 @@
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-key"></i></span>
-                        <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                     </div>
                 </div>
 
