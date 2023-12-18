@@ -2,7 +2,7 @@ package com.paymybuddy.application.repository;
 
 import com.paymybuddy.application.model.BankAccount;
 import com.paymybuddy.application.repository.jpa.BankAccountRepositoryJpa;
-import com.paymybuddy.domain.repository.BankAccountRepository;
+import com.paymybuddy.application.repository.definition.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

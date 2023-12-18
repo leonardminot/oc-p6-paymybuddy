@@ -1,7 +1,7 @@
 package com.paymybuddy.utils;
 
 import com.paymybuddy.application.model.BankAccount;
-import com.paymybuddy.domain.repository.BankAccountRepository;
+import com.paymybuddy.application.repository.definition.BankAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;

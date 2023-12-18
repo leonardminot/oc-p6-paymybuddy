@@ -1,11 +1,12 @@
 package com.paymybuddy.utils;
 
 import com.paymybuddy.application.model.*;
+import com.paymybuddy.application.repository.definition.*;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
 import com.paymybuddy.domain.dto.UserRequestCommandDTO;
 import com.paymybuddy.domain.dto.UserTransactionCommand;
-import com.paymybuddy.domain.repository.*;
+import com.paymybuddy.domain.definition.*;
 import com.paymybuddy.domain.service.*;
 
 import java.time.LocalDateTime;

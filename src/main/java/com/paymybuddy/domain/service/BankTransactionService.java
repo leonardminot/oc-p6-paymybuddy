@@ -2,7 +2,7 @@ package com.paymybuddy.domain.service;
 
 import com.paymybuddy.application.model.BankTransaction;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
-import com.paymybuddy.domain.repository.BankTransactionRepository;
+import com.paymybuddy.application.repository.definition.BankTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

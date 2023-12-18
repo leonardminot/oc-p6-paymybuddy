@@ -1,7 +1,7 @@
 package com.paymybuddy.domain.service;
 
 import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.domain.repository.UserRelationRepository;
+import com.paymybuddy.application.repository.definition.UserRelationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

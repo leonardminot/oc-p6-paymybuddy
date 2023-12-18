@@ -1,4 +1,4 @@
-package com.paymybuddy.domain.repository;
+package com.paymybuddy.application.repository.definition;
 
 import com.paymybuddy.application.model.BankAccount;
 

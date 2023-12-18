@@ -2,8 +2,8 @@ package com.paymybuddy.domain.service;
 
 import com.paymybuddy.application.model.BankAccount;
 import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
-import com.paymybuddy.domain.repository.BankAccountRepository;
-import com.paymybuddy.domain.repository.UserAccountRepository;
+import com.paymybuddy.application.repository.definition.BankAccountRepository;
+import com.paymybuddy.application.repository.definition.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

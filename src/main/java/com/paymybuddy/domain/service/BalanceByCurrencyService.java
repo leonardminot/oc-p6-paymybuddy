@@ -4,7 +4,7 @@ import com.paymybuddy.application.model.BalanceByCurrency;
 import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
 import com.paymybuddy.domain.dto.UserTransactionCommand;
-import com.paymybuddy.domain.repository.BalanceByCurrencyRepository;
+import com.paymybuddy.application.repository.definition.BalanceByCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
