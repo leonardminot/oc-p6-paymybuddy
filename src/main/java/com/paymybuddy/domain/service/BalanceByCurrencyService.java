@@ -5,13 +5,17 @@ import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
 import com.paymybuddy.domain.dto.UserTransactionCommand;
 import com.paymybuddy.domain.repository.BalanceByCurrencyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class BalanceByCurrencyService {
     private final BalanceByCurrencyRepository balanceByCurrencyRepository;
 
+    @Autowired
     public BalanceByCurrencyService(BalanceByCurrencyRepository balanceByCurrencyRepository) {
         this.balanceByCurrencyRepository = balanceByCurrencyRepository;
     }
