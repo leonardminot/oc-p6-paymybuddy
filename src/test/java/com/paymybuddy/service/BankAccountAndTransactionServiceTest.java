@@ -1,11 +1,11 @@
 package com.paymybuddy.service;
 
-import com.paymybuddy.application.model.BalanceByCurrency;
-import com.paymybuddy.application.model.BankAccount;
-import com.paymybuddy.application.model.BankTransaction;
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.domain.dto.BankAccountCreationCommandDTO;
-import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
+import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.BankTransaction;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.dto.BankAccountCreationCommandDTO;
+import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;

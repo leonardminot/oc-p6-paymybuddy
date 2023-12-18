@@ -1,8 +1,8 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.application.model.Relation;
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.application.repository.definition.UserRelationRepository;
+import com.paymybuddy.model.Relation;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.definition.UserRelationRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

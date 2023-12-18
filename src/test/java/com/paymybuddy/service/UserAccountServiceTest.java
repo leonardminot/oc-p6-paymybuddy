@@ -1,8 +1,8 @@
 package com.paymybuddy.service;
 
-import com.paymybuddy.application.model.Relation;
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.domain.dto.UserRequestCommandDTO;
+import com.paymybuddy.model.Relation;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.dto.UserRequestCommandDTO;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;

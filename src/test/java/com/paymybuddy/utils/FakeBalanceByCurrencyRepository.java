@@ -1,8 +1,8 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.application.model.BalanceByCurrency;
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.application.repository.definition.BalanceByCurrencyRepository;
+import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.definition.BalanceByCurrencyRepository;
 
 import java.util.ArrayList;
 import java.util.List;

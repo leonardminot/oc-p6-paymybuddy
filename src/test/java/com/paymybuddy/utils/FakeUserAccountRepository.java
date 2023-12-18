@@ -1,7 +1,7 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.application.repository.definition.UserAccountRepository;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.definition.UserAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;

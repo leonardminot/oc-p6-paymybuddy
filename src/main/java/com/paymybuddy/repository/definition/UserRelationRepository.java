@@ -1,0 +1,11 @@
+package com.paymybuddy.repository.definition;
+
+import com.paymybuddy.model.Relation;
+import com.paymybuddy.model.UserAccount;
+
+import java.time.LocalDateTime;
+
+public interface UserRelationRepository {
+    Relation getRelation(UserAccount user1, UserAccount user2);
+    void saveRelation(UserAccount user1, UserAccount user2, LocalDateTime createdAt);
+}

@@ -1,7 +1,7 @@
 package com.paymybuddy.utils;
 
-import com.paymybuddy.application.model.Transfer;
-import com.paymybuddy.application.repository.definition.UserTransferRepository;
+import com.paymybuddy.model.Transfer;
+import com.paymybuddy.repository.definition.UserTransferRepository;
 
 import java.util.ArrayList;
 import java.util.List;

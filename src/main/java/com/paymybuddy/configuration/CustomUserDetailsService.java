@@ -1,7 +1,7 @@
 package com.paymybuddy.configuration;
 
-import com.paymybuddy.application.model.UserAccount;
-import com.paymybuddy.application.repository.jpa.UserAccountRepositoryJpa;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.jpa.UserAccountRepositoryJpa;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

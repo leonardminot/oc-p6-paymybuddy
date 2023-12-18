@@ -1,7 +1,7 @@
 package com.paymybuddy.integration;
 
-import com.paymybuddy.application.model.*;
-import com.paymybuddy.application.repository.jpa.*;
+import com.paymybuddy.model.*;
+import com.paymybuddy.repository.jpa.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

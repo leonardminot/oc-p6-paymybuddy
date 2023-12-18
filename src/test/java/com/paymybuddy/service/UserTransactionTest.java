@@ -1,9 +1,9 @@
 package com.paymybuddy.service;
 
-import com.paymybuddy.application.model.BalanceByCurrency;
-import com.paymybuddy.application.model.Transaction;
-import com.paymybuddy.application.model.Transfer;
-import com.paymybuddy.application.model.UserAccount;
+import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Transaction;
+import com.paymybuddy.model.Transfer;
+import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
