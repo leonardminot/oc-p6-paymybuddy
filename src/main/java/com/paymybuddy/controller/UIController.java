@@ -49,7 +49,7 @@ public class UIController {
     }
 
     @PostMapping("/createAccount")
-    public String createAccount(@ModelAttribute CreateUserAccountCommandDTO newUserCommand, RedirectAttributes ra, Model model) {
+    public String createAccount(@ModelAttribute CreateUserAccountCommandDTO newUserCommand, RedirectAttributes ra) {
 
         if (!Objects.equals(newUserCommand.getPassword(), newUserCommand.getPasswordConfirmation())) {
             ra.addFlashAttribute("arePasswordDifferent", true);
