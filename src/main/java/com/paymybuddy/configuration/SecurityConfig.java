@@ -26,6 +26,7 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/admin").hasRole("ADMIN");
                     auth.requestMatchers("/user").hasRole("USER");
+                    auth.requestMatchers("/createAccount").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/login")

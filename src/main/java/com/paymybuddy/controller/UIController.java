@@ -16,6 +16,11 @@ public class UIController {
         log.info("HasError: " + hasError);
         return "login";
     }
+    @GetMapping("/createAccount")
+    public String createAccount() {
+        return "createAccount";
+    }
+
     @GetMapping("/")
     public String showFirstPage() {
         return "connexion";
