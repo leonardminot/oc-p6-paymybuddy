@@ -2,11 +2,15 @@ package com.paymybuddy.domain.service;
 
 import com.paymybuddy.application.model.UserAccount;
 import com.paymybuddy.domain.repository.UserRelationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserRelationService {
     private final UserRelationRepository userRelationRepository;
     private final DateProvider dateProvider;
 
+    @Autowired
     public UserRelationService(UserRelationRepository userRelationRepository, DateProvider dateProvider) {
         this.userRelationRepository = userRelationRepository;
         this.dateProvider = dateProvider;
