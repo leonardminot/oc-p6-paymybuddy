@@ -3,14 +3,18 @@ package com.paymybuddy.domain.service;
 import com.paymybuddy.application.model.BankTransaction;
 import com.paymybuddy.domain.dto.BankTransactionCommandDTO;
 import com.paymybuddy.domain.repository.BankTransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class BankTransactionService {
     private final BalanceByCurrencyService balanceByCurrencyService;
     private final BankTransactionRepository bankTransactionRepository;
     private final DateProvider dateProvider;
 
+    @Autowired
     public BankTransactionService(BalanceByCurrencyService balanceByCurrencyService, BankTransactionRepository bankTransactionRepository, DateProvider dateProvider) {
         this.balanceByCurrencyService = balanceByCurrencyService;
         this.bankTransactionRepository = bankTransactionRepository;
