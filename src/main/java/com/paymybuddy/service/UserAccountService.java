@@ -9,6 +9,7 @@ import com.paymybuddy.repository.definition.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +43,10 @@ public class UserAccountService {
         return newUserAccount;
     }
 
+    public Optional<UserAccount> getUserWithEmail(String mail) {
+        return userAccountRepository.getByEmail(mail);
+    }
+
     private void throwIfUserNameAlreadyExists(UserRequestCommandDTO userRequestCommandDTO) {
         if (userAccountRepository.isUserNameExists(userRequestCommandDTO.username())) {
             throw new UsernameException("UserName already exists.");
@@ -70,7 +75,7 @@ public class UserAccountService {
         });
     }
 
-    public Optional<UserAccount> getUserWithEmail(String mail) {
-        return userAccountRepository.getByEmail(mail);
+    public List<UserAccount> getAllUsers() {
+        return userAccountRepository.getAllUsers();
     }
 }

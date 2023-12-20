@@ -31,13 +31,15 @@ public class Fixture {
 
 
 
+
+
     }
     private final UserAccountRepository userAccountRepository = new FakeUserAccountRepository();
     private final UserRelationRepository userRelationRepository = new FakeUserRelationRepository();
     private final BankAccountRepository bankAccountRepository = new FakeBankAccountRepository();
-
     private final BalanceByCurrencyRepository balanceByCurrencyRepository = new FakeBalanceByCurrencyRepository();
     private final BankTransactionRepository bankTransactionRepository = new FakeBankTransactionRepository();
+
     private final UserTransactionRepository userTransactionRepository = new FakeUserTransactionRepository();
     private final UserTransferRepository userTransferRepository = new FakeUserTransferRepository();
     private final StubDateProvider dateProvider = new StubDateProvider();
@@ -47,13 +49,11 @@ public class Fixture {
     private final UserAccountService userAccountService = new UserAccountService(userAccountRepository);
     private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
-
     private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankTransactionRepository, dateProvider);
     private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, dateProvider);
+
     List<UserAccount> connectedUser = new ArrayList<>();
     Optional<UserAccount> actualUser = Optional.empty();
-
-
     public void givenUserInDatabase(UserAccount userInDB) {
         userAccountRepository.save(userInDB);
     }
@@ -70,9 +70,11 @@ public class Fixture {
         bankTransactionRepository.save(existingBankTransaction);
 
     }
+
     public void givenTheBalanceByCurrencyInDataBase(BalanceByCurrency existingBalanceByCurrency) {
         balanceByCurrencyRepository.save(existingBalanceByCurrency);
     }
+
     public void whenRequestForCreateBankAccount(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         bankAccountService.create(bankAccountCreationCommandDTO);
     }
@@ -82,7 +84,6 @@ public class Fixture {
     public void whenRequestForCreateUserThatThrow(UserRequestCommandDTO userRequestCommandDTO) {
         this.userRequestCommandDTO = userRequestCommandDTO;
     }
-
     public void givenAConnectionExistsBetween(UserAccount user1, UserAccount user2) {
         userRelationService.createRelation(user1, user2);
     }
@@ -102,7 +103,6 @@ public class Fixture {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining(message);
     }
-
     public void whenRequestForCreateBankAccountAndThenThrow(BankAccountCreationCommandDTO bankAccountCreationCommandDTO, Exception exceptionToThrown) {
         assertThatThrownBy(() -> bankAccountService.create(bankAccountCreationCommandDTO))
                 .isInstanceOf(exceptionToThrown.getClass())
@@ -135,6 +135,10 @@ public class Fixture {
                 .hasMessageContaining(exceptionThrown.getMessage());
     }
 
+    public void whenFetchAllUsers() {
+        connectedUser = userAccountService.getAllUsers();
+    }
+
     public void thenTheUserShouldBeAndSaved(UserAccount expectedUserAccount) {
         assertThat(userAccountRepository.get(userAccountToCreate).get()).isEqualTo(expectedUserAccount);
     }
@@ -147,6 +151,10 @@ public class Fixture {
 
     public void thenReturnedUserShouldBe(Optional<UserAccount> expectedUser) {
         assertThat(actualUser).isEqualTo(expectedUser);
+    }
+
+    public void thenUsersShouldBe(List<UserAccount> expectedUsers) {
+        assertThat(connectedUser).containsAll(expectedUsers);
     }
 
     public void thenARelationHasToBeCreateAndEqualTo(Relation expectedRelation) {

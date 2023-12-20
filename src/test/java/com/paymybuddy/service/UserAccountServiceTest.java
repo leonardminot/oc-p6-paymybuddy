@@ -137,7 +137,7 @@ class UserAccountServiceTest {
     }
 
     @Nested
-    @DisplayName("Feature: get a user account")
+    @DisplayName("Feature: get user accounts")
     class GetUserAccount {
 
         @Nested
@@ -162,6 +162,45 @@ class UserAccountServiceTest {
                 // Then
                 fixture.thenReturnedUserShouldBe(Optional.of(existingUser));
 
+            }
+        }
+
+        @Nested
+        @DisplayName("Rule: return all users")
+        class getAllUsers {
+            private Fixture fixture;
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            @Test
+            void itShouldAllUsers() {
+                // Given
+                UserAccount user1 = new UserAccountBuilder().withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("MINOT")
+                        .build();
+
+                UserAccount user2 = new UserAccountBuilder().withId(UUID.fromString("1024d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("MINOT")
+                        .build();
+
+                UserAccount user3 = new UserAccountBuilder().withId(UUID.fromString("9024d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("John")
+                        .withLastName("TRAVOLTA")
+                        .build();
+
+                fixture.givenUserInDatabase(user1);
+                fixture.givenUserInDatabase(user2);
+                fixture.givenUserInDatabase(user3);
+
+                // When
+                fixture.whenFetchAllUsers();
+
+                // Then
+                fixture.thenUsersShouldBe(List.of(user1, user2, user3));
             }
         }
     }

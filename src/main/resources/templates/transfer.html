@@ -25,11 +25,9 @@
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/sendMoney}">
                 <div class="col">
-                    <select class="form-select" aria-label="Select a connection">
+                    <select class="form-select" aria-label="Select a connection" name="toUserId">
                         <option value="" disabled selected hidden="">Select a connection</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option th:each="relation:${relations}" th:value="${relation.getUserId()}" th:text="${relation.getUsername()}">One</option>
                     </select>
                 </div>
 
