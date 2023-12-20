@@ -33,15 +33,17 @@ public class Fixture {
 
 
 
+
+
     }
     private final UserAccountRepository userAccountRepository = new FakeUserAccountRepository();
     private final UserRelationRepository userRelationRepository = new FakeUserRelationRepository();
     private final BankAccountRepository bankAccountRepository = new FakeBankAccountRepository();
     private final BalanceByCurrencyRepository balanceByCurrencyRepository = new FakeBalanceByCurrencyRepository();
     private final BankTransactionRepository bankTransactionRepository = new FakeBankTransactionRepository();
-
     private final UserTransactionRepository userTransactionRepository = new FakeUserTransactionRepository();
     private final UserTransferRepository userTransferRepository = new FakeUserTransferRepository();
+
     private final StubDateProvider dateProvider = new StubDateProvider();
     private UserAccount userAccountToCreate;
     private UserRequestCommandDTO userRequestCommandDTO;
@@ -51,9 +53,11 @@ public class Fixture {
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
     private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankTransactionRepository, dateProvider);
     private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, dateProvider);
-
     List<UserAccount> connectedUser = new ArrayList<>();
     Optional<UserAccount> actualUser = Optional.empty();
+
+    List<BankAccount> bankAccounts = new ArrayList<>();
+
     public void givenUserInDatabase(UserAccount userInDB) {
         userAccountRepository.save(userInDB);
     }
@@ -61,7 +65,6 @@ public class Fixture {
     public void givenNowIs(LocalDateTime now) {
         dateProvider.now = now;
     }
-
     public void givenBankAccountInDatabase(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);
     }
@@ -78,9 +81,11 @@ public class Fixture {
     public void whenRequestForCreateBankAccount(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         bankAccountService.create(bankAccountCreationCommandDTO);
     }
+
     public void whenRequestForCreateUser(UserRequestCommandDTO userRequestCommandDTO) {
         userAccountToCreate = userAccountService.createUserAccount(userRequestCommandDTO);
     }
+
     public void whenRequestForCreateUserThatThrow(UserRequestCommandDTO userRequestCommandDTO) {
         this.userRequestCommandDTO = userRequestCommandDTO;
     }
@@ -90,7 +95,6 @@ public class Fixture {
     public void whenRequestAUserInDatabaseWithEmail(String mail) {
         actualUser = userAccountService.getUserWithEmail(mail);
     }
-
     public void whenRequestACreationOfARelationBetween(UserAccount user1, UserAccount user2) {
         userRelationService.createRelation(user1, user2);
     }
@@ -112,7 +116,6 @@ public class Fixture {
     public void whenCreateANewBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         bankTransactionService.newTransaction(bankTransactionCommand);
     }
-
     public void whenCreateABankTransactionAndThenThrow(BankTransactionCommandDTO bankTransactionCommand, RuntimeException exceptionToThrown) {
         assertThatThrownBy(() -> bankTransactionService.newTransaction(bankTransactionCommand))
                 .isInstanceOf(exceptionToThrown.getClass())
@@ -137,6 +140,10 @@ public class Fixture {
 
     public void whenFetchAllUsers() {
         connectedUser = userAccountService.getAllUsers();
+    }
+
+    public void whenFetchAllBankAccountsForUser(UserAccount user) {
+        bankAccounts = bankAccountService.getBankAccountsFor(user);
     }
 
     public void thenTheUserShouldBeAndSaved(UserAccount expectedUserAccount) {
@@ -197,6 +204,10 @@ public class Fixture {
 
     public void thenItShouldCreateATransferOf(Transfer transferModel) {
         assertThat(userTransferRepository.get(transferModel)).isEqualTo(transferModel);
+    }
+
+    public void thenItShouldTheReturnListOfBankAccounts(List<BankAccount> expectedBankAccounts) {
+        assertThat(bankAccounts).hasSameElementsAs(expectedBankAccounts);
     }
 }
 

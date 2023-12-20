@@ -11,6 +11,7 @@ import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Tag("UnitTest")
@@ -135,6 +136,74 @@ public class BankAccountAndTransactionServiceTest {
             }
         }
 
+    }
+
+    @Nested
+    @DisplayName("Feature: it should return the list of associated Bank Accounts")
+    class GetBankAccounts {
+
+        @Nested
+        @DisplayName("Rule: it should return all banks acocunt associate to an user")
+        class GetAllBankAccountsAssociatedToAnUser {
+            private Fixture fixture;
+
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            @Test
+            void itShouldReturnAllBankAccounts() {
+                // Given
+                UserAccount user1 = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("Minot")
+                        .build();
+
+                UserAccount user2 = new UserAccountBuilder()
+                        .withId(UUID.fromString("2124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(user1);
+                fixture.givenUserInDatabase(user2);
+
+                BankAccount bankAccount1 = new BankAccount(
+                        UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
+                        user1,
+                        "123456789",
+                        "FR"
+                );
+
+                BankAccount bankAccount2 = new BankAccount(
+                        UUID.fromString("77777777-7777-4bcf-8035-37a02ba75c69"),
+                        user2,
+                        "333333333",
+                        "FR"
+                );
+
+                BankAccount bankAccount3 = new BankAccount(
+                        UUID.fromString("77777777-8888-4bcf-8035-37a02ba75c69"),
+                        user1,
+                        "444444444",
+                        "FR"
+                );
+
+
+
+                fixture.givenBankAccountInDatabase(bankAccount1);
+                fixture.givenBankAccountInDatabase(bankAccount2);
+                fixture.givenBankAccountInDatabase(bankAccount3);
+
+                // When
+                fixture.whenFetchAllBankAccountsForUser(user1);
+
+                // Then
+                fixture.thenItShouldTheReturnListOfBankAccounts(List.of(bankAccount1, bankAccount3));
+            }
+        }
     }
 
     @Nested

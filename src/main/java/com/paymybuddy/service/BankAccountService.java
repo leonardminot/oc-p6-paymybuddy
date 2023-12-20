@@ -2,11 +2,13 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
+import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.BankAccountRepository;
 import com.paymybuddy.repository.definition.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,6 +35,10 @@ public class BankAccountService {
                 bankAccountCreationCommandDTO.iban(),
                 bankAccountCreationCommandDTO.country()
         ));
+    }
+
+    public List<BankAccount> getBankAccountsFor(UserAccount user) {
+        return bankAccountRepository.fetchAllBankAccountsForUser(user);
     }
 
     private void throwIfAFieldIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {

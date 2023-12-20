@@ -5,12 +5,12 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
 @Entity(name = "BankAccount")
 @Table(
@@ -78,4 +78,7 @@ public class BankAccount {
         this.country = country;
         this.userAccount = userAccount;
     }
+
+
+
 }

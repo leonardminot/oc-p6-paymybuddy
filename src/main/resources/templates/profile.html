@@ -30,15 +30,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>123456789</td>
-                    <td>FRANCE</td>
+                <tr th:each="account:${bankAccounts}">
+                    <td th:text="${account.getIban()}">123456789</td>
+                    <td th:text="${account.getCountry()}">FRANCE</td>
                     <td><a class="btn btn-success" th:href="'#'">Add money</a> <a class="btn btn-outline-primary" th:href="'#'">Withdraw</a></td>
                 </tr>
                 </tbody>
             </table>
 
-            <a class="btn btn-primary" th:href="@{'#'}"><i class="bi bi-patch-plus"></i> Add Bank Account</a>
+            <a class="btn btn-primary" th:href="@{/addBankAccount}"><i class="bi bi-patch-plus"></i> Add Bank Account</a>
         </div>
     </div>
 
