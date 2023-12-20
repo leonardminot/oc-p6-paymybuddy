@@ -5,6 +5,9 @@ import com.paymybuddy.repository.definition.UserRelationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserRelationService {
     private final UserRelationRepository userRelationRepository;
@@ -19,6 +22,10 @@ public class UserRelationService {
     public void createRelation(UserAccount user1, UserAccount user2) {
         validateInput(user1, user2);
         userRelationRepository.saveRelation(getFirstUser(user1, user2), getSecondUser(user1, user2), dateProvider.getNow());
+    }
+
+    public List<UserAccount> getRelationsFor(UserAccount principalUser) {
+        return userRelationRepository.getAllRelationsForUser(principalUser);
     }
 
     private UserAccount getFirstUser(UserAccount user1, UserAccount user2) {

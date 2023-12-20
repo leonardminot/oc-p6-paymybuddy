@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Objects;
 
 @Controller
@@ -33,11 +34,7 @@ public class UIController {
     }
 
     @GetMapping("/login")
-    public String login(
-            @RequestParam(value = "hasError", required = false) boolean hasError,
-            Model model) {
-        model.addAttribute("hasError", hasError);
-        log.info("HasError: " + hasError);
+    public String login(@RequestParam(value = "hasError", required = false) boolean hasError) {
         return "login";
     }
 
@@ -83,7 +80,8 @@ public class UIController {
     }
 
     @GetMapping("/")
-    public String showFirstPage() {
-        return "connexion";
+    public String showFirstPage(Principal principal, Model model) {
+        model.addAttribute("name", principal.getName());
+        return "home";
     }
 }

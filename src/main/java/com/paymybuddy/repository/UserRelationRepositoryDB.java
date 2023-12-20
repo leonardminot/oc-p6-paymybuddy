@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserRelationRepositoryDB implements UserRelationRepository {
@@ -26,5 +28,18 @@ public class UserRelationRepositoryDB implements UserRelationRepository {
     @Override
     public void saveRelation(UserAccount user1, UserAccount user2, LocalDateTime createdAt) {
         relationRepositoryJpa.save(new Relation(user1, user2, createdAt));
+    }
+
+    @Override
+    public List<UserAccount> getAllRelationsForUser(UserAccount user) {
+        List<UserAccount> connectedUser = new ArrayList<>();
+        Iterable<Relation> allRelations = relationRepositoryJpa.findAll();
+        for (Relation relation : allRelations) {
+            if (relation.getUser1() == user)
+                connectedUser.add(relation.getUser2());
+            if (relation.getUser2() == user)
+                connectedUser.add(relation.getUser1());
+        }
+        return connectedUser;
     }
 }

@@ -37,7 +37,7 @@
                 <h1 class="text-center display-6"><span class="badge bg-success">Pay My Buddy</span></h1>
             </div>
 
-            <div class="alert alert-danger" th:if="${hasError}">Wrong Email or Password</div>
+            <div class="alert alert-danger" th:if="${param.hasError}">Wrong Email or Password</div>
 
 
             <form method="post" th:action="@{/login}" role="form">

@@ -35,4 +35,9 @@ public class FakeUserAccountRepository implements UserAccountRepository {
     public List<UserAccount> getAllUsers() {
         return users;
     }
+
+    @Override
+    public Optional<UserAccount> getByEmail(String email) {
+        return users.stream().filter(user -> user.getEmail().equals(email)).findAny();
+    }
 }

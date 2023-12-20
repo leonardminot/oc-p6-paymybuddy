@@ -34,9 +34,4 @@ public class Relation {
         this.user2 = user2;
         this.createdAt = createdAt;
     }
-
-
-
-
-
 }

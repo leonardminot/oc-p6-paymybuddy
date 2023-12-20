@@ -12,4 +12,6 @@ public interface UserAccountRepository {
     boolean isUserNameExists(String userName);
     Optional<UserAccount> get(UserAccount userAccount);
     List<UserAccount> getAllUsers();
+
+    Optional<UserAccount> getByEmail(String email);
 }

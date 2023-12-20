@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -67,5 +68,9 @@ public class UserAccountService {
                 throw new EmptyFieldException(fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1).toLowerCase() + " shouldn't be empty.");
             }
         });
+    }
+
+    public Optional<UserAccount> getUserWithEmail(String mail) {
+        return userAccountRepository.getByEmail(mail);
     }
 }

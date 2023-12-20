@@ -45,4 +45,9 @@ public class UserAccountRepositoryDB implements UserAccountRepository {
         Iterable<UserAccount> users = userAccountRepositoryJpa.findAll();
         return StreamSupport.stream(users.spliterator(), false).toList();
     }
+
+    @Override
+    public Optional<UserAccount> getByEmail(String email) {
+        return userAccountRepositoryJpa.findByEmail(email);
+    }
 }

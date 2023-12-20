@@ -25,5 +25,18 @@ public class FakeUserRelationRepository implements UserRelationRepository {
         relations.add(new Relation(user1, user2, createdAt));
     }
 
+    @Override
+    public List<UserAccount> getAllRelationsForUser(UserAccount user) {
+        List<UserAccount> connectedUser = new ArrayList<>();
+
+        for (Relation relation : relations) {
+            if (relation.getUser1() == user)
+                connectedUser.add(relation.getUser2());
+            if (relation.getUser2() == user)
+                connectedUser.add(relation.getUser1());
+        }
+        return connectedUser;
+    }
+
 
 }
