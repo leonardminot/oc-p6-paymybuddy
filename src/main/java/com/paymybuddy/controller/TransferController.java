@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -25,6 +26,7 @@ public class TransferController {
     private final UserAccountService userAccountService;
     private final UserRelationService userRelationService;
     private final UserTransactionService userTransactionService;
+    private final long TRANSACTION_PER_PAGE = 5;
 
     @Autowired
     public TransferController(UserAccountService userAccountService, UserRelationService userRelationService, UserTransactionService userTransactionService) {
@@ -34,15 +36,29 @@ public class TransferController {
     }
 
     @GetMapping("/transfer")
-    public String transferPage(Principal principal, Model model) {
+    public String transferPage(
+            Principal principal,
+            Model model,
+            @RequestParam(name = "page", required = false) Integer page) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
         List<UserTransactionDTO> transactions = userTransactionService.getTransactionsFor(connectedUser);
 
+        long pageToShow = page == null ? 1 : page;
+        long numberOfPages = (long) Math.ceil((double) transactions.size() / TRANSACTION_PER_PAGE);
+        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
+
+        List<UserTransactionDTO> transactionsToShow = transactions.stream()
+                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
+                .limit(TRANSACTION_PER_PAGE)
+                .toList();
+
         model.addAttribute("relations", relations);
         model.addAttribute("transferCommand", new UserTransactionCommand());
-        model.addAttribute("transactions", transactions);
+        model.addAttribute("transactions", transactionsToShow);
         model.addAttribute("connectedUser", connectedUser);
+        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("currentPage", pageToShow);
 
         return "transfer";
     }

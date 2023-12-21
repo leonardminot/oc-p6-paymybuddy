@@ -30,6 +30,8 @@ public class ProfileController {
     private final BankTransactionService bankTransactionService;
     private final BalanceByCurrencyService balanceByCurrencyService;
 
+    private final long TRANSACTION_PER_PAGE = 5;
+
     @Autowired
     public ProfileController(UserAccountService userAccountService, BankAccountService bankAccountService, BankTransactionService bankTransactionService, BalanceByCurrencyService balanceByCurrencyService) {
         this.userAccountService = userAccountService;
@@ -39,16 +41,30 @@ public class ProfileController {
     }
 
     @GetMapping("/profile")
-    public String getProfile(Principal principal, Model model) {
+    public String getProfile(
+            Principal principal,
+            Model model,
+            @RequestParam(name = "page", required = false) Integer page) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<BankAccount> currentBankAccounts = bankAccountService.getBankAccountsFor(connectedUser);
-        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser);
+
+        // TODO (On fetch les données 2 fois : il faut créer une variable en mémoire)
+        long pageToShow = page == null ? 1 : page;
+        long numberOfPages = (long) Math.ceil((double) bankTransactionService.fetchTransactionsFor(connectedUser).size() / TRANSACTION_PER_PAGE);
+        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
+        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser)
+                .stream()
+                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
+                .limit(TRANSACTION_PER_PAGE)
+                .toList();
         List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser);
 
         model.addAttribute("bankAccounts", currentBankAccounts);
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
         model.addAttribute("bankTransactions", bankTransactions);
         model.addAttribute("balanceByCurrencies", balanceByCurrencies);
+        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("currentPage", pageToShow);
 
         return "profile";
     }

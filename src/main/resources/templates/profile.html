@@ -62,7 +62,7 @@
                                     <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}">
                                         <option value="" disabled selected hidden="">Select a currency</option>
                                         <option value="EUR">EUR</option>
-                                        <option value="USD">EUR</option>
+                                        <option value="USD">USD</option>
                                         <option value="GBP">GBP</option>
                                     </select>
                                 </div>
@@ -102,6 +102,21 @@
                 </tr>
                 </tbody>
             </table>
+            <nav class="text-center" aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/profile(page=${currentPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="i: ${#numbers.sequence(1, numberOfPages)}" th:classappend="${currentPage == i ? 'active' : ''}"><a class="page-link" th:href="@{/profile(page=${i})}" th:text="${i}">1</a></li>
+                    <li class="page-item" th:classappend="${(currentPage == numberOfPages ? 'disabled' : '')}">
+                        <a class="page-link" th:href="@{/profile(page=${currentPage + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
