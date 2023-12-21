@@ -23,19 +23,19 @@ public class BalanceByCurrencyService {
 
     public void updateBalanceByCurrencyForFromUserOrThrowIfInsufficientAmount(UserTransactionCommand userTransactionCommand) {
         Optional<BalanceByCurrency> fromUserBalanceByCurrency = getByUserAccountAndCurrency(
-                userTransactionCommand.fromUser(),
-                userTransactionCommand.currency()
+                userTransactionCommand.getFromUser(),
+                userTransactionCommand.getCurrency()
         );
 
         if (fromUserBalanceByCurrency.isPresent()) {
             BalanceByCurrency currentBalanceByCurrency = fromUserBalanceByCurrency.get();
 
-            throwIfProjectedAmountBeyondZero(-userTransactionCommand.amount(), fromUserBalanceByCurrency);
+            throwIfProjectedAmountBeyondZero(-userTransactionCommand.getAmount(), fromUserBalanceByCurrency);
 
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     currentBalanceByCurrency.getBalanceID(),
                     currentBalanceByCurrency.getUserAccount(),
-                    currentBalanceByCurrency.getBalance() - userTransactionCommand.amount(),
+                    currentBalanceByCurrency.getBalance() - userTransactionCommand.getAmount(),
                     currentBalanceByCurrency.getCurrency()
             ));
         } else {
@@ -58,8 +58,8 @@ public class BalanceByCurrencyService {
 
     public void updateOrCreateToUserBalanceByCurrency(UserTransactionCommand userTransactionCommand) {
         Optional<BalanceByCurrency> toUserBalanceByCurrency = balanceByCurrencyRepository.getByUserAccountAndCurrency(
-                userTransactionCommand.toUser(),
-                userTransactionCommand.currency()
+                userTransactionCommand.getToUser(),
+                userTransactionCommand.getCurrency()
         );
 
         if (toUserBalanceByCurrency.isPresent()) {
@@ -68,16 +68,16 @@ public class BalanceByCurrencyService {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     balanceByCurrencyModel.getBalanceID(),
                     balanceByCurrencyModel.getUserAccount(),
-                    balanceByCurrencyModel.getBalance() + userTransactionCommand.amount(),
+                    balanceByCurrencyModel.getBalance() + userTransactionCommand.getAmount(),
                     balanceByCurrencyModel.getCurrency()
             ));
 
         } else {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                    userTransactionCommand.toUser(),
-                    userTransactionCommand.amount(),
-                    userTransactionCommand.currency()
+                    userTransactionCommand.getToUser(),
+                    userTransactionCommand.getAmount(),
+                    userTransactionCommand.getCurrency()
             ));
         }
     }

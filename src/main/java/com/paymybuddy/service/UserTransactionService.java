@@ -37,16 +37,16 @@ public class UserTransactionService {
 
         Transaction transaction = userTransactionRepository.save(new Transaction(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                userTransactionCommand.description(),
-                userTransactionCommand.amount(),
-                userTransactionCommand.currency(),
+                userTransactionCommand.getDescription(),
+                userTransactionCommand.getAmount(),
+                userTransactionCommand.getCurrency(),
                 dateProvider.getNow()
         ));
 
 
         userTransferRepository.save(new Transfer(
-                userTransactionCommand.fromUser(),
-                userTransactionCommand.toUser(),
+                userTransactionCommand.getFromUser(),
+                userTransactionCommand.getToUser(),
                 transaction
         ));
 
@@ -57,18 +57,18 @@ public class UserTransactionService {
 
 
     private void throwIfAmountIsNegative(UserTransactionCommand userTransactionCommand) {
-        if (userTransactionCommand.amount() < 0)
+        if (userTransactionCommand.getAmount() < 0)
             throw new RuntimeException("Amount must be positive");
     }
 
     private void throwIfNullFields(UserTransactionCommand userTransactionCommand) {
-        if (userTransactionCommand.description() == null)
+        if (userTransactionCommand.getDescription() == null)
             throw new RuntimeException("Description must not be null");
-        if (userTransactionCommand.currency() == null)
+        if (userTransactionCommand.getCurrency() == null)
             throw new RuntimeException("Currency must not be null");
-        if (userTransactionCommand.fromUser() == null)
+        if (userTransactionCommand.getFromUser() == null)
             throw new RuntimeException("From user must not be null");
-        if (userTransactionCommand.toUser() == null)
+        if (userTransactionCommand.getToUser() == null)
             throw new RuntimeException("To user must not be null");
     }
 }
