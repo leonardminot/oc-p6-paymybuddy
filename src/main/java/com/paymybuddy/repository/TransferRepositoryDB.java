@@ -1,6 +1,7 @@
 package com.paymybuddy.repository;
 
 import com.paymybuddy.model.Transfer;
+import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.jpa.TransferRepositoryJpa;
 import com.paymybuddy.repository.definition.UserTransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class TransferRepositoryDB implements UserTransferRepository {
     @Override
     public Transfer get(Transfer transferModel) {
         return transferRepositoryJpa.findById(transferModel.getTransferId()).orElse(null);
+    }
+
+    @Override
+    public List<Transfer> getAllForUser(UserAccount user) {
+        return transferRepositoryJpa.findTransferByFromUserOrToUser(user, user);
     }
 }

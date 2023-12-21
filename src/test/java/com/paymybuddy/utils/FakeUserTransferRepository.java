@@ -1,6 +1,7 @@
 package com.paymybuddy.utils;
 
 import com.paymybuddy.model.Transfer;
+import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.UserTransferRepository;
 
 import java.util.ArrayList;
@@ -24,5 +25,12 @@ public class FakeUserTransferRepository implements UserTransferRepository {
                 .filter(tra -> tra.equals(transferModel))
                 .findAny()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Transfer> getAllForUser(UserAccount user) {
+        return transfers.stream()
+                .filter(tra -> tra.getFromUser().equals(user) || tra.getToUser().equals(user))
+                .toList();
     }
 }

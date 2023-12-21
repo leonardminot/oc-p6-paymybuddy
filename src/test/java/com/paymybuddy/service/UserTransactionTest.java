@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.Transfer;
@@ -9,6 +10,7 @@ import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Tag("UnitTest")
@@ -425,6 +427,108 @@ public class UserTransactionTest {
                 // When
                 // Then
                 fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new RuntimeException("Amount can not go beyond 0"));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Feature: fetch user transactions")
+    class FetchAllUserTransactions {
+
+        @Nested
+        @DisplayName("Rule: fetch user transactions for a given user")
+        class FetchUserTransactionsForAGivenUser {
+            private Fixture fixture;
+
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            @Test
+            void itShouldFetchUserTransaction() {
+                // Given
+                UserAccount targetUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(targetUser);
+
+                UserAccount otherUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(otherUser);
+
+                UserAccount thirdUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("33333333-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("Minot")
+                        .build();
+
+                Transaction transaction1 = new Transaction(
+                        UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
+                        "Première transaction",
+                        100.0,
+                        "EUR",
+                        LocalDateTime.of(2023, 12, 21, 15, 0,0)
+                );
+
+                Transaction transaction2 = new Transaction(
+                        UUID.fromString("00000001-6266-4bcf-8035-37a02ba75c69"),
+                        "Deuxième transaction",
+                        100.0,
+                        "EUR",
+                        LocalDateTime.of(2023, 12, 22, 15, 0,0)
+                );
+
+                Transaction transaction3 = new Transaction(
+                        UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
+                        "Troisième transaction",
+                        100.0,
+                        "EUR",
+                        LocalDateTime.of(2023, 12, 23, 15, 0,0)
+                );
+
+                Transfer transfer1 = new Transfer(
+                        targetUser,
+                        otherUser,
+                        transaction1
+                );
+
+                Transfer transfer2 = new Transfer(
+                        thirdUser,
+                        targetUser,
+                        transaction2
+                );
+
+                Transfer transfer3 = new Transfer(
+                        otherUser,
+                        thirdUser,
+                        transaction3
+                );
+
+                fixture.givenTheUserTransactionInDatabase(transaction1);
+                fixture.givenTheUserTransactionInDatabase(transaction2);
+                fixture.givenTheUserTransactionInDatabase(transaction3);
+
+                fixture.givenTheUserTransferInDatabase(transfer1);
+                fixture.givenTheUserTransferInDatabase(transfer2);
+                fixture.givenTheUserTransferInDatabase(transfer3);
+
+                // When
+                fixture.whenFetchUserTransactionFor(targetUser);
+
+                // Then
+                fixture.thenTransactionListShouldBe(List.of(
+                        new UserTransactionDTO(targetUser, otherUser, "Première transaction", -100.0, "EUR", LocalDateTime.of(2023, 12, 21, 15, 0,0)),
+                        new UserTransactionDTO(thirdUser, targetUser, "Deuxième transaction", 100.0, "EUR", LocalDateTime.of(2023, 12, 22, 15, 0,0))
+                ));
+
             }
         }
     }

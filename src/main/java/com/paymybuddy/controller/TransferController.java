@@ -1,6 +1,7 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.dto.UserTransactionCommand;
+import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.service.UserAccountService;
 import com.paymybuddy.service.UserRelationService;
@@ -36,8 +37,13 @@ public class TransferController {
     public String transferPage(Principal principal, Model model) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
+        List<UserTransactionDTO> transactions = userTransactionService.getTransactionsFor(connectedUser);
+
         model.addAttribute("relations", relations);
         model.addAttribute("transferCommand", new UserTransactionCommand());
+        model.addAttribute("transactions", transactions);
+        model.addAttribute("connectedUser", connectedUser);
+
         return "transfer";
     }
 
