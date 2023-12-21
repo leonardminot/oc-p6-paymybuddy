@@ -527,6 +527,111 @@ public class BankAccountAndTransactionServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Feature: it should return bank transactions for a User")
+    class getBankTransaction {
+
+        @Nested
+        @DisplayName("Rule: it should return all transaction for a given user")
+        class getBankTransactionForGivenUser {
+            private Fixture fixture;
+
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            @Test
+            void itShouldReturnAListOfBankTransaction() {
+                // Given
+                UserAccount targetUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(targetUser);
+
+                UserAccount otherUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-9999-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(otherUser);
+
+                BankAccount bankAccount1 = new BankAccount(
+                        UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
+                        targetUser,
+                        "123456789",
+                        "FR"
+                );
+
+                BankAccount bankAccount2 = new BankAccount(
+                        UUID.fromString("77777777-7777-4bcf-8035-37a02ba75c69"),
+                        targetUser,
+                        "333333333",
+                        "FR"
+                );
+
+                BankAccount bankAccount3 = new BankAccount(
+                        UUID.fromString("77777777-8888-4bcf-8035-37a02ba75c69"),
+                        otherUser,
+                        "789456123",
+                        "FR"
+                );
+
+                fixture.givenBankAccountInDatabase(bankAccount1);
+                fixture.givenBankAccountInDatabase(bankAccount2);
+                fixture.givenBankAccountInDatabase(bankAccount3);
+
+                BankTransaction bankTransaction1 = new BankTransaction(
+                        UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
+                        bankAccount1,
+                        100.0,
+                        "EUR",
+                        LocalDateTime.now()
+                );
+
+                BankTransaction bankTransaction2 = new BankTransaction(
+                        UUID.fromString("00000001-6266-4bcf-8035-37a02ba75c69"),
+                        bankAccount2,
+                        150.0,
+                        "EUR",
+                        LocalDateTime.now()
+                );
+
+                BankTransaction bankTransaction3 = new BankTransaction(
+                        UUID.fromString("00000002-6266-4bcf-8035-37a02ba75c69"),
+                        bankAccount3,
+                        100.0,
+                        "USD",
+                        LocalDateTime.now()
+                );
+
+                BankTransaction bankTransaction4 = new BankTransaction(
+                        UUID.fromString("00000003-6266-4bcf-8035-37a02ba75c69"),
+                        bankAccount1,
+                        -32.0,
+                        "EUR",
+                        LocalDateTime.now()
+                );
+
+                fixture.givenTheTransactionInDatabase(bankTransaction1);
+                fixture.givenTheTransactionInDatabase(bankTransaction2);
+                fixture.givenTheTransactionInDatabase(bankTransaction3);
+                fixture.givenTheTransactionInDatabase(bankTransaction4);
+
+                // When
+                fixture.whenFetchBankTransactionFor(targetUser);
+
+                // Then
+                fixture.thenTransactionListShouldContain(List.of(bankTransaction1, bankTransaction2, bankTransaction4));
+
+            }
+        }
+    }
+
 
 
 

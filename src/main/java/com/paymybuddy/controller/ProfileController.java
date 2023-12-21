@@ -3,6 +3,7 @@ package com.paymybuddy.controller;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.service.BankAccountService;
 import com.paymybuddy.service.BankTransactionService;
@@ -37,9 +38,11 @@ public class ProfileController {
     public String getProfile(Principal principal, Model model) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<BankAccount> currentBankAccounts = bankAccountService.getBankAccountsFor(connectedUser);
+        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser);
 
         model.addAttribute("bankAccounts", currentBankAccounts);
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
+        model.addAttribute("bankTransactions", bankTransactions);
 
         return "profile";
     }

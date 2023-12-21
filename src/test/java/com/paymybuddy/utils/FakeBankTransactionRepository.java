@@ -1,5 +1,6 @@
 package com.paymybuddy.utils;
 
+import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.repository.definition.BankTransactionRepository;
 
@@ -25,5 +26,12 @@ public class FakeBankTransactionRepository implements BankTransactionRepository 
     @Override
     public List<BankTransaction> getAll() {
         return bankTransactions;
+    }
+
+    @Override
+    public List<BankTransaction> getAllFor(BankAccount bankAccount) {
+        return bankTransactions.stream()
+                .filter(bankTransaction -> bankTransaction.getBankAccount().equals(bankAccount))
+                .toList();
     }
 }

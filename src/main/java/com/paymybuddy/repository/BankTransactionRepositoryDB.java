@@ -1,5 +1,6 @@
 package com.paymybuddy.repository;
 
+import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.repository.jpa.BankTransactionRepositoryJpa;
 import com.paymybuddy.repository.definition.BankTransactionRepository;
@@ -33,5 +34,10 @@ public class BankTransactionRepositoryDB implements BankTransactionRepository {
     public List<BankTransaction> getAll() {
         Iterable<BankTransaction> allBankTransactions = bankTransactionRepositoryJpa.findAll();
         return StreamSupport.stream(allBankTransactions.spliterator(), false).toList();
+    }
+
+    @Override
+    public List<BankTransaction> getAllFor(BankAccount bankAccount) {
+        return bankTransactionRepositoryJpa.findBankTransactionsByBankAccountEquals(bankAccount);
     }
 }
