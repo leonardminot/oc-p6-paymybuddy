@@ -61,7 +61,6 @@ public class ConnectionController {
             log.error(exception.getMessage());
         }
 
-
         return "redirect:/addConnection";
     }
 }

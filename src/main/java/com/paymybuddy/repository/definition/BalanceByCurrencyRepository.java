@@ -12,4 +12,5 @@ public interface BalanceByCurrencyRepository {
 
     Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccount, String currency);
     List<BalanceByCurrency> getAll();
+    List<BalanceByCurrency> getForUser(UserAccount userAccount);
 }

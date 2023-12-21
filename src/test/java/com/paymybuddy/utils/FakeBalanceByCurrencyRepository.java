@@ -52,4 +52,11 @@ public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyReposit
     public List<BalanceByCurrency> getAll() {
         return balanceByCurrencies;
     }
+
+    @Override
+    public List<BalanceByCurrency> getForUser(UserAccount userAccount) {
+        return balanceByCurrencies.stream()
+                .filter(bbc -> bbc.getUserAccount().equals(userAccount))
+                .toList();
+    }
 }

@@ -41,4 +41,9 @@ public class BalanceByCurrencyRepositoryDB implements BalanceByCurrencyRepositor
         Iterable<BalanceByCurrency> allBalanceByCurrencies = balanceByCurrencyRepositoryJpa.findAll();
         return StreamSupport.stream(allBalanceByCurrencies.spliterator(), false).toList();
     }
+
+    @Override
+    public List<BalanceByCurrency> getForUser(UserAccount userAccount) {
+        return balanceByCurrencyRepositoryJpa.findByUserAccountEquals(userAccount);
+    }
 }

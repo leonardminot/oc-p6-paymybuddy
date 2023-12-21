@@ -8,6 +8,7 @@ import com.paymybuddy.repository.definition.BalanceByCurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -81,6 +82,10 @@ public class BalanceByCurrencyService {
         }
     }
 
+    public List<BalanceByCurrency> fetchBalanceByCurrencyFor(UserAccount targetUser) {
+        return balanceByCurrencyRepository.getForUser(targetUser);
+    }
+
     private void throwIfNoBalanceByCurrencyForFromUserFound() {
         throw new RuntimeException("No BalanceByCurrency for From User found");
     }
@@ -122,5 +127,4 @@ public class BalanceByCurrencyService {
             throw new RuntimeException("Amount can not go beyond 0");
         }
     }
-
 }

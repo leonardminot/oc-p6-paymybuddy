@@ -2,9 +2,11 @@ package com.paymybuddy.controller;
 
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
+import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.service.BalanceByCurrencyService;
 import com.paymybuddy.service.BankAccountService;
 import com.paymybuddy.service.BankTransactionService;
 import com.paymybuddy.service.UserAccountService;
@@ -26,12 +28,14 @@ public class ProfileController {
     private final UserAccountService userAccountService;
     private final BankAccountService bankAccountService;
     private final BankTransactionService bankTransactionService;
+    private final BalanceByCurrencyService balanceByCurrencyService;
 
     @Autowired
-    public ProfileController(UserAccountService userAccountService, BankAccountService bankAccountService, BankTransactionService bankTransactionService) {
+    public ProfileController(UserAccountService userAccountService, BankAccountService bankAccountService, BankTransactionService bankTransactionService, BalanceByCurrencyService balanceByCurrencyService) {
         this.userAccountService = userAccountService;
         this.bankAccountService = bankAccountService;
         this.bankTransactionService = bankTransactionService;
+        this.balanceByCurrencyService = balanceByCurrencyService;
     }
 
     @GetMapping("/profile")
@@ -39,10 +43,12 @@ public class ProfileController {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<BankAccount> currentBankAccounts = bankAccountService.getBankAccountsFor(connectedUser);
         List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser);
+        List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser);
 
         model.addAttribute("bankAccounts", currentBankAccounts);
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
         model.addAttribute("bankTransactions", bankTransactions);
+        model.addAttribute("balanceByCurrencies", balanceByCurrencies);
 
         return "profile";
     }
