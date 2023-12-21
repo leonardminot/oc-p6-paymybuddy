@@ -4,6 +4,8 @@ import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.UserAccount;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface BankAccountRepository {
     void save(BankAccount bankAccount);
@@ -11,4 +13,6 @@ public interface BankAccountRepository {
     boolean isIBANExists(String iban);
 
     List<BankAccount> fetchAllBankAccountsForUser(UserAccount user);
+
+    Optional<BankAccount> getById(UUID bankAccountId);
 }

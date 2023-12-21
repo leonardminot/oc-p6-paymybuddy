@@ -6,6 +6,8 @@ import com.paymybuddy.repository.definition.BankAccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class FakeBankAccountRepository implements BankAccountRepository {
     List<BankAccount> bankAccounts = new ArrayList<>();
@@ -31,5 +33,10 @@ public class FakeBankAccountRepository implements BankAccountRepository {
     @Override
     public List<BankAccount> fetchAllBankAccountsForUser(UserAccount user) {
         return bankAccounts.stream().filter(bankAccount -> bankAccount.getUserAccount().equals(user)).toList();
+    }
+
+    @Override
+    public Optional<BankAccount> getById(UUID bankAccountId) {
+        return bankAccounts.stream().filter(ba -> ba.getBankAccountId().equals(bankAccountId)).findAny();
     }
 }

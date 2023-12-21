@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 @Repository
@@ -37,8 +39,11 @@ public class BankAccountRepositoryDB implements BankAccountRepository {
 
     @Override
     public List<BankAccount> fetchAllBankAccountsForUser(UserAccount user) {
-        return StreamSupport.stream(bankAccountRepositoryJpa.findAll().spliterator(), false)
-                .filter(bankAccount -> bankAccount.getUserAccount().equals(user))
-                .toList();
+        return bankAccountRepositoryJpa.findBankAccountsByUserAccountEquals(user);
+    }
+
+    @Override
+    public Optional<BankAccount> getById(UUID bankAccountId) {
+        return bankAccountRepositoryJpa.findById(bankAccountId);
     }
 }

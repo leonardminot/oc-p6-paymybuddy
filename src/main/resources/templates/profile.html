@@ -21,6 +21,9 @@
     <div class="card bg-body-tertiary mt-4">
         <div class="card-body">
             <h6>Your bank accounts</h6>
+            <div class="alert alert-danger" th:if="${notEnoughMoney}">
+                <p>Not enough money available on your account to perform the withdrawal.</p>
+            </div>
             <table class="table">
                 <thead>
                 <tr class="table-dark">
@@ -33,7 +36,32 @@
                 <tr th:each="account:${bankAccounts}">
                     <td th:text="${account.getIban()}">123456789</td>
                     <td th:text="${account.getCountry()}">FRANCE</td>
-                    <td><a class="btn btn-success" th:href="'#'">Add money</a> <a class="btn btn-outline-primary" th:href="'#'">Withdraw</a></td>
+                    <td>
+                        <form method="post" th:action="@{/addMoney/{id}(id=${account.getBankAccountId()})}" role="form" th:object="${bankTransactionCommand}">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-piggy-bank"></i></span>
+                                        <input type="number" name="amount" id="amount" class="form-control" placeholder="Amount" min="0" th:field="*{amount}">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}">
+                                        <option value="" disabled selected hidden="">Select a currency</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="USD">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-success" type="submit" name="action" value="addMoney">Add money</button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-outline-primary" type="submit" name="action" value="withdraw">Withdraw</button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

@@ -44,13 +44,13 @@ public class BalanceByCurrencyService {
 
     public void createOrUpdateAssociatedBalanceByCurrencyForBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         Optional<BalanceByCurrency> existingBalanceByCurrency = getByUserAccountAndCurrency(
-                bankTransactionCommand.bankAccount().getUserAccount(),
-                bankTransactionCommand.currency());
+                bankTransactionCommand.getBankAccount().getUserAccount(),
+                bankTransactionCommand.getCurrency());
 
-        throwIfProjectedAmountBeyondZero(bankTransactionCommand.amount(), existingBalanceByCurrency);
+        throwIfProjectedAmountBeyondZero(bankTransactionCommand.getAmount(), existingBalanceByCurrency);
 
         BalanceByCurrency balanceModel = existingBalanceByCurrency
-                .map(balance -> createBalance(balance, bankTransactionCommand.amount()))
+                .map(balance -> createBalance(balance, bankTransactionCommand.getAmount()))
                 .orElseGet(() -> createBalance(bankTransactionCommand));
         updateBalanceByCurrencyWithNewAmount(balanceModel);
     }
@@ -105,9 +105,9 @@ public class BalanceByCurrencyService {
     private BalanceByCurrency createBalance(BankTransactionCommandDTO bankTransactionCommand) {
         return new BalanceByCurrency(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                bankTransactionCommand.bankAccount().getUserAccount(),
-                bankTransactionCommand.amount(),
-                bankTransactionCommand.currency()
+                bankTransactionCommand.getBankAccount().getUserAccount(),
+                bankTransactionCommand.getAmount(),
+                bankTransactionCommand.getCurrency()
         );
     }
 

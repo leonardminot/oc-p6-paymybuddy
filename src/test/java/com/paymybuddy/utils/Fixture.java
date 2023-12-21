@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,6 +36,8 @@ public class Fixture {
 
 
 
+
+
     }
     private final UserAccountRepository userAccountRepository = new FakeUserAccountRepository();
     private final UserRelationRepository userRelationRepository = new FakeUserRelationRepository();
@@ -43,9 +46,9 @@ public class Fixture {
     private final BankTransactionRepository bankTransactionRepository = new FakeBankTransactionRepository();
     private final UserTransactionRepository userTransactionRepository = new FakeUserTransactionRepository();
     private final UserTransferRepository userTransferRepository = new FakeUserTransferRepository();
-
     private final StubDateProvider dateProvider = new StubDateProvider();
     private UserAccount userAccountToCreate;
+
     private UserRequestCommandDTO userRequestCommandDTO;
     private final BalanceByCurrencyService balanceByCurrencyService = new BalanceByCurrencyService(balanceByCurrencyRepository);
     private final UserAccountService userAccountService = new UserAccountService(userAccountRepository);
@@ -55,9 +58,8 @@ public class Fixture {
     private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, dateProvider);
     List<UserAccount> connectedUser = new ArrayList<>();
     Optional<UserAccount> actualUser = Optional.empty();
-
     List<BankAccount> bankAccounts = new ArrayList<>();
-
+    Optional<BankAccount> currentBankAccount = Optional.empty();
     public void givenUserInDatabase(UserAccount userInDB) {
         userAccountRepository.save(userInDB);
     }
@@ -65,6 +67,7 @@ public class Fixture {
     public void givenNowIs(LocalDateTime now) {
         dateProvider.now = now;
     }
+
     public void givenBankAccountInDatabase(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);
     }
@@ -73,7 +76,6 @@ public class Fixture {
         bankTransactionRepository.save(existingBankTransaction);
 
     }
-
     public void givenTheBalanceByCurrencyInDataBase(BalanceByCurrency existingBalanceByCurrency) {
         balanceByCurrencyRepository.save(existingBalanceByCurrency);
     }
@@ -89,9 +91,11 @@ public class Fixture {
     public void whenRequestForCreateUserThatThrow(UserRequestCommandDTO userRequestCommandDTO) {
         this.userRequestCommandDTO = userRequestCommandDTO;
     }
+
     public void givenAConnectionExistsBetween(UserAccount user1, UserAccount user2) {
         userRelationService.createRelation(user1, user2);
     }
+
     public void whenRequestAUserInDatabaseWithEmail(String mail) {
         actualUser = userAccountService.getUserWithEmail(mail);
     }
@@ -101,7 +105,6 @@ public class Fixture {
     public void whenRequestConnectedUserFor(UserAccount principalUser) {
         connectedUser = userRelationService.getRelationsFor(principalUser);
     }
-
     public void whenRequestACreationOfARelationBetweenThenThrow(UserAccount user1, UserAccount user2, String message) {
         assertThatThrownBy(() -> userRelationService.createRelation(user1, user2))
                 .isInstanceOf(RuntimeException.class)
@@ -113,15 +116,19 @@ public class Fixture {
                 .hasMessageContaining(exceptionToThrown.getMessage());
     }
 
+    public void whenFetchBankAccountWithId(UUID bankAccountId) {
+        currentBankAccount = bankAccountService.getBankAccount(bankAccountId);
+    }
+
     public void whenCreateANewBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         bankTransactionService.newTransaction(bankTransactionCommand);
     }
+
     public void whenCreateABankTransactionAndThenThrow(BankTransactionCommandDTO bankTransactionCommand, RuntimeException exceptionToThrown) {
         assertThatThrownBy(() -> bankTransactionService.newTransaction(bankTransactionCommand))
                 .isInstanceOf(exceptionToThrown.getClass())
                 .hasMessageContaining(exceptionToThrown.getMessage());
     }
-
     public void whenCreateANewBankTransactionThenThrow(BankTransactionCommandDTO bankTransactionCommand, RuntimeException exceptionToThrow) {
         assertThatThrownBy(() -> bankTransactionService.newTransaction(bankTransactionCommand))
                 .isInstanceOf(exceptionToThrow.getClass())
@@ -208,6 +215,11 @@ public class Fixture {
 
     public void thenItShouldTheReturnListOfBankAccounts(List<BankAccount> expectedBankAccounts) {
         assertThat(bankAccounts).hasSameElementsAs(expectedBankAccounts);
+    }
+
+    public void thenItShouldReturnTheBankAccount(BankAccount bankAccount) {
+        assertThat(currentBankAccount).isPresent();
+        assertThat(currentBankAccount.get()).isEqualTo(bankAccount);
     }
 }
 

@@ -33,21 +33,21 @@ public class BankTransactionService {
     }
 
     private void throwIfUserAccountIsNull(BankTransactionCommandDTO bankTransactionCommand) {
-        if (bankTransactionCommand.bankAccount() == null)
+        if (bankTransactionCommand.getBankAccount()== null)
             throw new RuntimeException("User Account must be not null");
     }
 
     private void throwIfCurrencyIsNull(BankTransactionCommandDTO bankTransactionCommand) {
-        if (bankTransactionCommand.currency() == null)
+        if (bankTransactionCommand.getCurrency() == null)
             throw new RuntimeException("Currency must be not null");
     }
 
     private void saveANewTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         bankTransactionRepository.save(new BankTransaction(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
-                bankTransactionCommand.bankAccount(),
-                bankTransactionCommand.amount(),
-                bankTransactionCommand.currency(),
+                bankTransactionCommand.getBankAccount(),
+                bankTransactionCommand.getAmount(),
+                bankTransactionCommand.getCurrency(),
                 dateProvider.getNow()
         ));
     }

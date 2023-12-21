@@ -139,11 +139,11 @@ public class BankAccountAndTransactionServiceTest {
     }
 
     @Nested
-    @DisplayName("Feature: it should return the list of associated Bank Accounts")
+    @DisplayName("Feature: it should return the list or the given Bank Accounts")
     class GetBankAccounts {
 
         @Nested
-        @DisplayName("Rule: it should return all banks acocunt associate to an user")
+        @DisplayName("Rule: it should return all banks account associate to an user")
         class GetAllBankAccountsAssociatedToAnUser {
             private Fixture fixture;
 
@@ -202,6 +202,44 @@ public class BankAccountAndTransactionServiceTest {
 
                 // Then
                 fixture.thenItShouldTheReturnListOfBankAccounts(List.of(bankAccount1, bankAccount3));
+            }
+        }
+
+        @Nested
+        @DisplayName("Rule: it should return the bank account with the given id")
+        class FetchGivenBankAccount {
+            private Fixture fixture;
+
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            @Test
+            void itShouldReturnTheBankAccount() {
+                // Given
+                UserAccount user = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("Minot")
+                        .build();
+
+                BankAccount bankAccount = new BankAccount(
+                        UUID.fromString("77777777-6266-4bcf-8035-37a02ba75c69"),
+                        user,
+                        "123456789",
+                        "FR"
+                );
+
+                fixture.givenUserInDatabase(user);
+                fixture.givenBankAccountInDatabase(bankAccount);
+
+                // When
+                fixture.whenFetchBankAccountWithId(bankAccount.getBankAccountId());
+
+                // Then
+                fixture.thenItShouldReturnTheBankAccount(bankAccount);
+
             }
         }
     }
