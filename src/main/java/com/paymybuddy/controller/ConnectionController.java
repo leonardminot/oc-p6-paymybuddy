@@ -10,10 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -49,14 +51,20 @@ public class ConnectionController {
     @PostMapping("/addConnection")
     public String addConnection(
             Principal principal,
-            @RequestParam("selectedUser") String newRelationEmail
+            @RequestParam(value = "selectedUser", defaultValue = "ERROR_USER") String newRelationEmail,
+            RedirectAttributes ra
     ) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
-        UserAccount newRelationUser = userAccountService.getUserWithEmail(newRelationEmail).orElse(null);
+        if (newRelationEmail.equals("ERROR_USER")) {
+            ra.addFlashAttribute("noUserSelected", true);
+            return "redirect:/addConnection";
+        }
 
         log.info("New user connection email: " + newRelationEmail);
         try {
+            UserAccount newRelationUser = userAccountService.getUserWithEmail(newRelationEmail).orElse(null);
             userRelationService.createRelation(connectedUser, newRelationUser);
+
         } catch (Exception exception) {
             log.error(exception.getMessage());
         }

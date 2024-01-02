@@ -25,6 +25,10 @@
         Error during transaction. Please check that all fields are correctly fill.
     </div>
 
+    <div class="alert alert-danger my-2" th:if="${transactionError}">
+        You don't have enough money to perform the transaction in this currency.
+    </div>
+
     <div class="card bg-body-tertiary mt-1">
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/sendMoney}" th:object="${transferCommand}">

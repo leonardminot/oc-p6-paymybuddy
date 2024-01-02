@@ -15,6 +15,10 @@
 
     <a class="btn btn-outline-primary" th:href="@{/transfer}"><i class="bi bi-arrow-left-circle"></i> Back to transfer</a>
 
+    <div class="alert alert-danger my-2" th:if="${noUserSelected}">
+        You should select a user.
+    </div>
+
     <div class="card bg-body-tertiary mt-2">
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/addConnection}">

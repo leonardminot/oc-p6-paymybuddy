@@ -37,6 +37,10 @@
             <div class="alert alert-danger" th:if="${notEnoughMoney}">
                 <p>Not enough money available on your account to perform the withdrawal.</p>
             </div>
+
+            <div class="alert alert-danger" th:if="${zeroMoney}">
+                <p>The Amount cannot be zero.</p>
+            </div>
             <table class="table">
                 <thead>
                 <tr class="table-dark">

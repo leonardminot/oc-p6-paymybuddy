@@ -15,6 +15,11 @@
 
     <a class="btn btn-outline-primary" th:href="@{/profile}"><i class="bi bi-arrow-left-circle"></i> Back to profile</a>
 
+    <div class="alert alert-danger my-2" th:if="${emptyFieldError}">
+        No fields should be empty.
+    </div>
+
+
     <div class="card mt-2">
 
         <div class="card-header">

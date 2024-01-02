@@ -1,5 +1,6 @@
 package com.paymybuddy.controller;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.UserAccount;
@@ -40,6 +41,7 @@ public class TransferController {
             Principal principal,
             Model model,
             @RequestParam(name = "page", required = false) Integer page) {
+
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
         List<UserTransactionDTO> transactions = userTransactionService.getTransactionsFor(connectedUser);
@@ -78,6 +80,9 @@ public class TransferController {
                     userTransactionCommand.getCurrency(),
                     userTransactionCommand.getAmount()
             ));
+        } catch (BalanceAndTransferException e) {
+            ra.addFlashAttribute("transactionError", true);
+            log.error(e.getMessage());
         } catch (Exception e) {
             ra.addFlashAttribute("hasError", true);
             log.error(e.getMessage());

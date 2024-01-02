@@ -61,12 +61,12 @@ public class BankAccountService {
     }
 
     private void throwIfIBANIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
-        if (bankAccountCreationCommandDTO.iban() == null)
+        if (bankAccountCreationCommandDTO.iban() == null || bankAccountCreationCommandDTO.iban().isEmpty())
             throw new EmptyFieldException("IBAN must be not null");
     }
 
     private void throwIfCountryIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
-        if (bankAccountCreationCommandDTO.country() == null)
+        if (bankAccountCreationCommandDTO.country() == null || bankAccountCreationCommandDTO.country().isEmpty())
             throw new EmptyFieldException("Country must be not null");
     }
 

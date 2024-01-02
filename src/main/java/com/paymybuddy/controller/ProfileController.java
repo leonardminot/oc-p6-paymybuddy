@@ -1,5 +1,7 @@
 package com.paymybuddy.controller;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
+import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.model.BalanceByCurrency;
@@ -47,21 +49,22 @@ public class ProfileController {
             @RequestParam(name = "page", required = false) Integer page) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<BankAccount> currentBankAccounts = bankAccountService.getBankAccountsFor(connectedUser);
+        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser);
 
-        // TODO (On fetch les données 2 fois : il faut créer une variable en mémoire)
         long pageToShow = page == null ? 1 : page;
-        long numberOfPages = (long) Math.ceil((double) bankTransactionService.fetchTransactionsFor(connectedUser).size() / TRANSACTION_PER_PAGE);
+        long numberOfPages = (long) Math.ceil((double) bankTransactions.size() / TRANSACTION_PER_PAGE);
         numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
-        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser)
-                .stream()
+
+        List<BankTransaction> bankTransactionsToShow = bankTransactions.stream()
                 .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
                 .limit(TRANSACTION_PER_PAGE)
                 .toList();
+
         List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser);
 
         model.addAttribute("bankAccounts", currentBankAccounts);
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
-        model.addAttribute("bankTransactions", bankTransactions);
+        model.addAttribute("bankTransactions", bankTransactionsToShow);
         model.addAttribute("balanceByCurrencies", balanceByCurrencies);
         model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("currentPage", pageToShow);
@@ -78,11 +81,15 @@ public class ProfileController {
     @PostMapping("/addBankAccount")
     public String newBankAccount(
             @ModelAttribute("bankAccount") BankAccount bankAccount,
-            Principal principal
+            Principal principal,
+            RedirectAttributes ra
     ) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         try {
             bankAccountService.create(new BankAccountCreationCommandDTO(connectedUser, bankAccount.getIban(), bankAccount.getCountry()));
+        } catch (EmptyFieldException e) {
+            ra.addFlashAttribute("emptyFieldError", true);
+            return "redirect:/addBankAccount";
         } catch (Exception error) {
             log.error(error.getMessage());
         }
@@ -96,31 +103,26 @@ public class ProfileController {
             @RequestParam String action,
             RedirectAttributes ra) {
         BankAccount bankAccount = bankAccountService.getBankAccount(id).orElse(null);
+        double transactionAmount = action.equals("addMoney") ? bankTransactionCommandDTO.getAmount() : -bankTransactionCommandDTO.getAmount();
 
-        if (action.equals("addMoney")) {
-            try {
-                bankTransactionService.newTransaction(new BankTransactionCommandDTO(
-                        bankAccount,
-                        bankTransactionCommandDTO.getAmount(),
-                        bankTransactionCommandDTO.getCurrency()
-                ));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
+        if (transactionAmount == 0) {
+            ra.addFlashAttribute("zeroMoney", true);
+            return "redirect:/profile";
         }
 
-        if (action.equals("withdraw")) {
-            try {
-                bankTransactionService.newTransaction(new BankTransactionCommandDTO(
-                        bankAccount,
-                        -bankTransactionCommandDTO.getAmount(),
-                        bankTransactionCommandDTO.getCurrency()
-                ));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                ra.addFlashAttribute("notEnoughMoney", true);
-            }
+        try {
+            bankTransactionService.newTransaction(new BankTransactionCommandDTO(
+                    bankAccount,
+                    transactionAmount,
+                    bankTransactionCommandDTO.getCurrency()
+            ));
+        } catch (BalanceAndTransferException e) {
+            log.error(e.getMessage());
+            ra.addFlashAttribute("notEnoughMoney", true);
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
+
         return "redirect:/profile";
     }
 }

@@ -6,6 +6,7 @@ import com.paymybuddy.Exception.UsernameException;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.UserRequestCommandDTO;
 import com.paymybuddy.repository.definition.UserAccountRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 @Service
+@Slf4j
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
 
@@ -44,7 +46,13 @@ public class UserAccountService {
     }
 
     public Optional<UserAccount> getUserWithEmail(String mail) {
-        return userAccountRepository.getByEmail(mail);
+        try {
+            return userAccountRepository.getByEmail(mail);
+        } catch (Exception e) {
+            log.error("No User found");
+            return Optional.empty();
+        }
+
     }
 
     private void throwIfUserNameAlreadyExists(UserRequestCommandDTO userRequestCommandDTO) {
