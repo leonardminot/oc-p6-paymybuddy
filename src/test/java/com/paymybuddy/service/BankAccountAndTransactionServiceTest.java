@@ -1,5 +1,9 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
+import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.Exception.IBANException;
+import com.paymybuddy.Exception.UserException;
 import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.BankTransaction;
@@ -60,7 +64,7 @@ public class BankAccountAndTransactionServiceTest {
 
                 // When
                 // Then
-                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userNotInDB, "123456789", "FR"), new RuntimeException("User is unknown"));
+                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userNotInDB, "123456789", "FR"), new UserException("User is unknown"));
             }
 
             @Test
@@ -68,7 +72,7 @@ public class BankAccountAndTransactionServiceTest {
                 // Given
                 // When
                 // Then
-                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(null, "123456789", "FR"), new RuntimeException("User must be not null"));
+                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(null, "123456789", "FR"), new UserException("User must be not null"));
             }
 
             @Test
@@ -83,7 +87,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenUserInDatabase(userInDB);
                 // When
                 // Then
-                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, null, "FR"), new RuntimeException("IBAN must be not null"));
+                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, null, "FR"), new EmptyFieldException("IBAN must be not null"));
             }
 
             @Test
@@ -98,7 +102,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenUserInDatabase(userInDB);
                 // When
                 // Then
-                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, "123456789", null), new RuntimeException("Country must be not null"));
+                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, "123456789", null), new EmptyFieldException("Country must be not null"));
             }
         }
 
@@ -132,7 +136,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenBankAccountInDatabase(bankAccountModel);
                 // When
                 // Then
-                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, "123456789", "US"), new RuntimeException("IBAN already exists"));
+                fixture.whenRequestForCreateBankAccountAndThenThrow(new BankAccountCreationCommandDTO(userInDB, "123456789", "US"), new IBANException("IBAN already exists"));
             }
         }
 
@@ -294,7 +298,7 @@ public class BankAccountAndTransactionServiceTest {
                 // Given
                 // When
                 // Then
-                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(null, 100, "EUR"), new RuntimeException("User Account must be not null"));
+                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(null, 100, "EUR"), new UserException("User Account must be not null"));
             }
 
             @Test
@@ -321,7 +325,7 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenBankAccountInDatabase(bankAccount);
                 // When
                 // Then
-                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(bankAccount, 100, null), new RuntimeException("Currency must be not null"));
+                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(bankAccount, 100, null), new EmptyFieldException("Currency must be not null"));
             }
         }
 
@@ -493,7 +497,7 @@ public class BankAccountAndTransactionServiceTest {
 
                 // When
                 // Then
-                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new RuntimeException("Amount can not go beyond 0"));
+                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new BalanceAndTransferException("Amount can not go beyond 0"));
 
             }
 
@@ -522,7 +526,7 @@ public class BankAccountAndTransactionServiceTest {
 
                 // When
                 // Then
-                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new RuntimeException("Amount can not go beyond 0"));
+                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new BalanceAndTransferException("Amount can not go beyond 0"));
             }
         }
     }

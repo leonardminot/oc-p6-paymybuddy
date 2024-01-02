@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.UserException;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.UserRelationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,11 @@ public class UserRelationService {
 
     private void throwIfUserIsTheSame(UserAccount user1, UserAccount user2) {
         if (user1 == user2)
-            throw new RuntimeException("Users must be different");
+            throw new UserException("Users must be different");
     }
 
     private void throwIfAnUserIsEmpty(UserAccount user1, UserAccount user2) {
         if (user1 == null || user2 == null)
-            throw new RuntimeException("Users should not be empty");
+            throw new UserException("Users should not be empty");
     }
 }

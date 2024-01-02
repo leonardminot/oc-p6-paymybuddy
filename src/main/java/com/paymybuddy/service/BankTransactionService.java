@@ -1,5 +1,7 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.Exception.UserException;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
@@ -53,12 +55,12 @@ public class BankTransactionService {
 
     private void throwIfUserAccountIsNull(BankTransactionCommandDTO bankTransactionCommand) {
         if (bankTransactionCommand.getBankAccount()== null)
-            throw new RuntimeException("User Account must be not null");
+            throw new UserException("User Account must be not null");
     }
 
     private void throwIfCurrencyIsNull(BankTransactionCommandDTO bankTransactionCommand) {
         if (bankTransactionCommand.getCurrency() == null)
-            throw new RuntimeException("Currency must be not null");
+            throw new EmptyFieldException("Currency must be not null");
     }
 
     private void saveANewTransaction(BankTransactionCommandDTO bankTransactionCommand) {

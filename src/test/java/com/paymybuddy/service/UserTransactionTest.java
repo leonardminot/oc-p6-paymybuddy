@@ -1,5 +1,7 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
+import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.Transaction;
@@ -86,7 +88,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, null, "EUR", 100.0, new RuntimeException("Description must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, null, "EUR", 100.0, new EmptyFieldException("Description must not be null"));
             }
 
             @Test
@@ -114,7 +116,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", null, 100.0, new RuntimeException("Currency must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", null, 100.0, new EmptyFieldException("Currency must not be null"));
             }
 
             @Test
@@ -134,7 +136,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(null, toUser, "test transaction", "EUR", 100.0, new RuntimeException("From user must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(null, toUser, "test transaction", "EUR", 100.0, new EmptyFieldException("From user must not be null"));
             }
 
             @Test
@@ -151,7 +153,7 @@ public class UserTransactionTest {
 
                 fixture.givenNowIs(now);
 
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, null, "test transaction", "EUR", 100.0, new RuntimeException("To user must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, null, "test transaction", "EUR", 100.0, new EmptyFieldException("To user must not be null"));
             }
 
             @Test
@@ -175,7 +177,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "EUR", -100.0, new RuntimeException("Amount must be positive"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "EUR", -100.0, new BalanceAndTransferException("Amount must be positive"));
             }
         }
 
@@ -391,7 +393,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new RuntimeException("No BalanceByCurrency for From User found"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new BalanceAndTransferException("No BalanceByCurrency for From User found"));
             }
 
             @Test
@@ -426,7 +428,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new RuntimeException("Amount can not go beyond 0"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new BalanceAndTransferException("Amount can not go beyond 0"));
             }
         }
     }

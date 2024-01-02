@@ -104,10 +104,10 @@ public class Fixture {
         connectedUser = userRelationService.getRelationsFor(principalUser);
     }
 
-    public void whenRequestACreationOfARelationBetweenThenThrow(UserAccount user1, UserAccount user2, String message) {
+    public void whenRequestACreationOfARelationBetweenThenThrow(UserAccount user1, UserAccount user2, Exception exception) {
         assertThatThrownBy(() -> userRelationService.createRelation(user1, user2))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining(message);
+                .isInstanceOf(exception.getClass())
+                .hasMessageContaining(exception.getMessage());
     }
 
     public void whenRequestForCreateBankAccountAndThenThrow(BankAccountCreationCommandDTO bankAccountCreationCommandDTO, Exception exceptionToThrown) {
@@ -123,12 +123,12 @@ public class Fixture {
     public void whenCreateANewBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         bankTransactionService.newTransaction(bankTransactionCommand);
     }
-    public void whenCreateABankTransactionAndThenThrow(BankTransactionCommandDTO bankTransactionCommand, RuntimeException exceptionToThrown) {
+    public void whenCreateABankTransactionAndThenThrow(BankTransactionCommandDTO bankTransactionCommand, Exception exceptionToThrown) {
         assertThatThrownBy(() -> bankTransactionService.newTransaction(bankTransactionCommand))
                 .isInstanceOf(exceptionToThrown.getClass())
                 .hasMessageContaining(exceptionToThrown.getMessage());
     }
-    public void whenCreateANewBankTransactionThenThrow(BankTransactionCommandDTO bankTransactionCommand, RuntimeException exceptionToThrow) {
+    public void whenCreateANewBankTransactionThenThrow(BankTransactionCommandDTO bankTransactionCommand, Exception exceptionToThrow) {
         assertThatThrownBy(() -> bankTransactionService.newTransaction(bankTransactionCommand))
                 .isInstanceOf(exceptionToThrow.getClass())
                 .hasMessageContaining(exceptionToThrow.getMessage());
@@ -136,7 +136,7 @@ public class Fixture {
     public void whenCreateATransactionBetweenUsers(UserAccount fromUser, UserAccount toUser, String description, String currency, double amount) {
         userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency,amount));
     }
-    public void whenCreateATransactionBetweenUsersAndThenThrow(UserAccount fromUser, UserAccount toUser, String description, String currency, double amount, RuntimeException exceptionThrown) {
+    public void whenCreateATransactionBetweenUsersAndThenThrow(UserAccount fromUser, UserAccount toUser, String description, String currency, double amount, Exception exceptionThrown) {
         assertThatThrownBy(() -> userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency, amount)))
                 .isInstanceOf(exceptionThrown.getClass())
                 .hasMessageContaining(exceptionThrown.getMessage());
@@ -165,9 +165,9 @@ public class Fixture {
         assertThat(userAccountRepository.get(userAccountToCreate).get()).isEqualTo(expectedUserAccount);
     }
 
-    public void thenItShouldThrowAnException(RuntimeException e) {
+    public void thenItShouldThrowAnException(Exception e) {
         assertThatThrownBy(() -> userAccountService.createUserAccount(this.userRequestCommandDTO))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(e.getClass())
                 .hasMessageContaining(e.getMessage());
     }
 

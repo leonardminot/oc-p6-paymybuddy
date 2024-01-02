@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
@@ -87,7 +88,7 @@ public class BalanceByCurrencyService {
     }
 
     private void throwIfNoBalanceByCurrencyForFromUserFound() {
-        throw new RuntimeException("No BalanceByCurrency for From User found");
+        throw new BalanceAndTransferException("No BalanceByCurrency for From User found");
     }
 
     private void updateBalanceByCurrencyWithNewAmount(BalanceByCurrency currentBalanceByCurrency) {
@@ -124,7 +125,7 @@ public class BalanceByCurrencyService {
         }
 
         if (projectedAmount < 0) {
-            throw new RuntimeException("Amount can not go beyond 0");
+            throw new BalanceAndTransferException("Amount can not go beyond 0");
         }
     }
 }

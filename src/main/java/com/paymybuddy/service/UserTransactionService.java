@@ -1,5 +1,7 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.BalanceAndTransferException;
+import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.Transfer;
@@ -71,17 +73,17 @@ public class UserTransactionService {
 
     private void throwIfAmountIsNegative(UserTransactionCommand userTransactionCommand) {
         if (userTransactionCommand.getAmount() < 0)
-            throw new RuntimeException("Amount must be positive");
+            throw new BalanceAndTransferException("Amount must be positive");
     }
 
     private void throwIfNullFields(UserTransactionCommand userTransactionCommand) {
         if (userTransactionCommand.getDescription() == null)
-            throw new RuntimeException("Description must not be null");
+            throw new EmptyFieldException("Description must not be null");
         if (userTransactionCommand.getCurrency() == null)
-            throw new RuntimeException("Currency must not be null");
+            throw new EmptyFieldException("Currency must not be null");
         if (userTransactionCommand.getFromUser() == null)
-            throw new RuntimeException("From user must not be null");
+            throw new EmptyFieldException("From user must not be null");
         if (userTransactionCommand.getToUser() == null)
-            throw new RuntimeException("To user must not be null");
+            throw new EmptyFieldException("To user must not be null");
     }
 }

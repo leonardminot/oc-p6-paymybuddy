@@ -1,5 +1,8 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.Exception.IBANException;
+import com.paymybuddy.Exception.UserException;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.model.UserAccount;
@@ -54,27 +57,27 @@ public class BankAccountService {
 
     private void throwIfUserAccountIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         if (bankAccountCreationCommandDTO.userAccount() == null)
-            throw new RuntimeException("User must be not null");
+            throw new UserException("User must be not null");
     }
 
     private void throwIfIBANIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         if (bankAccountCreationCommandDTO.iban() == null)
-            throw new RuntimeException("IBAN must be not null");
+            throw new EmptyFieldException("IBAN must be not null");
     }
 
     private void throwIfCountryIsEmpty(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         if (bankAccountCreationCommandDTO.country() == null)
-            throw new RuntimeException("Country must be not null");
+            throw new EmptyFieldException("Country must be not null");
     }
 
     private void throwIfUserIsUnknown(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         if (this.userAccountRepository.get(bankAccountCreationCommandDTO.userAccount()).isEmpty()) {
-            throw new RuntimeException("User is unknown");
+            throw new UserException("User is unknown");
         }
     }
 
     private void throwIfIBANAlreadyExists(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         if (bankAccountRepository.isIBANExists(bankAccountCreationCommandDTO.iban()))
-            throw new RuntimeException("IBAN already exists");
+            throw new IBANException("IBAN already exists");
     }
 }

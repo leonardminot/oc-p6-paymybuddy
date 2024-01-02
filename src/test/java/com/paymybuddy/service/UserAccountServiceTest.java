@@ -2,6 +2,7 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.Exception.EmailException;
 import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.Exception.UserException;
 import com.paymybuddy.Exception.UsernameException;
 import com.paymybuddy.model.Relation;
 import com.paymybuddy.model.UserAccount;
@@ -236,7 +237,7 @@ class UserAccountServiceTest {
                 UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
-                fixture.whenRequestACreationOfARelationBetweenThenThrow(null, user, "Users should not be empty");
+                fixture.whenRequestACreationOfARelationBetweenThenThrow(null, user, new UserException("Users should not be empty"));
             }
 
             @Test
@@ -245,7 +246,7 @@ class UserAccountServiceTest {
                 UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
-                fixture.whenRequestACreationOfARelationBetweenThenThrow(user, null, "Users should not be empty");
+                fixture.whenRequestACreationOfARelationBetweenThenThrow(user, null, new UserException("Users should not be empty"));
             }
         }
 
@@ -263,7 +264,7 @@ class UserAccountServiceTest {
                 UserAccount user = new UserAccountBuilder().build();
                 // When
                 // Then
-                fixture.whenRequestACreationOfARelationBetweenThenThrow(user, user, "Users must be different");
+                fixture.whenRequestACreationOfARelationBetweenThenThrow(user, user, new UserException("Users must be different"));
             }
         }
 
