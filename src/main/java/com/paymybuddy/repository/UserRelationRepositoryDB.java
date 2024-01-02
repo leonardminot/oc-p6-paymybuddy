@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Repository
 @Slf4j
@@ -44,5 +45,10 @@ public class UserRelationRepositoryDB implements UserRelationRepository {
                 connectedUser.add(relation.getUser1());
         }
         return connectedUser;
+    }
+
+    @Override
+    public List<Relation> getAllRelations() {
+        return StreamSupport.stream(relationRepositoryJpa.findAll().spliterator(), false).toList();
     }
 }

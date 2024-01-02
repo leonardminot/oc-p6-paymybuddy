@@ -5,7 +5,9 @@ import com.paymybuddy.integration.e2e.page.AddConnectionPage;
 import com.paymybuddy.integration.e2e.page.HomePage;
 import com.paymybuddy.integration.e2e.page.LoginPage;
 import com.paymybuddy.integration.e2e.page.TransferPage;
+import com.paymybuddy.model.Relation;
 import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.repository.UserRelationRepositoryDB;
 import com.paymybuddy.repository.jpa.*;
 import com.paymybuddy.service.UserAccountService;
 import com.paymybuddy.service.UserRelationService;
@@ -32,6 +34,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,6 +68,8 @@ public class LoginE2EIT {
     private UserAccountService userAccountService;
     @Autowired
     private UserRelationService userRelationService;
+    @Autowired
+    private UserRelationRepositoryDB userRelationRepositoryDB;
 
     @BeforeAll
     static void beforeAll() {
@@ -167,13 +172,13 @@ public class LoginE2EIT {
 
         // Then
         UserAccount targetUserInDb = userAccountService.getUserWithEmail("leo@email.com").orElse(null);
-        log.info("Target User email: " + targetUserInDb.getUserId());
         UserAccount connectedUserInDb = userAccountService.getUserWithEmail("victor@email.com").orElse(null);
-        log.info("Connected User email: " + connectedUserInDb.getUserId());
 
-        List<UserAccount> relations = userRelationService.getRelationsFor(targetUserInDb);
-        log.info("relations: " + relations);
-        assertThat(relations).contains(connectedUserInDb);
-
+        List<Relation> relations = userRelationRepositoryDB.getAllRelations();
+        Optional<Relation> potentialRelation = relations.stream()
+                .filter(relation -> relation.getUser1().getUserId().equals(targetUserInDb.getUserId()) || relation.getUser2().getUserId().equals(targetUserInDb.getUserId()))
+                .filter(relation -> relation.getUser1().getUserId().equals(connectedUserInDb.getUserId()) || relation.getUser2().getUserId().equals(connectedUserInDb.getUserId()))
+                .findAny();
+        assertThat(potentialRelation).isPresent();
     }
 }

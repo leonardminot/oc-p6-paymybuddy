@@ -11,4 +11,5 @@ public interface UserRelationRepository {
     void saveRelation(UserAccount user1, UserAccount user2, LocalDateTime createdAt);
 
     List<UserAccount> getAllRelationsForUser(UserAccount user);
+    List<Relation> getAllRelations();
 }

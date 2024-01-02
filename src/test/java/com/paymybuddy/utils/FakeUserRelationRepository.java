@@ -38,5 +38,10 @@ public class FakeUserRelationRepository implements UserRelationRepository {
         return connectedUser;
     }
 
+    @Override
+    public List<Relation> getAllRelations() {
+        return relations;
+    }
+
 
 }
