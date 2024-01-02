@@ -23,14 +23,14 @@
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/addConnection}">
                 <div class="col">
-                    <select class="form-select" aria-label="Select a user" name="selectedUser">
+                    <select class="form-select" aria-label="Select a user" name="selectedUser" id="add-user-selector">
                         <option value="" disabled selected hidden="">Select a user</option>
                         <option th:each="user: ${availableUsers}" th:text="${user.getUsername()}" th:value="${user.getEmail()}">One</option>
                     </select>
                 </div>
 
                 <div class="col">
-                    <button class="btn btn-success form-control" type="submit">Add connection</button>
+                    <button class="btn btn-success form-control" type="submit" id="add-connection-button">Add connection</button>
                 </div>
             </form>
         </div>
@@ -39,7 +39,7 @@
     <div class="card bg-body-tertiary mt-3">
         <div class="card-body">
             <p>Your current connections : </p>
-            <table class="table">
+            <table class="table" id="relations-table">
                 <thead>
                 <tr class="table-dark">
                     <th>Username</th>

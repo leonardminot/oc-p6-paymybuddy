@@ -5,11 +5,12 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@ToString
 @Entity(name = "UserAccount")
 @Table(
         name = "user_account",
@@ -120,5 +121,18 @@ public class UserAccount {
             this.bankAccounts.remove(bankAccount);
             bankAccount.setUserAccount(null);
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        UserAccount that = (UserAccount) obj;
+        return Objects.equals(userId, that.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

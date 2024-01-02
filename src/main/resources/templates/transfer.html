@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-auto">
-            <a class="btn btn-primary" th:href="@{/addConnection}">Add Connection</a>
+            <a class="btn btn-primary" th:href="@{/addConnection}" id="add-connection-btn">Add Connection</a>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/sendMoney}" th:object="${transferCommand}">
                 <div class="col">
-                    <select class="form-select" aria-label="Select a connection" name="toUserId" th:field="*{toUser}">
+                    <select class="form-select" aria-label="Select a connection" name="toUserId" th:field="*{toUser}" id="to-user-selector">
                         <option value="" disabled selected hidden="">Select a connection</option>
                         <option th:each="relation:${relations}" th:value="${relation.getUserId()}" th:text="${relation.getUsername()}">One</option>
                     </select>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col">
-                    <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}">
+                    <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}" id="currency-selector">
                         <option value="" disabled selected hidden="">Currency</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="col">
-                    <button class="btn btn-success form-control" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Pay</button>
+                    <button class="btn btn-success form-control" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pay-button">Pay</button>
                 </div>
 
 
