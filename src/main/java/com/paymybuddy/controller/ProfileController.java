@@ -45,29 +45,16 @@ public class ProfileController {
             Principal principal,
             Model model,
             @RequestParam(name = "page", required = false) Integer page) {
+
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
-        List<BankAccount> currentBankAccounts = bankAccountService.getBankAccountsFor(connectedUser);
-        List<BankTransaction> bankTransactions = bankTransactionService.fetchTransactionsFor(connectedUser);
 
-        long pageToShow = page == null ? 1 : page;
-        long numberOfPages = (long) Math.ceil((double) bankTransactions.size() / TRANSACTION_PER_PAGE);
-        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
-
-        List<BankTransaction> bankTransactionsToShow = bankTransactions.stream()
-                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
-                .limit(TRANSACTION_PER_PAGE)
-                .toList();
-
-        List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser);
-        List<Currency> allCurrencies = Arrays.asList(Currency.values());
-
-        model.addAttribute("bankAccounts", currentBankAccounts);
+        model.addAttribute("bankAccounts", bankAccountService.getBankAccountsFor(connectedUser));
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
-        model.addAttribute("bankTransactions", bankTransactionsToShow);
-        model.addAttribute("balanceByCurrencies", balanceByCurrencies);
-        model.addAttribute("numberOfPages", numberOfPages);
-        model.addAttribute("currentPage", pageToShow);
-        model.addAttribute("allCurrencies", allCurrencies);
+        model.addAttribute("bankTransactions", getTransactionsToShow(bankTransactionService.fetchTransactionsFor(connectedUser), getPageToShow(page)));
+        model.addAttribute("balanceByCurrencies", balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser));
+        model.addAttribute("numberOfPages", getNumberOfPages(bankTransactionService.fetchTransactionsFor(connectedUser)));
+        model.addAttribute("currentPage", getPageToShow(page));
+        model.addAttribute("allCurrencies", Arrays.asList(Currency.values()));
 
         return "profile";
     }
@@ -102,6 +89,7 @@ public class ProfileController {
             @ModelAttribute BankTransactionCommandDTO bankTransactionCommandDTO,
             @RequestParam String action,
             RedirectAttributes ra) {
+
         BankAccount bankAccount = bankAccountService.getBankAccount(id).orElse(null);
         double transactionAmount = action.equals("addMoney") ? bankTransactionCommandDTO.getAmount() : -bankTransactionCommandDTO.getAmount();
 
@@ -114,8 +102,7 @@ public class ProfileController {
             bankTransactionService.newTransaction(new BankTransactionCommandDTO(
                     bankAccount,
                     transactionAmount,
-                    bankTransactionCommandDTO.getCurrency()
-            ));
+                    bankTransactionCommandDTO.getCurrency()));
         } catch (BalanceAndTransferException e) {
             log.error(e.getMessage());
             ra.addFlashAttribute("notEnoughMoney", true);
@@ -124,5 +111,22 @@ public class ProfileController {
         }
 
         return "redirect:/profile";
+    }
+
+    private long getNumberOfPages(List<BankTransaction> bankTransactions) {
+        long numberOfPages = (long) Math.ceil((double) bankTransactions.size() / TRANSACTION_PER_PAGE);
+        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
+        return numberOfPages;
+    }
+
+    private List<BankTransaction> getTransactionsToShow(List<BankTransaction> bankTransactions, long pageToShow) {
+        return bankTransactions.stream()
+                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
+                .limit(TRANSACTION_PER_PAGE)
+                .toList();
+    }
+
+    private int getPageToShow(Integer page) {
+        return page == null ? 1 : page;
     }
 }

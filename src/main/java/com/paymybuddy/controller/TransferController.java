@@ -45,26 +45,14 @@ public class TransferController {
             @RequestParam(name = "page", required = false) Integer page) {
 
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
-        List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
-        List<UserTransactionDTO> transactions = userTransactionService.getTransactionsFor(connectedUser);
-        List<Currency> allCurrencies = Arrays.asList(Currency.values());
 
-        long pageToShow = page == null ? 1 : page;
-        long numberOfPages = (long) Math.ceil((double) transactions.size() / TRANSACTION_PER_PAGE);
-        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
-
-        List<UserTransactionDTO> transactionsToShow = transactions.stream()
-                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
-                .limit(TRANSACTION_PER_PAGE)
-                .toList();
-
-        model.addAttribute("relations", relations);
+        model.addAttribute("relations", userRelationService.getRelationsFor(connectedUser));
         model.addAttribute("transferCommand", new UserTransactionCommand());
-        model.addAttribute("transactions", transactionsToShow);
+        model.addAttribute("transactions", getTransactionsToShow(userTransactionService.getTransactionsFor(connectedUser), getPageToShow(page)));
         model.addAttribute("connectedUser", connectedUser);
-        model.addAttribute("numberOfPages", numberOfPages);
-        model.addAttribute("currentPage", pageToShow);
-        model.addAttribute("allCurrencies", allCurrencies);
+        model.addAttribute("numberOfPages", getNumberOfPages(userTransactionService.getTransactionsFor(connectedUser)));
+        model.addAttribute("currentPage", getPageToShow(page));
+        model.addAttribute("allCurrencies", Arrays.asList(Currency.values()));
 
         return "transfer";
     }
@@ -92,5 +80,22 @@ public class TransferController {
             log.error(e.getMessage());
         }
         return "redirect:/transfer";
+    }
+
+    private long getPageToShow(Integer page) {
+        return page == null ? 1 : page;
+    }
+
+    private long getNumberOfPages(List<UserTransactionDTO> transactions) {
+        long numberOfPages = (long) Math.ceil((double) transactions.size() / TRANSACTION_PER_PAGE);
+        numberOfPages = numberOfPages == 0 ? 1 : numberOfPages;
+        return numberOfPages;
+    }
+
+    private List<UserTransactionDTO> getTransactionsToShow(List<UserTransactionDTO> transactions, long pageToShow) {
+        return transactions.stream()
+                .skip(TRANSACTION_PER_PAGE * (pageToShow - 1))
+                .limit(TRANSACTION_PER_PAGE)
+                .toList();
     }
 }

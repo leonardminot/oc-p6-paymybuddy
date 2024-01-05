@@ -33,17 +33,10 @@ public class ConnectionController {
     @GetMapping("/addConnection")
     public String addConnectionInterface(Principal principal, Model model) {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
-        List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
-
-        List<UserAccount> availableUsers = userAccountService.getAllUsers().stream()
-                .filter(user -> !user.equals(connectedUser))
-                .filter(user -> !relations.contains(user))
-                .sorted(Comparator.comparing(UserAccount::getUsername))
-                .toList();
 
         model.addAttribute("connectedUser", connectedUser);
-        model.addAttribute("relations", relations);
-        model.addAttribute("availableUsers", availableUsers);
+        model.addAttribute("relations", userRelationService.getRelationsFor(connectedUser));
+        model.addAttribute("availableUsers", getAvailableUsers(connectedUser, userRelationService.getRelationsFor(connectedUser)));
 
         return "add-connection";
     }
@@ -70,5 +63,13 @@ public class ConnectionController {
         }
 
         return "redirect:/addConnection";
+    }
+
+    private List<UserAccount> getAvailableUsers(UserAccount connectedUser, List<UserAccount> relations) {
+        return userAccountService.getAllUsers().stream()
+                .filter(user -> !user.equals(connectedUser))
+                .filter(user -> !relations.contains(user))
+                .sorted(Comparator.comparing(UserAccount::getUsername))
+                .toList();
     }
 }
