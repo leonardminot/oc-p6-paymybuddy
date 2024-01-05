@@ -6,6 +6,7 @@ import com.paymybuddy.Exception.UsernameException;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.UserRequestCommandDTO;
 import com.paymybuddy.repository.definition.UserAccountRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
 
+    @Transactional
     public UserAccount createUserAccount(UserRequestCommandDTO userRequestCommandDTO) {
         throwIsUserInputIsEmpty(userRequestCommandDTO);
         throwIfEmailAlreadyExists(userRequestCommandDTO);

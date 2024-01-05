@@ -7,6 +7,7 @@ import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.repository.definition.BalanceByCurrencyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class BalanceByCurrencyService {
         this.balanceByCurrencyRepository = balanceByCurrencyRepository;
     }
 
+    @Transactional
     public void updateBalanceByCurrencyForFromUserOrThrowIfInsufficientAmount(UserTransactionCommand userTransactionCommand) {
         Optional<BalanceByCurrency> fromUserBalanceByCurrency = getByUserAccountAndCurrency(
                 userTransactionCommand.getFromUser(),
@@ -45,6 +47,7 @@ public class BalanceByCurrencyService {
         }
     }
 
+    @Transactional
     public void createOrUpdateAssociatedBalanceByCurrencyForBankTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         Optional<BalanceByCurrency> existingBalanceByCurrency = getByUserAccountAndCurrency(
                 bankTransactionCommand.getBankAccount().getUserAccount(),
@@ -58,6 +61,7 @@ public class BalanceByCurrencyService {
         updateBalanceByCurrencyWithNewAmount(balanceModel);
     }
 
+    @Transactional
     public void updateOrCreateToUserBalanceByCurrency(UserTransactionCommand userTransactionCommand) {
         Optional<BalanceByCurrency> toUserBalanceByCurrency = balanceByCurrencyRepository.getByUserAccountAndCurrency(
                 userTransactionCommand.getToUser(),

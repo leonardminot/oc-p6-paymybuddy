@@ -94,34 +94,6 @@ public class UserAccount {
 
     }
 
-    public void addBalanceByCurrency(BalanceByCurrency balanceByCurrency) {
-        if (!balanceByCurrencyList.contains(balanceByCurrency)) {
-            balanceByCurrencyList.add(balanceByCurrency);
-            balanceByCurrency.setUserAccount(this);
-        }
-    }
-
-    public void removeBalanceByCurrency(BalanceByCurrency balanceByCurrency) {
-        if (this.balanceByCurrencyList.contains(balanceByCurrency)) {
-            this.balanceByCurrencyList.remove(balanceByCurrency);
-            balanceByCurrency.setUserAccount(null);
-        }
-    }
-
-    public void addBankAccount(BankAccount bankAccount) {
-        if (!this.bankAccounts.contains(bankAccount)) {
-            bankAccounts.add(bankAccount);
-            bankAccount.setUserAccount(this);
-        }
-    }
-
-    public void removeBankAccount(BankAccount bankAccount) {
-        if (this.bankAccounts.contains(bankAccount)) {
-            this.bankAccounts.remove(bankAccount);
-            bankAccount.setUserAccount(null);
-        }
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -1,5 +1,8 @@
 package com.paymybuddy.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Currency {
     EUR("EUR"),
     USD("USD"),
@@ -12,7 +15,4 @@ public enum Currency {
         this.displayValue = displayValue;
     }
 
-    public String getDisplayValue() {
-        return displayValue;
-    }
 }

@@ -7,6 +7,7 @@ import com.paymybuddy.model.BankTransaction;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.BankTransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class BankTransactionService {
         this.dateProvider = dateProvider;
     }
 
+    @Transactional
     public void newTransaction(BankTransactionCommandDTO bankTransactionCommand) {
         throwIfNullData(bankTransactionCommand);
         balanceByCurrencyService.createOrUpdateAssociatedBalanceByCurrencyForBankTransaction(bankTransactionCommand);

@@ -8,6 +8,7 @@ import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.BankAccountRepository;
 import com.paymybuddy.repository.definition.UserAccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class BankAccountService {
     }
 
 
+    @Transactional
     public void create(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         throwIfAFieldIsEmpty(bankAccountCreationCommandDTO);
         throwIfUserIsUnknown(bankAccountCreationCommandDTO);

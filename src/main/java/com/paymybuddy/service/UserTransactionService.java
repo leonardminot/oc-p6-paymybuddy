@@ -9,6 +9,7 @@ import com.paymybuddy.model.Transfer;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.UserTransactionRepository;
 import com.paymybuddy.repository.definition.UserTransferRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class UserTransactionService {
         this.dateProvider = dateProvider;
     }
 
+    @Transactional
     public void performTransaction(UserTransactionCommand userTransactionCommand) {
         // WARNING: To work properly, Spring Data JPA need to save first the transaction in the database and then create the new transfer entity
         // so, the UserTransactionRepository::save need to return the new entity with the completed id.

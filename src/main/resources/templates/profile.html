@@ -98,7 +98,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="transaction:${bankTransactions}">
-                    <td th:text="${transaction.date}">Date</td>
+                    <td th:text="${#temporals.format(transaction.date, 'dd-MM-yyyy HH:mm')}">Date</td>
                     <td><span th:text="${transaction.amount}" class="badge" th:classappend="${transaction.amount > 0} ? 'bg-success' : 'bg-warning'">Montant</span></td>
                     <td th:text="${transaction.currency}">Currency</td>
                 </tr>

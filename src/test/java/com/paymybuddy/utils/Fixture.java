@@ -4,7 +4,6 @@ import com.paymybuddy.dto.*;
 import com.paymybuddy.model.*;
 import com.paymybuddy.repository.definition.*;
 import com.paymybuddy.service.*;
-import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
