@@ -9,6 +9,8 @@
 <body>
 
 <div th:replace="~{fragment::navbar(${'home'})}"></div>
+<div th:replace="~{fragment::breadcrumb(Home, '')}"></div>
+
 
 <div class="card shadow w-50 text-center m-auto mt-3" id="home-div" th:text="'Welcome, ' + ${name}">
     Welcome

@@ -27,3 +27,15 @@
         </ul>
     </div>
 </nav>
+
+<div class="p-3 bg-body-tertiary" th:fragment="breadcrumb(currentPage, previousPage)">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" th:if="${currentPage != 'Home'}"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item active" th:if="${currentPage == 'Home'}">Home</li>
+            <li class="breadcrumb-item" th:if="${previousPage != ''}"><a th:href="@{/{prev}(prev=${previousPage})}" th:text="${previousPage}"></a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${currentPage}" th:if="${currentPage != 'Home'}">Profile</li>
+        </ol>
+    </nav>
+</div>
+
