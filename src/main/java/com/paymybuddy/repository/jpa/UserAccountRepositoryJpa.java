@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserAccountRepositoryJpa extends CrudRepository<UserAccount, UUID> {
-    Optional<UserAccount> findByEmail(String email);
+    Optional<UserAccount> findByEmailEquals(String email);
     Optional<UserAccount> findByUsername(String username);
 }

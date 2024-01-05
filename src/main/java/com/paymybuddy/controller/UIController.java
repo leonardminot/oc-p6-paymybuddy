@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -34,7 +33,13 @@ public class UIController {
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "hasError", required = false) boolean hasError) {
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("error", true);
         return "login";
     }
 

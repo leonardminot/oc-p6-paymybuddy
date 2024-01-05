@@ -27,7 +27,7 @@ public class UserAccountRepositoryDB implements UserAccountRepository {
 
     @Override
     public boolean isEmailExists(String email) {
-        return userAccountRepositoryJpa.findByEmail(email).isPresent();
+        return userAccountRepositoryJpa.findByEmailEquals(email).isPresent();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class UserAccountRepositoryDB implements UserAccountRepository {
 
     @Override
     public Optional<UserAccount> getByEmail(String email) {
-        return userAccountRepositoryJpa.findByEmail(email);
+        return userAccountRepositoryJpa.findByEmailEquals(email);
     }
 }
