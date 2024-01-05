@@ -18,14 +18,14 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link disabled" th:href="@{/createAccount}">Créer un compte</a>
+                <a class="nav-link disabled" th:href="@{/createAccount}">Create an account</a>
             </li>
         </ul>
     </div>
 </nav>
 <div class="container w-50 mt-4">
 
-    <a class="btn btn-outline-danger mb-3" th:href="@{/login}">Annuler</a>
+    <a class="btn btn-outline-danger mb-3" th:href="@{/login}">Cancel</a>
 
     <div class="card shadow">
         <div class="card-body">
@@ -33,24 +33,24 @@
                 <h1 class="text-center display-6"><span class="badge bg-success">Pay My Buddy</span></h1>
             </div>
 
-            <p>Créer un compte</p>
+            <p>Create an account</p>
 
-            <div class="alert alert-danger" th:if="${emptyFields}">Tous les champs doivent être renseignés</div>
+            <div class="alert alert-danger" th:if="${emptyFields}">All fields must be complete</div>
 
             <form method="post" th:action="@{/createAccount}" role="form" th:object="${newUserCommand}">
                 <div class="mb-3">
-                    <label for="firstName" class="form-label">Prénom</label>
+                    <label for="firstName" class="form-label">Firstname</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Prénom" th:field="*{firstName}">
+                        <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Firstname" th:field="*{firstName}">
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="lastName" class="form-label">Nom</label>
+                    <label for="lastName" class="form-label">Lastname</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Nom" th:field="*{lastName}">
+                        <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Lastname" th:field="*{lastName}">
                     </div>
                 </div>
 
@@ -62,40 +62,40 @@
                     </div>
                 </div>
 
-                <div class="alert alert-danger" th:if="${isEmailExists}">Un compte utilisateur est déjà associé à cet email.</div>
+                <div class="alert alert-danger" th:if="${isEmailExists}">An user account is already associate to this email.</div>
 
                 <div class="mb-3">
-                    <label for="userName" class="form-label">Pseudo</label>
+                    <label for="userName" class="form-label">Username</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="text" name="userName" id="userName" class="form-control" placeholder="Pseudo" th:field="*{userName}">
+                        <input type="text" name="userName" id="userName" class="form-control" placeholder="Username" th:field="*{userName}">
                     </div>
                 </div>
 
-                <div class="alert alert-danger" th:if="${isUsernameExists}">Le nom d'utilisateur existe déjà.</div>
+                <div class="alert alert-danger" th:if="${isUsernameExists}">Given Username already exists.</div>
 
                 <hr>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Mot de passe</label>
+                    <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" th:field="*{password}">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" th:field="*{password}">
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="passwordConfirmation" class="form-label">Confirmation mot de passe</label>
+                    <label for="passwordConfirmation" class="form-label">Confirm password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control" placeholder="Confirmez mot de passe" th:field="*{passwordConfirmation}">
+                        <input type="password" name="passwordConfirmation" id="passwordConfirmation" class="form-control" placeholder="Confirm password<" th:field="*{passwordConfirmation}">
                     </div>
                 </div>
 
-                <div class="alert alert-danger" th:if="${arePasswordDifferent}">Les mots de passe ne correspondent pas.</div>
+                <div class="alert alert-danger" th:if="${arePasswordDifferent}">Both password don't match</div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Créer compte</button>
+                    <button type="submit" class="btn btn-primary">Create account</button>
                 </div>
 
 
