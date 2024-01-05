@@ -5,6 +5,8 @@ import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.Exception.UsernameException;
 import com.paymybuddy.dto.CreateUserAccountCommandDTO;
 import com.paymybuddy.dto.UserRequestCommandDTO;
+import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.service.BalanceByCurrencyService;
 import com.paymybuddy.service.UserAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,13 @@ public class UIController {
 
     private final UserAccountService userAccountService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final BalanceByCurrencyService balanceByCurrencyService;
 
     @Autowired
-    public UIController(UserAccountService userAccountService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UIController(UserAccountService userAccountService, BCryptPasswordEncoder bCryptPasswordEncoder, BalanceByCurrencyService balanceByCurrencyService) {
         this.userAccountService = userAccountService;
         this.passwordEncoder = bCryptPasswordEncoder;
+        this.balanceByCurrencyService = balanceByCurrencyService;
     }
 
     @GetMapping("/login")
@@ -86,7 +90,9 @@ public class UIController {
 
     @GetMapping("/")
     public String showFirstPage(Principal principal, Model model) {
-        model.addAttribute("name", principal.getName());
+        UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
+        model.addAttribute("balanceByCurrencies", balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser));
+        model.addAttribute("user", connectedUser);
         return "home";
     }
 }

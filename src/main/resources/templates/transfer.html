@@ -103,7 +103,10 @@
                 </tr>
                 </tbody>
             </table>
-            <nav class="text-center" aria-label="Page navigation example">
+            <div th:if="${#lists.isEmpty(transactions)}" class="display-5 text-center text-body-tertiary">
+                No transactions for the moment
+            </div>
+            <nav class="text-center" aria-label="Page navigation example" th:if="${#lists.size(transactions) > 0}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
                         <a class="page-link" th:href="@{/transfer(page=${currentPage - 1})}" aria-label="Previous">

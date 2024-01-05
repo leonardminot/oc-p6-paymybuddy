@@ -28,8 +28,10 @@
                         </div>
                     </div>
                 </div>
+                <div th:if="${#lists.isEmpty(balanceByCurrencies)}" class="display-5 text-center text-body-tertiary">
+                    No balance for the moment
+                </div>
             </div>
-
         </div>
     </div>
 
@@ -82,6 +84,9 @@
                 </tr>
                 </tbody>
             </table>
+            <div th:if="${#lists.isEmpty(bankAccounts)}" class="display-5 text-center text-body-tertiary">
+                No bank account for the moment
+            </div>
 
             <a class="btn btn-primary" th:href="@{/addBankAccount}"><i class="bi bi-patch-plus"></i> Add Bank Account</a>
         </div>
@@ -106,7 +111,10 @@
                 </tr>
                 </tbody>
             </table>
-            <nav class="text-center" aria-label="Page navigation example">
+            <div th:if="${#lists.isEmpty(bankTransactions)}" class="display-5 text-center text-body-tertiary">
+                No bank transaction for the moment
+            </div>
+            <nav class="text-center" aria-label="Page navigation example" th:if="${#lists.size(bankTransactions) > 0}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
                         <a class="page-link" th:href="@{/profile(page=${currentPage - 1})}" aria-label="Previous">

@@ -12,8 +12,31 @@
 <div th:replace="~{fragment::breadcrumb(Home, '')}"></div>
 
 
-<div class="card shadow w-50 text-center m-auto mt-3" id="home-div" th:text="'Welcome, ' + ${name}">
+<div class="card shadow w-75 text-center m-auto mt-3 display-4" id="home-div" th:text="'Welcome, ' + ${user.getUsername()}">
     Welcome
 </div>
+
+<div class="card shadow w-75 m-auto mt-5">
+    <div class="card-body">
+        <h6>Your current balances</h6>
+        <div class="row">
+            <div class="col" th:each="balance:${balanceByCurrencies}">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 th:text="${balance.currency}">Currency</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 th:text="${balance.balance}">100</h2>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(balanceByCurrencies)}" class="display-5 text-center text-body-tertiary">
+                No balance for the moment
+            </div>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>
