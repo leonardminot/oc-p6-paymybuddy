@@ -1,6 +1,7 @@
 package com.paymybuddy.utils;
 
 import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.BalanceByCurrencyRepository;
 
@@ -42,7 +43,7 @@ public class FakeBalanceByCurrencyRepository implements BalanceByCurrencyReposit
     }
 
     @Override
-    public Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccountModel, String currency) {
+    public Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccountModel, Currency currency) {
         return balanceByCurrencies.stream()
                 .filter(bbc -> bbc.getUserAccount().equals(userAccountModel) && bbc.getCurrency().equals(currency))
                 .findAny();

@@ -1,6 +1,7 @@
 package com.paymybuddy.repository.definition;
 
 import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface BalanceByCurrencyRepository {
     void save(BalanceByCurrency balanceByCurrency);
     BalanceByCurrency get(BalanceByCurrency balanceByCurrency);
 
-    Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccount, String currency);
+    Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccount, Currency currency);
     List<BalanceByCurrency> getAll();
     List<BalanceByCurrency> getForUser(UserAccount userAccount);
 }

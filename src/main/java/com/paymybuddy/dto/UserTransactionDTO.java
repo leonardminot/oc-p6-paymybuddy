@@ -1,5 +1,6 @@
 package com.paymybuddy.dto;
 
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ public record UserTransactionDTO(
         UserAccount to,
         String description,
         Double amount,
-        String currency,
+        Currency currency,
         LocalDateTime date
 ) {
 }

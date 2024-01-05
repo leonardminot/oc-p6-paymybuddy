@@ -65,9 +65,7 @@
                                 <div class="col-3">
                                     <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}">
                                         <option value="" disabled selected hidden="">Select a currency</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="USD">USD</option>
-                                        <option value="GBP">GBP</option>
+                                        <option th:each="cur: ${allCurrencies}" th:value="${cur}" th:text="${cur.getDisplayValue()}">EUR</option>
                                     </select>
                                 </div>
                                 <div class="col">

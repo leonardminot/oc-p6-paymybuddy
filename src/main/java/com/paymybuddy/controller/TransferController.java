@@ -3,6 +3,7 @@ package com.paymybuddy.controller;
 import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.dto.UserTransactionDTO;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.service.UserAccountService;
 import com.paymybuddy.service.UserRelationService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -45,6 +47,7 @@ public class TransferController {
         UserAccount connectedUser = userAccountService.getUserWithEmail(principal.getName()).orElse(null);
         List<UserAccount> relations = userRelationService.getRelationsFor(connectedUser);
         List<UserTransactionDTO> transactions = userTransactionService.getTransactionsFor(connectedUser);
+        List<Currency> allCurrencies = Arrays.asList(Currency.values());
 
         long pageToShow = page == null ? 1 : page;
         long numberOfPages = (long) Math.ceil((double) transactions.size() / TRANSACTION_PER_PAGE);
@@ -61,6 +64,7 @@ public class TransferController {
         model.addAttribute("connectedUser", connectedUser);
         model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("currentPage", pageToShow);
+        model.addAttribute("allCurrencies", allCurrencies);
 
         return "transfer";
     }

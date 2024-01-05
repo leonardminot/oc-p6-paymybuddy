@@ -4,10 +4,7 @@ import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.Exception.IBANException;
 import com.paymybuddy.Exception.UserException;
-import com.paymybuddy.model.BalanceByCurrency;
-import com.paymybuddy.model.BankAccount;
-import com.paymybuddy.model.BankTransaction;
-import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.model.*;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.utils.Fixture;
@@ -286,11 +283,11 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenBankAccountInDatabase(bankAccount);
 
                 // When
-                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100, "EUR"));
+                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100, Currency.EUR));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(UUID.fromString("00000000-0000-0000-0000-000000000000"), userInDB, 100.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(UUID.fromString("00000000-0000-0000-0000-000000000000"), userInDB, 100.0, Currency.EUR));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, Currency.EUR, now));
             }
 
             @Test
@@ -298,7 +295,7 @@ public class BankAccountAndTransactionServiceTest {
                 // Given
                 // When
                 // Then
-                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(null, 100, "EUR"), new UserException("User Account must be not null"));
+                fixture.whenCreateABankTransactionAndThenThrow(new BankTransactionCommandDTO(null, 100, Currency.EUR), new UserException("User Account must be not null"));
             }
 
             @Test
@@ -366,7 +363,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
                         50.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
@@ -382,11 +379,11 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenTheBalanceByCurrencyInDataBase(existingBalanceByCurrency);
 
                 // When
-                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100.0, "EUR"));
+                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, 100.0, Currency.EUR));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 150.0, Currency.EUR));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, 100.0, Currency.EUR, now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);
             }
@@ -428,7 +425,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
                         50.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
@@ -444,11 +441,11 @@ public class BankAccountAndTransactionServiceTest {
                 fixture.givenTheBalanceByCurrencyInDataBase(existingBalanceByCurrency);
 
                 // When
-                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, -20.0, "EUR"));
+                fixture.whenCreateANewBankTransaction(new BankTransactionCommandDTO(bankAccount, -20.0, Currency.EUR));
 
                 // Then
-                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30.0, "EUR"));
-                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, -20.0, "EUR", now));
+                fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(UUID.fromString("99999999-6266-4bcf-8035-37a02ba75c69"), userInDB, 30.0, Currency.EUR));
+                fixture.thenABankTransactionShouldBeRegister(new BankTransaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), bankAccount, -20.0, Currency.EUR, now));
                 fixture.thenBankTransactionShouldHaveLengthOf(2);
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(1);
             }
@@ -480,7 +477,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("88888888-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount,
                         50.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2013, 11, 11, 15, 42, 0, 0)
                 );
 
@@ -497,7 +494,7 @@ public class BankAccountAndTransactionServiceTest {
 
                 // When
                 // Then
-                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new BalanceAndTransferException("Amount can not go beyond 0"));
+                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, Currency.EUR), new BalanceAndTransferException("Amount can not go beyond 0"));
 
             }
 
@@ -526,7 +523,7 @@ public class BankAccountAndTransactionServiceTest {
 
                 // When
                 // Then
-                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, "EUR"), new BalanceAndTransferException("Amount can not go beyond 0"));
+                fixture.whenCreateANewBankTransactionThenThrow(new BankTransactionCommandDTO(bankAccount, -100.0, Currency.EUR), new BalanceAndTransferException("Amount can not go beyond 0"));
             }
         }
     }
@@ -593,7 +590,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount1,
                         100.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.now()
                 );
 
@@ -601,7 +598,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("00000001-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount2,
                         150.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.now()
                 );
 
@@ -609,7 +606,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("00000002-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount3,
                         100.0,
-                        "USD",
+                        Currency.USD,
                         LocalDateTime.now()
                 );
 
@@ -617,7 +614,7 @@ public class BankAccountAndTransactionServiceTest {
                         UUID.fromString("00000003-6266-4bcf-8035-37a02ba75c69"),
                         bankAccount1,
                         -32.0,
-                        "EUR",
+                        Currency.USD,
                         LocalDateTime.now()
                 );
 

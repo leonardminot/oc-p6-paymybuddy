@@ -1,6 +1,7 @@
 package com.paymybuddy.repository;
 
 import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.jpa.BalanceByCurrencyRepositoryJpa;
 import com.paymybuddy.repository.definition.BalanceByCurrencyRepository;
@@ -32,7 +33,7 @@ public class BalanceByCurrencyRepositoryDB implements BalanceByCurrencyRepositor
     }
 
     @Override
-    public Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccount, String currency) {
+    public Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount userAccount, Currency currency) {
         return balanceByCurrencyRepositoryJpa.findByUserAccountAndCurrency(userAccount, currency);
     }
 

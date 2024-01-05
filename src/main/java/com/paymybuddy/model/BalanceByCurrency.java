@@ -25,7 +25,8 @@ public class BalanceByCurrency {
             name = "currency",
             nullable = false
     )
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @ManyToOne
     @JoinColumn(
@@ -34,14 +35,14 @@ public class BalanceByCurrency {
     )
     private UserAccount userAccount;
 
-    public BalanceByCurrency(UUID balanceID, UserAccount userAccount, Double balance, String currency) {
+    public BalanceByCurrency(UUID balanceID, UserAccount userAccount, Double balance, Currency currency) {
         this.balanceID = balanceID;
         this.balance = balance;
         this.currency = currency;
         this.userAccount = userAccount;
     }
 
-    public BalanceByCurrency(Double balance, String currency, UserAccount userAccount) {
+    public BalanceByCurrency(Double balance, Currency currency, UserAccount userAccount) {
         this.balance = balance;
         this.currency = currency;
         this.userAccount = userAccount;

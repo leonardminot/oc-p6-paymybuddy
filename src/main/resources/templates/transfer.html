@@ -46,9 +46,7 @@
                 <div class="col">
                     <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}" id="currency-selector">
                         <option value="" disabled selected hidden="">Currency</option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="GBP">GBP</option>
+                        <option th:each="cur: ${allCurrencies}" th:value="${cur}" th:text="${cur.getDisplayValue()}">EUR</option>
                     </select>
                 </div>
 
@@ -98,7 +96,7 @@
                     <td><span th:text="${transaction.from().getUsername()}" th:classappend="${transaction.from() == connectedUser ? 'badge bg-primary' : ''}">FROM</span></td>
                     <td><span th:text="${transaction.to().getUsername()}" th:classappend="${transaction.to() == connectedUser ? 'badge bg-primary' : ''}">TO</span></td>
                     <td th:text="${transaction.description()}">To</td>
-                    <td><span class="badge" th:classappend="${transaction.amount() < 0 ? 'bg-warning' : 'bg-success'}" th:text="${transaction.amount() + transaction.currency()}">Amount</span></td>
+                    <td><span class="badge" th:classappend="${transaction.amount() < 0 ? 'bg-warning' : 'bg-success'}" th:text="${transaction.amount() + transaction.currency().getDisplayValue()}">Amount</span></td>
                     <td th:text="${transaction.date()}">To</td>
                 </tr>
                 </tbody>

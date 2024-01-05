@@ -2,6 +2,7 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
 import com.paymybuddy.dto.UserTransactionCommand;
@@ -95,7 +96,7 @@ public class BalanceByCurrencyService {
         balanceByCurrencyRepository.save(currentBalanceByCurrency);
     }
 
-    private Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount user, String currency) {
+    private Optional<BalanceByCurrency> getByUserAccountAndCurrency(UserAccount user, Currency currency) {
         return balanceByCurrencyRepository.getByUserAccountAndCurrency(user, currency);
     }
 

@@ -1,6 +1,7 @@
 package com.paymybuddy.dto;
 
 import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.Currency;
 import lombok.*;
 
 @NoArgsConstructor
@@ -11,5 +12,5 @@ import lombok.*;
 public class BankTransactionCommandDTO{
     private BankAccount bankAccount;
     private double amount;
-    private String currency;
+    private Currency currency;
 }

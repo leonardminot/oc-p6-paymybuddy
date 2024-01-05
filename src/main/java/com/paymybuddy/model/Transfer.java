@@ -6,7 +6,6 @@ import lombok.*;
 @Entity(name = "Transfer")
 @Table(name = "transfer")
 @Getter
-@ToString
 @EqualsAndHashCode
 @Setter
 @NoArgsConstructor

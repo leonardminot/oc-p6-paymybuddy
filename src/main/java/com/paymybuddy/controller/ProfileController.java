@@ -4,10 +4,7 @@ import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.BankTransactionCommandDTO;
-import com.paymybuddy.model.BalanceByCurrency;
-import com.paymybuddy.model.BankAccount;
-import com.paymybuddy.model.BankTransaction;
-import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.model.*;
 import com.paymybuddy.service.BalanceByCurrencyService;
 import com.paymybuddy.service.BankAccountService;
 import com.paymybuddy.service.BankTransactionService;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +59,7 @@ public class ProfileController {
                 .toList();
 
         List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(connectedUser);
+        List<Currency> allCurrencies = Arrays.asList(Currency.values());
 
         model.addAttribute("bankAccounts", currentBankAccounts);
         model.addAttribute("bankTransactionCommand", new BankTransactionCommandDTO());
@@ -68,6 +67,7 @@ public class ProfileController {
         model.addAttribute("balanceByCurrencies", balanceByCurrencies);
         model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("currentPage", pageToShow);
+        model.addAttribute("allCurrencies", allCurrencies);
 
         return "profile";
     }

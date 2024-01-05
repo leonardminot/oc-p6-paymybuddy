@@ -133,10 +133,10 @@ public class Fixture {
                 .isInstanceOf(exceptionToThrow.getClass())
                 .hasMessageContaining(exceptionToThrow.getMessage());
     }
-    public void whenCreateATransactionBetweenUsers(UserAccount fromUser, UserAccount toUser, String description, String currency, double amount) {
+    public void whenCreateATransactionBetweenUsers(UserAccount fromUser, UserAccount toUser, String description, Currency currency, double amount) {
         userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency,amount));
     }
-    public void whenCreateATransactionBetweenUsersAndThenThrow(UserAccount fromUser, UserAccount toUser, String description, String currency, double amount, Exception exceptionThrown) {
+    public void whenCreateATransactionBetweenUsersAndThenThrow(UserAccount fromUser, UserAccount toUser, String description, Currency currency, double amount, Exception exceptionThrown) {
         assertThatThrownBy(() -> userTransactionService.performTransaction(new UserTransactionCommand(fromUser, toUser, description, currency, amount)))
                 .isInstanceOf(exceptionThrown.getClass())
                 .hasMessageContaining(exceptionThrown.getMessage());

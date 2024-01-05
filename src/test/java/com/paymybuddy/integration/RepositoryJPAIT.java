@@ -147,7 +147,7 @@ public class RepositoryJPAIT {
         // When
         BalanceByCurrency balanceByCurrency = new BalanceByCurrency(
                 100.0,
-                "EUR",
+                Currency.EUR,
                 user1
         );
         balanceByCurrencyRepositoryJpa.save(balanceByCurrency);
@@ -180,7 +180,7 @@ public class RepositoryJPAIT {
         // When
         BankTransaction bankTransaction = new BankTransaction(
                 100.0,
-                "EUR",
+                Currency.EUR,
                 LocalDateTime.now(),
                 bankAccount1
         );
@@ -218,7 +218,7 @@ public class RepositoryJPAIT {
         Transaction transaction = new Transaction(
                 "nom transaction",
                 100.0,
-                "EUR",
+                Currency.EUR,
                 LocalDateTime.now()
         );
 

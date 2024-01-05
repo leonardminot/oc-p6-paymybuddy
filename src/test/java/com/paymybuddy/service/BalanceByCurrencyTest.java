@@ -1,6 +1,7 @@
 package com.paymybuddy.service;
 
 import com.paymybuddy.model.BalanceByCurrency;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
@@ -48,21 +49,21 @@ public class BalanceByCurrencyTest {
                         UUID.fromString("1124d9e8-6266-4bcf-0000-37a02ba75c69"),
                         targetUser,
                         100.0,
-                        "EUR"
+                        Currency.EUR
                 );
 
                 BalanceByCurrency balanceByCurrency2 = new BalanceByCurrency(
                         UUID.fromString("1124d9e8-6266-4bcf-0001-37a02ba75c69"),
                         targetUser,
                         150.0,
-                        "USD"
+                        Currency.USD
                 );
 
                 BalanceByCurrency balanceByCurrency3 = new BalanceByCurrency(
                         UUID.fromString("1124d9e8-6266-4bcf-0002-37a02ba75c69"),
                         otherUser,
                         100.0,
-                        "EUR"
+                        Currency.EUR
                 );
 
                 fixture.givenTheBalanceByCurrencyInDataBase(balanceByCurrency1);

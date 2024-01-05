@@ -24,11 +24,13 @@ public class BankTransaction {
     )
     private Double amount;
 
+
     @Column(
             name = "currency",
             nullable = false
     )
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @Column(
             name = "date",
@@ -44,7 +46,7 @@ public class BankTransaction {
     )
     private BankAccount bankAccount;
 
-    public BankTransaction(UUID bankTransactionID, BankAccount bankAccount, Double amount, String currency, LocalDateTime date) {
+    public BankTransaction(UUID bankTransactionID, BankAccount bankAccount, Double amount, Currency currency, LocalDateTime date) {
         this.bankTransactionID = bankTransactionID;
         this.amount = amount;
         this.currency = currency;
@@ -52,14 +54,14 @@ public class BankTransaction {
         this.bankAccount = bankAccount;
     }
 
-    public BankTransaction(Double amount, String currency, LocalDateTime date, BankAccount bankAccount) {
+    public BankTransaction(Double amount, Currency currency, LocalDateTime date, BankAccount bankAccount) {
         this.amount = amount;
         this.currency = currency;
         this.date = date;
         this.bankAccount = bankAccount;
     }
 
-    public BankTransaction(Double amount, String currency, LocalDateTime date) {
+    public BankTransaction(Double amount, Currency currency, LocalDateTime date) {
         this.amount = amount;
         this.currency = currency;
         this.date = date;

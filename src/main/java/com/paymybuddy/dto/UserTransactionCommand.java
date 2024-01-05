@@ -1,5 +1,6 @@
 package com.paymybuddy.dto;
 
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import lombok.*;
 
@@ -12,6 +13,6 @@ public class UserTransactionCommand {
     private UserAccount fromUser;
     private UserAccount toUser;
     private String description;
-    private String currency;
+    private Currency currency;
     private double amount;
 }

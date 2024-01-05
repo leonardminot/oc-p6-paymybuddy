@@ -2,17 +2,16 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.Exception.EmptyFieldException;
+import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.dto.UserTransactionDTO;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.Transfer;
-import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.definition.UserTransactionRepository;
 import com.paymybuddy.repository.definition.UserTransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;

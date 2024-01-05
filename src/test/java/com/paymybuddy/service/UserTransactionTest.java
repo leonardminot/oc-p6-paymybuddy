@@ -3,10 +3,7 @@ package com.paymybuddy.service;
 import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.UserTransactionDTO;
-import com.paymybuddy.model.BalanceByCurrency;
-import com.paymybuddy.model.Transaction;
-import com.paymybuddy.model.Transfer;
-import com.paymybuddy.model.UserAccount;
+import com.paymybuddy.model.*;
 import com.paymybuddy.utils.Fixture;
 import com.paymybuddy.utils.UserAccountBuilder;
 import org.junit.jupiter.api.*;
@@ -53,14 +50,14 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, Currency.EUR));
 
 
                 // When
-                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "EUR", 100.0);
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransactionOf(new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, "EUR", now));
+                fixture.thenItShouldCreateATransactionOf(new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, Currency.EUR, now));
             }
 
             @Test
@@ -88,7 +85,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, null, "EUR", 100.0, new EmptyFieldException("Description must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, null, Currency.EUR, 100.0, new EmptyFieldException("Description must not be null"));
             }
 
             @Test
@@ -136,7 +133,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(null, toUser, "test transaction", "EUR", 100.0, new EmptyFieldException("From user must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(null, toUser, "test transaction", Currency.EUR, 100.0, new EmptyFieldException("From user must not be null"));
             }
 
             @Test
@@ -153,7 +150,7 @@ public class UserTransactionTest {
 
                 fixture.givenNowIs(now);
 
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, null, "test transaction", "EUR", 100.0, new EmptyFieldException("To user must not be null"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, null, "test transaction", Currency.EUR, 100.0, new EmptyFieldException("To user must not be null"));
             }
 
             @Test
@@ -177,7 +174,7 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "EUR", -100.0, new BalanceAndTransferException("Amount must be positive"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", Currency.EUR, -100.0, new BalanceAndTransferException("Amount must be positive"));
             }
         }
 
@@ -207,13 +204,13 @@ public class UserTransactionTest {
 
                 fixture.givenUserInDatabase(toUser);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "EUR"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, Currency.EUR));
 
                 // When
-                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "EUR", 100.0);
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransferOf(new Transfer(fromUser, toUser, new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, "EUR", now)));
+                fixture.thenItShouldCreateATransferOf(new Transfer(fromUser, toUser, new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, Currency.EUR, now)));
             }
         }
     }
@@ -255,16 +252,16 @@ public class UserTransactionTest {
                 LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
                 fixture.givenNowIs(now);
 
-                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD"));
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, Currency.USD));
                 // When
-                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", "USD", 100.0);
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", Currency.USD, 100.0);
 
                 // Then
                 fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
                         UUID.fromString("00000000-0000-0000-0000-000000000000"),
                         toUser,
                         100.0,
-                        "USD"
+                        Currency.USD
                 ));
 
             }
@@ -295,23 +292,23 @@ public class UserTransactionTest {
                         UUID.fromString("33333333-6266-4bcf-8035-37a02ba75c69"),
                         toUser,
                         50.0,
-                        "USD"
+                        Currency.USD
                 );
                 fixture.givenTheBalanceByCurrencyInDataBase(toUserBalanceByCurrency);
 
-                BalanceByCurrency fromUserBalanceByCurrency = new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, "USD");
+                BalanceByCurrency fromUserBalanceByCurrency = new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, Currency.USD);
                 fixture.givenTheBalanceByCurrencyInDataBase(fromUserBalanceByCurrency);
 
 
                 // When
-                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", "USD", 100.0);
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "Transaction description", Currency.USD, 100.0);
 
                 // Then
                 fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
                         toUserBalanceByCurrency.getBalanceID(),
                         toUser,
                         150.0,
-                        "USD"
+                        Currency.USD
                 ));
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(2);
             }
@@ -352,19 +349,19 @@ public class UserTransactionTest {
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         50.0,
-                        "USD"
+                        Currency.USD
                 );
                 fixture.givenTheBalanceByCurrencyInDataBase(fromUserBalanceByCurrency);
 
                 // When
-                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", "USD", 30.0);
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.USD, 30.0);
 
                 // Then
                 fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         20.0,
-                        "USD"
+                        Currency.USD
                 ));
 
             }
@@ -393,7 +390,7 @@ public class UserTransactionTest {
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new BalanceAndTransferException("No BalanceByCurrency for From User found"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", Currency.USD, 100.0, new BalanceAndTransferException("No BalanceByCurrency for From User found"));
             }
 
             @Test
@@ -422,13 +419,13 @@ public class UserTransactionTest {
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
                         50.0,
-                        "USD"
+                        Currency.USD
                 );
                 fixture.givenTheBalanceByCurrencyInDataBase(fromUserBalanceByCurrency);
 
                 // When
                 // Then
-                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", "USD", 100.0, new BalanceAndTransferException("Amount can not go beyond 0"));
+                fixture.whenCreateATransactionBetweenUsersAndThenThrow(fromUser, toUser, "test transaction", Currency.USD, 100.0, new BalanceAndTransferException("Amount can not go beyond 0"));
             }
         }
     }
@@ -476,7 +473,7 @@ public class UserTransactionTest {
                         UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
                         "Première transaction",
                         100.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2023, 12, 21, 15, 0,0)
                 );
 
@@ -484,7 +481,7 @@ public class UserTransactionTest {
                         UUID.fromString("00000001-6266-4bcf-8035-37a02ba75c69"),
                         "Deuxième transaction",
                         100.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2023, 12, 22, 15, 0,0)
                 );
 
@@ -492,7 +489,7 @@ public class UserTransactionTest {
                         UUID.fromString("00000000-6266-4bcf-8035-37a02ba75c69"),
                         "Troisième transaction",
                         100.0,
-                        "EUR",
+                        Currency.EUR,
                         LocalDateTime.of(2023, 12, 23, 15, 0,0)
                 );
 
@@ -527,8 +524,8 @@ public class UserTransactionTest {
 
                 // Then
                 fixture.thenTransactionListShouldBe(List.of(
-                        new UserTransactionDTO(targetUser, otherUser, "Première transaction", -100.0, "EUR", LocalDateTime.of(2023, 12, 21, 15, 0,0)),
-                        new UserTransactionDTO(thirdUser, targetUser, "Deuxième transaction", 100.0, "EUR", LocalDateTime.of(2023, 12, 22, 15, 0,0))
+                        new UserTransactionDTO(targetUser, otherUser, "Première transaction", -100.0, Currency.EUR, LocalDateTime.of(2023, 12, 21, 15, 0,0)),
+                        new UserTransactionDTO(thirdUser, targetUser, "Deuxième transaction", 100.0, Currency.EUR, LocalDateTime.of(2023, 12, 22, 15, 0,0))
                 ));
 
             }
