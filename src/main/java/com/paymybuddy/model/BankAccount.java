@@ -60,20 +60,6 @@ public class BankAccount {
         this.userAccount = userAccount;
     }
 
-    public void addTransaction(BankTransaction bankTransaction) {
-        if (!bankTransactions.contains(bankTransaction)) {
-            bankTransactions.add(bankTransaction);
-            bankTransaction.setBankAccount(this);
-        }
-    }
-
-    public void removeTransaction(BankTransaction bankTransaction) {
-        if (bankTransactions.contains(bankTransaction)) {
-            bankTransactions.remove(bankTransaction);
-            bankTransaction.setBankAccount(null);
-        }
-    }
-
     public BankAccount(String iban, String country, UserAccount userAccount) {
         this.iban = iban;
         this.country = country;

@@ -1,13 +1,17 @@
 package com.paymybuddy.integration.e2e;
 
+import com.paymybuddy.dto.BankAccountCreationCommandDTO;
 import com.paymybuddy.dto.UserRequestCommandDTO;
 import com.paymybuddy.integration.e2e.page.AddBankAccountPage;
 import com.paymybuddy.integration.e2e.page.HomePage;
 import com.paymybuddy.integration.e2e.page.LoginPage;
 import com.paymybuddy.integration.e2e.page.ProfilePage;
+import com.paymybuddy.model.BalanceByCurrency;
 import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.Currency;
 import com.paymybuddy.model.UserAccount;
 import com.paymybuddy.repository.jpa.*;
+import com.paymybuddy.service.BalanceByCurrencyService;
 import com.paymybuddy.service.BankAccountService;
 import com.paymybuddy.service.UserAccountService;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -59,6 +63,8 @@ public class BankAccountE2EIT {
     private UserAccountService userAccountService;
     @Autowired
     private BankAccountService bankAccountService;
+    @Autowired
+    private BalanceByCurrencyService balanceByCurrencyService;
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.firefoxdriver().setup();
@@ -136,5 +142,50 @@ public class BankAccountE2EIT {
             Fail.fail("No Bank account created for the user");
     }
 
+    @Test
+    void itShouldAddMoneyToBankAccount() {
+        // Given
+        UserAccount userToSave = new UserAccount(
+                "Léo",
+                "Minot",
+                "leo@email.com",
+                passwordEncoder.encode("Welcome123"),
+                "leoM",
+                "USER"
+        );
+        userToSave = userAccountService.createUserAccount(new UserRequestCommandDTO(
+                userToSave.getUsername(),
+                userToSave.getEmail(),
+                userToSave.getPassword(),
+                userToSave.getFirstName(),
+                userToSave.getLastName()
+        ));
 
+        bankAccountService.create(new BankAccountCreationCommandDTO(
+                userToSave,
+                "123456789",
+                "FR"
+        ));
+
+        // When
+        webDriver.get(baseUrl);
+        final LoginPage loginPage = new LoginPage(webDriver);
+
+        HomePage homePage = loginPage.login("leo@email.com", "Welcome123");
+        homePage.isHomeDisplayed();
+
+        ProfilePage profilePage = homePage.goToProfilePage();
+        profilePage.isProfilePageDisplayed();
+        ProfilePage profilePageBack = profilePage.addMoneyToAccount("123456789", "100", Currency.USD);
+        profilePageBack.isProfilePageDisplayed();
+
+        // Then
+        List<BalanceByCurrency> balanceByCurrencies = balanceByCurrencyService.fetchBalanceByCurrencyFor(userToSave);
+        balanceByCurrencies.stream()
+                .filter(bbc -> bbc.getCurrency().equals(Currency.USD))
+                .findFirst().ifPresentOrElse(
+                        bbc -> assertThat(bbc.getBalance()).isEqualTo(100.0),
+                        () -> Fail.fail("No balance by Currency")
+                );
+    }
 }

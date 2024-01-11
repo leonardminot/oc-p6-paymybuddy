@@ -63,17 +63,17 @@
                                 <div class="col-5">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-piggy-bank"></i></span>
-                                        <input type="number" name="amount" id="amount" class="form-control" placeholder="Amount" min="0" th:field="*{amount}">
+                                        <input type="number" name="amount" id="amount" class="form-control" placeholder="Amount" min="0" th:field="*{amount}" th:id="'amount_' + ${account.getIban()}">
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}">
+                                    <select class="form-select" aria-label="Select a currency" name="currency" th:field="*{currency}" th:id="'currency_' + ${account.getIban()}">
                                         <option value="" disabled selected hidden="">Select a currency</option>
                                         <option th:each="cur: ${allCurrencies}" th:value="${cur}" th:text="${cur.getDisplayValue()}">EUR</option>
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <button class="btn btn-success" type="submit" name="action" value="addMoney">Add money</button>
+                                    <button class="btn btn-success" type="submit" name="action" value="addMoney" th:id="'add-money_' + ${account.getIban()}">Add money</button>
                                 </div>
                                 <div class="col">
                                     <button class="btn btn-outline-warning" type="submit" name="action" value="withdraw">Withdraw</button>
