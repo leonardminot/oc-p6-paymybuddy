@@ -42,6 +42,9 @@ public class Transaction {
     )
     private LocalDateTime transactionDate;
 
+    @OneToOne(mappedBy = "transaction")
+    private PayMyBuddyDeduction deduction;
+
     public Transaction(UUID transactionID, String description, Double amount, Currency currency, LocalDateTime transactionDate) {
         this.transactionID = transactionID;
         this.description = description;

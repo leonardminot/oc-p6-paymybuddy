@@ -216,6 +216,55 @@ public class UserTransactionTest {
     }
 
     @Nested
+    @DisplayName("Feature: add a deduction for each transaction")
+    class addDeduction {
+        @Nested
+        @DisplayName("Feature: add deduction of 0.5% for each transaction")
+        class addDeductionForEachTransaction {
+            private Fixture fixture;
+
+            @BeforeEach
+            void setUp() {
+                fixture = new Fixture();
+            }
+
+            // TODO: ajouter la deduction de 0.5% à chaque transaction en base de donnée.
+
+            @Test
+            void itShouldAddANewDeduction() {
+                // Given
+                UserAccount fromUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("1124d9e8-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Léo")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(fromUser);
+
+                LocalDateTime now = LocalDateTime.of(2013, 12, 1, 15, 42, 0, 0);
+                fixture.givenNowIs(now);
+
+
+                UserAccount toUser = new UserAccountBuilder()
+                        .withId(UUID.fromString("22222222-6266-4bcf-8035-37a02ba75c69"))
+                        .withFirstName("Victor")
+                        .withLastName("Minot")
+                        .build();
+
+                fixture.givenUserInDatabase(toUser);
+
+                fixture.givenTheBalanceByCurrencyInDataBase(new BalanceByCurrency(UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"), fromUser, 100.0, Currency.EUR));
+
+                // When
+                fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
+
+                // Then
+                //TODO("ajouter la fixture pour enregistrer le prélèvement dans la BDD")
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("Feature: modify the balance by currency when performing a user transaction")
     class ModifyBalanceByCurrency {
 
