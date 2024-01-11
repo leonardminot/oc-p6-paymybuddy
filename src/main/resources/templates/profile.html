@@ -14,7 +14,7 @@
 <div th:replace="~{fragment::breadcrumb(profile, '')}"></div>
 
 <main class="container mt-3 w-75">
-    <div class="card bg-body-tertiary mt-1">
+    <div class="card bg-body-tertiary mt-1" id="current-balance-cards">
         <div class="card-body">
             <h6>Your current balances</h6>
             <div class="row">
@@ -88,7 +88,7 @@
                 No bank account for the moment
             </div>
 
-            <a class="btn btn-primary" th:href="@{/addBankAccount}"><i class="bi bi-patch-plus"></i> Add Bank Account</a>
+            <a class="btn btn-primary" th:href="@{/addBankAccount}" id="create-bank-account-btn"><i class="bi bi-patch-plus"></i> Add Bank Account</a>
         </div>
     </div>
 

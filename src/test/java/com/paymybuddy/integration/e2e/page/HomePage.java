@@ -14,6 +14,8 @@ public class HomePage {
     private WebElement homeDivElement;
     @FindBy(id = "transfer-page-link")
     private WebElement transferPageLink;
+    @FindBy(id = "profile-page-link")
+    private WebElement profilePageLink;
 
     private final WebDriver webDriver;
 
@@ -31,5 +33,10 @@ public class HomePage {
     public TransferPage goToTransferPage() {
         transferPageLink.click();
         return new TransferPage(webDriver);
+    }
+
+    public ProfilePage goToProfilePage() {
+        profilePageLink.click();
+        return new ProfilePage(webDriver);
     }
 }

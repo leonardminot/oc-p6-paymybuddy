@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "BankAccount")
+@ToString
 @Table(
         name = "bank_account",
         uniqueConstraints = {
