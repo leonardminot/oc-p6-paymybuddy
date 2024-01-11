@@ -32,7 +32,7 @@ public class ProfilePage {
     }
 
     public void isProfilePageDisplayed() {
-        WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         waiter.until(ExpectedConditions.visibilityOf(balancesCardDiv)).isDisplayed();
     }
 

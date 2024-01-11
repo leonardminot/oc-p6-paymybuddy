@@ -57,7 +57,7 @@ public class UserTransactionTest {
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransactionOf(new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, Currency.EUR, now));
+                fixture.thenItShouldCreateATransactionOf(new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0 * 0.995, Currency.EUR, now));
             }
 
             @Test
@@ -210,7 +210,7 @@ public class UserTransactionTest {
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
 
                 // Then
-                fixture.thenItShouldCreateATransferOf(new Transfer(fromUser, toUser, new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0, Currency.EUR, now)));
+                fixture.thenItShouldCreateATransferOf(new Transfer(fromUser, toUser, new Transaction(UUID.fromString("00000000-0000-0000-0000-000000000000"), "test transaction", 100.0 * 0.995, Currency.EUR, now)));
             }
         }
     }
@@ -260,7 +260,7 @@ public class UserTransactionTest {
                 fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
                         UUID.fromString("00000000-0000-0000-0000-000000000000"),
                         toUser,
-                        100.0,
+                        100.0 * 0.995,
                         Currency.USD
                 ));
 
@@ -307,7 +307,7 @@ public class UserTransactionTest {
                 fixture.thenBalanceByCurrencyShouldBe(new BalanceByCurrency(
                         toUserBalanceByCurrency.getBalanceID(),
                         toUser,
-                        150.0,
+                        50.0 + 100.0 * 0.995,
                         Currency.USD
                 ));
                 fixture.thenBalanceByCurrencyShouldHaveLengthOf(2);
@@ -360,7 +360,7 @@ public class UserTransactionTest {
                 fixture.thenBalanceByCurrencyShouldBeWithAmountVerification(new BalanceByCurrency(
                         UUID.fromString("44444444-6266-4bcf-8035-37a02ba75c69"),
                         fromUser,
-                        20.0,
+                        50.0 - 30.0,
                         Currency.USD
                 ));
 

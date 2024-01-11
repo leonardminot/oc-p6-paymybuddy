@@ -168,7 +168,7 @@ public class TransferE2EIT {
         balanceByCurrenciesForToUser.stream()
                 .filter(bbc -> bbc.getCurrency().equals(Currency.EUR))
                 .findFirst().ifPresentOrElse(
-                        bbc -> assertThat(bbc.getBalance()).isEqualTo(90.0),
+                        bbc -> assertThat(bbc.getBalance()).isEqualTo(90.0 * 0.995),
                         () -> Fail.fail("No balance by Currency for To User")
                 );
 
@@ -177,7 +177,7 @@ public class TransferE2EIT {
                 .filter(transaction -> transaction.from().getEmail().equals("leo@email.com"))
                 .findFirst()
                 .ifPresentOrElse(
-                        transaction -> assertThat(transaction.amount()).isEqualTo(90.0),
+                        transaction -> assertThat(transaction.amount()).isEqualTo(90.0 * 0.995),
                         () -> Fail.fail("No transactions found")
                 );
     }

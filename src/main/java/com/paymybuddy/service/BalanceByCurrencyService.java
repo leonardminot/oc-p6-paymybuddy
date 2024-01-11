@@ -74,7 +74,7 @@ public class BalanceByCurrencyService {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     balanceByCurrencyModel.getBalanceID(),
                     balanceByCurrencyModel.getUserAccount(),
-                    balanceByCurrencyModel.getBalance() + userTransactionCommand.getAmount(),
+                    balanceByCurrencyModel.getBalance() + userTransactionCommand.getAmount() * 0.995,
                     balanceByCurrencyModel.getCurrency()
             ));
 
@@ -82,7 +82,7 @@ public class BalanceByCurrencyService {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     UUID.fromString("00000000-0000-0000-0000-000000000000"),
                     userTransactionCommand.getToUser(),
-                    userTransactionCommand.getAmount(),
+                    userTransactionCommand.getAmount() * 0.995,
                     userTransactionCommand.getCurrency()
             ));
         }

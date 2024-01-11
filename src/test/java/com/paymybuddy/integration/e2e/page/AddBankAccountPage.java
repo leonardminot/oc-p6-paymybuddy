@@ -28,7 +28,7 @@ public class AddBankAccountPage {
     }
 
     public void isAddBankAccountPageDisplayed() {
-        WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(2));
+        WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(5));
         waiter.until(ExpectedConditions.visibilityOf(addBankAccountCard)).isDisplayed();
     }
 

@@ -45,7 +45,7 @@ public class UserTransactionService {
         Transaction transaction = userTransactionRepository.save(new Transaction(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 userTransactionCommand.getDescription(),
-                userTransactionCommand.getAmount(),
+                userTransactionCommand.getAmount() * 0.995,
                 userTransactionCommand.getCurrency(),
                 dateProvider.getNow()
         ));
