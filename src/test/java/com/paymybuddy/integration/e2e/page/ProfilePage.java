@@ -31,9 +31,9 @@ public class ProfilePage {
         return new AddBankAccountPage(webDriver);
     }
 
-    public boolean isProfilePageDisplayed() {
+    public void isProfilePageDisplayed() {
         WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        return waiter.until(ExpectedConditions.visibilityOf(balancesCardDiv)).isDisplayed();
+        waiter.until(ExpectedConditions.visibilityOf(balancesCardDiv)).isDisplayed();
     }
 
     public ProfilePage addMoneyToAccount(String iban, String amount, Currency currency) {

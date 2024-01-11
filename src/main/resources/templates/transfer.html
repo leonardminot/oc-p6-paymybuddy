@@ -27,11 +27,11 @@
         Error during transaction. Please check that all fields are correctly fill.
     </div>
 
-    <div class="alert alert-danger my-2" th:if="${transactionError}">
+    <div class="alert alert-danger my-2" th:if="${transactionError}" id="not-enough-money-alert">
         You don't have enough money to perform the transaction in this currency.
     </div>
 
-    <div class="card bg-body-tertiary mt-1">
+    <div class="card bg-body-tertiary mt-1" id="send-money-card">
         <div class="card-body">
             <form class="row p-4" method="post" role="form" th:action="@{/sendMoney}" th:object="${transferCommand}">
                 <div class="col">
@@ -66,11 +66,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input class="form-control" type="text" value="toto" th:field="*{description}">
+                                <input class="form-control" type="text" th:field="*{description}" id="transaction-description">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success">Pay</button>
+                                <button type="submit" class="btn btn-success" id="modal-pay-button">Pay</button>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @EqualsAndHashCode
 public class TransferId implements Serializable {
     @Column(name = "from_user_id")

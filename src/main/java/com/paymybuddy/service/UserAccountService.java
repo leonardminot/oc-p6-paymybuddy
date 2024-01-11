@@ -48,13 +48,7 @@ public class UserAccountService {
     }
 
     public Optional<UserAccount> getUserWithEmail(String mail) {
-        try {
             return userAccountRepository.getByEmail(mail);
-        } catch (Exception e) {
-            log.error("No User found");
-            return Optional.empty();
-        }
-
     }
 
     private void throwIfUserNameAlreadyExists(UserRequestCommandDTO userRequestCommandDTO) {

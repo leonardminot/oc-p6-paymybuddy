@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Repository
@@ -37,14 +38,14 @@ public class UserRelationRepositoryDB implements UserRelationRepository {
     public List<UserAccount> getAllRelationsForUser(UserAccount user) {
         List<UserAccount> connectedUser = new ArrayList<>();
         Iterable<Relation> allRelations = relationRepositoryJpa.findAll();
-        log.info("All relations in db: " + allRelations);
         for (Relation relation : allRelations) {
-            if (relation.getUser1().getUserId() == user.getUserId())
+            if (Objects.equals(relation.getUser1().getUsername(), user.getUsername()))
                 connectedUser.add(relation.getUser2());
-            if (relation.getUser2().getUserId() == user.getUserId())
+            if (Objects.equals(relation.getUser2().getUsername(), user.getUsername()))
                 connectedUser.add(relation.getUser1());
         }
         return connectedUser;
+
     }
 
     @Override

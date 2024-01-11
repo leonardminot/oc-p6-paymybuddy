@@ -12,8 +12,9 @@ import java.util.UUID;
 public class FakeBankAccountRepository implements BankAccountRepository {
     List<BankAccount> bankAccounts = new ArrayList<>();
     @Override
-    public void save(BankAccount bankAccount) {
+    public BankAccount save(BankAccount bankAccount) {
         bankAccounts.add(bankAccount);
+        return bankAccount;
     }
 
     @Override

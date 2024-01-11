@@ -61,7 +61,7 @@ public class UserAccount {
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
-    private List<BalanceByCurrency> balanceByCurrencyList = new ArrayList<>();
+    private final List<BalanceByCurrency> balanceByCurrencyList = new ArrayList<>();
 
     @OneToMany(
             fetch = FetchType.EAGER,
@@ -69,7 +69,7 @@ public class UserAccount {
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
-    private List<BankAccount> bankAccounts = new ArrayList<>();
+    private final List<BankAccount> bankAccounts = new ArrayList<>();
 
     public UserAccount(UUID userId, String firstName, String lastName, String email, String password, String username) {
         this.userId = userId;

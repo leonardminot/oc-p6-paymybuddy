@@ -30,17 +30,19 @@ public class BankAccountService {
 
 
     @Transactional
-    public void create(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
+    public BankAccount create(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         throwIfAFieldIsEmpty(bankAccountCreationCommandDTO);
         throwIfUserIsUnknown(bankAccountCreationCommandDTO);
         throwIfIBANAlreadyExists(bankAccountCreationCommandDTO);
 
-        this.bankAccountRepository.save(new BankAccount(
+        BankAccount newBankAccount = new BankAccount(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 bankAccountCreationCommandDTO.userAccount(),
                 bankAccountCreationCommandDTO.iban(),
                 bankAccountCreationCommandDTO.country()
-        ));
+        );
+        return this.bankAccountRepository.save(newBankAccount);
+
     }
 
     public List<BankAccount> getBankAccountsFor(UserAccount user) {

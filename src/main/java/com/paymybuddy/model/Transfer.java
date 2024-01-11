@@ -7,9 +7,7 @@ import lombok.*;
 @Table(name = "transfer")
 @Getter
 @EqualsAndHashCode
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Transfer {
     @EmbeddedId
     private TransferId transferId;

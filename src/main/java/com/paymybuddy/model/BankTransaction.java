@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @EqualsAndHashCode
 @Entity(name = "BankTransaction")
 @Table(name = "bank_transaction")
@@ -59,11 +58,5 @@ public class BankTransaction {
         this.currency = currency;
         this.date = date;
         this.bankAccount = bankAccount;
-    }
-
-    public BankTransaction(Double amount, Currency currency, LocalDateTime date) {
-        this.amount = amount;
-        this.currency = currency;
-        this.date = date;
     }
 }

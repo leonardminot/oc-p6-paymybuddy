@@ -1,11 +1,13 @@
 package com.paymybuddy.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -13,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity(name = "BankAccount")
-@ToString
 @Table(
         name = "bank_account",
         uniqueConstraints = {

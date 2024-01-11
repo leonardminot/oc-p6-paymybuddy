@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @EqualsAndHashCode
 @ToString
 @Entity(name = "Relation")

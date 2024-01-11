@@ -27,9 +27,9 @@ public class AddBankAccountPage {
         PageFactory.initElements(webDriver, this);
     }
 
-    public boolean isAddBankAccountPageDisplayed() {
+    public void isAddBankAccountPageDisplayed() {
         WebDriverWait waiter = new WebDriverWait(webDriver, Duration.ofSeconds(2));
-        return waiter.until(ExpectedConditions.visibilityOf(addBankAccountCard)).isDisplayed();
+        waiter.until(ExpectedConditions.visibilityOf(addBankAccountCard)).isDisplayed();
     }
 
     public ProfilePage createBankAccount(String IBAN, String country) {

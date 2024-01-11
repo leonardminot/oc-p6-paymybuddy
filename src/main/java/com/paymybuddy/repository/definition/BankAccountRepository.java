@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BankAccountRepository {
-    void save(BankAccount bankAccount);
+    BankAccount save(BankAccount bankAccount);
     BankAccount get(BankAccount bankAccount);
     boolean isIBANExists(String iban);
 
