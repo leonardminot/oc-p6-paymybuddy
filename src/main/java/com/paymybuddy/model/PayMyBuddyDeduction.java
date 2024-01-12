@@ -1,6 +1,7 @@
 package com.paymybuddy.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -8,6 +9,11 @@ import java.util.UUID;
 @Table(
         name = "pay_my_buddy_deduction"
 )
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class PayMyBuddyDeduction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,4 +27,9 @@ public class PayMyBuddyDeduction {
             nullable = false
     )
     private Double amount;
+
+    public PayMyBuddyDeduction(Transaction transaction, Double amount) {
+        this.transaction = transaction;
+        this.amount = amount;
+    }
 }

@@ -4,6 +4,7 @@ import com.paymybuddy.dto.*;
 import com.paymybuddy.model.*;
 import com.paymybuddy.repository.definition.*;
 import com.paymybuddy.service.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +15,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@Slf4j
 public class Fixture {
+
+
 
 
     static class StubDateProvider implements DateProvider {
@@ -34,6 +38,7 @@ public class Fixture {
     private final BankTransactionRepository bankTransactionRepository = new FakeBankTransactionRepository();
     private final UserTransactionRepository userTransactionRepository = new FakeUserTransactionRepository();
     private final UserTransferRepository userTransferRepository = new FakeUserTransferRepository();
+    private final DeductionRepository deductionRepository = new FakeDeductionRepository();
     private final StubDateProvider dateProvider = new StubDateProvider();
     private UserAccount userAccountToCreate;
     private UserRequestCommandDTO userRequestCommandDTO;
@@ -42,7 +47,7 @@ public class Fixture {
     private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
     private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankAccountService, bankTransactionRepository, dateProvider);
-    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, dateProvider);
+    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, deductionRepository, dateProvider);
     List<UserAccount> connectedUser = new ArrayList<>();
 
     Optional<UserAccount> actualUser = Optional.empty();
@@ -198,6 +203,16 @@ public class Fixture {
     public void thenBalanceByCurrencyShouldBeWithAmountVerification(BalanceByCurrency balanceByCurrency) {
         assertThat(balanceByCurrencyRepository.get(balanceByCurrency)).isEqualTo(balanceByCurrency);
         assertThat(balanceByCurrencyRepository.get(balanceByCurrency).getBalance()).isEqualTo(balanceByCurrency.getBalance());
+    }
+
+    public void thenADeductionIsCreatedOf(Double expectedDeduction) {
+
+        PayMyBuddyDeduction actualDeduction = deductionRepository.fetchAll().stream()
+                .filter(deduction -> deduction.getAmount().equals(expectedDeduction))
+                .findAny()
+                .orElse(null);
+        log.info("Actual deduction: " + actualDeduction);
+        assertThat(actualDeduction).isNotNull();
     }
 
     public void thenABankTransactionShouldBeRegister(BankTransaction bankTransaction) {

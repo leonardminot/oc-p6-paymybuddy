@@ -259,7 +259,7 @@ public class UserTransactionTest {
                 fixture.whenCreateATransactionBetweenUsers(fromUser, toUser, "test transaction", Currency.EUR, 100.0);
 
                 // Then
-                //TODO("ajouter la fixture pour enregistrer le prélèvement dans la BDD")
+                fixture.thenADeductionIsCreatedOf(100.0 - 100.0 * 0.995);
             }
         }
     }
