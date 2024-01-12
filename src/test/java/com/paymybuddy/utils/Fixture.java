@@ -47,7 +47,8 @@ public class Fixture {
     private final UserRelationService userRelationService = new UserRelationService(userRelationRepository, dateProvider);
     private final BankAccountService bankAccountService = new BankAccountService(bankAccountRepository, userAccountRepository);
     private final BankTransactionService bankTransactionService = new BankTransactionService(balanceByCurrencyService, bankAccountService, bankTransactionRepository, dateProvider);
-    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, userTransactionRepository, userTransferRepository, deductionRepository, dateProvider);
+    private final DeductionService deductionService = new DeductionService(deductionRepository);
+    private final UserTransactionService userTransactionService = new UserTransactionService(balanceByCurrencyService, deductionService, userTransactionRepository, userTransferRepository, dateProvider);
     List<UserAccount> connectedUser = new ArrayList<>();
 
     Optional<UserAccount> actualUser = Optional.empty();
@@ -206,7 +207,7 @@ public class Fixture {
     }
 
     public void thenADeductionIsCreatedOf(Double expectedDeduction) {
-
+        log.info("all deductions: " + deductionRepository.fetchAll());
         PayMyBuddyDeduction actualDeduction = deductionRepository.fetchAll().stream()
                 .filter(deduction -> deduction.getAmount().equals(expectedDeduction))
                 .findAny()

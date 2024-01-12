@@ -4,11 +4,9 @@ import com.paymybuddy.Exception.BalanceAndTransferException;
 import com.paymybuddy.Exception.EmptyFieldException;
 import com.paymybuddy.dto.UserTransactionCommand;
 import com.paymybuddy.dto.UserTransactionDTO;
-import com.paymybuddy.model.PayMyBuddyDeduction;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.Transfer;
 import com.paymybuddy.model.UserAccount;
-import com.paymybuddy.repository.definition.DeductionRepository;
 import com.paymybuddy.repository.definition.UserTransactionRepository;
 import com.paymybuddy.repository.definition.UserTransferRepository;
 import jakarta.transaction.Transactional;
@@ -22,18 +20,17 @@ import java.util.UUID;
 @Service
 public class UserTransactionService {
     private final BalanceByCurrencyService balanceByCurrencyService;
+    private final DeductionService deductionService;
     private final UserTransactionRepository userTransactionRepository;
     private final UserTransferRepository userTransferRepository;
-    private final DeductionRepository deductionRepository;
     private final DateProvider dateProvider;
-    private final double DEDUCTION_PERCENTAGE = 0.995;
 
     @Autowired
-    public UserTransactionService(BalanceByCurrencyService balanceByCurrencyService, UserTransactionRepository userTransactionRepository, UserTransferRepository userTransferRepository, DeductionRepository deductionRepository, DateProvider dateProvider) {
+    public UserTransactionService(BalanceByCurrencyService balanceByCurrencyService, DeductionService deductionService, UserTransactionRepository userTransactionRepository, UserTransferRepository userTransferRepository, DateProvider dateProvider) {
         this.balanceByCurrencyService = balanceByCurrencyService;
+        this.deductionService = deductionService;
         this.userTransactionRepository = userTransactionRepository;
         this.userTransferRepository = userTransferRepository;
-        this.deductionRepository = deductionRepository;
         this.dateProvider = dateProvider;
     }
 
@@ -44,21 +41,20 @@ public class UserTransactionService {
         throwIfNullFields(userTransactionCommand);
         throwIfAmountIsNegative(userTransactionCommand);
 
-        double amountAfterDeduction = userTransactionCommand.getAmount() * DEDUCTION_PERCENTAGE;
-        double deductionAmount = userTransactionCommand.getAmount() - amountAfterDeduction;
+        double deductionAmount = deductionService.getDeductionAmount(userTransactionCommand.getAmount());
 
         balanceByCurrencyService.updateBalanceByCurrencyForFromUserOrThrowIfInsufficientAmount(userTransactionCommand);
-        balanceByCurrencyService.updateOrCreateToUserBalanceByCurrency(userTransactionCommand);
+        balanceByCurrencyService.updateOrCreateToUserBalanceByCurrency(userTransactionCommand, deductionAmount);
 
         Transaction transaction = userTransactionRepository.save(new Transaction(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 userTransactionCommand.getDescription(),
-                userTransactionCommand.getAmount() * DEDUCTION_PERCENTAGE,
+                userTransactionCommand.getAmount() - deductionAmount,
                 userTransactionCommand.getCurrency(),
                 dateProvider.getNow()
         ));
 
-        deductionRepository.save(new PayMyBuddyDeduction(transaction, deductionAmount));
+        deductionService.saveDeductionOfTransaction(transaction);
 
         userTransferRepository.save(new Transfer(
                 userTransactionCommand.getFromUser(),

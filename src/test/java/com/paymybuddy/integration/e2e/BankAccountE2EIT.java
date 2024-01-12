@@ -58,6 +58,8 @@ public class BankAccountE2EIT {
     @Autowired
     private TransferRepositoryJpa transferRepositoryJpa;
     @Autowired
+    private DeductionRepositoryJpa deductionRepositoryJpa;
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private UserAccountService userAccountService;
@@ -74,6 +76,7 @@ public class BankAccountE2EIT {
     void setUp() {
         webDriver = new FirefoxDriver();
         baseUrl = "http://localhost:" + port;
+        deductionRepositoryJpa.deleteAll();
         transferRepositoryJpa.deleteAll();
         transactionRepositoryJpa.deleteAll();
         relationRepositoryJpa.deleteAll();

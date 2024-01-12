@@ -45,6 +45,8 @@ public class UserAccountCreationE2EIT {
     @Autowired
     private TransferRepositoryJpa transferRepositoryJpa;
     @Autowired
+    private DeductionRepositoryJpa deductionRepositoryJpa;
+    @Autowired
     private UserAccountService userAccountService;
 
     @BeforeAll
@@ -56,6 +58,7 @@ public class UserAccountCreationE2EIT {
     void setUp() {
         webDriver = new FirefoxDriver();
         baseUrl = "http://localhost:" + port;
+        deductionRepositoryJpa.deleteAll();
         transferRepositoryJpa.deleteAll();
         transactionRepositoryJpa.deleteAll();
         relationRepositoryJpa.deleteAll();

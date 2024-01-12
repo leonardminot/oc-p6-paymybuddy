@@ -62,7 +62,7 @@ public class BalanceByCurrencyService {
     }
 
     @Transactional
-    public void updateOrCreateToUserBalanceByCurrency(UserTransactionCommand userTransactionCommand) {
+    public void updateOrCreateToUserBalanceByCurrency(UserTransactionCommand userTransactionCommand, Double deductionAmount) {
         Optional<BalanceByCurrency> toUserBalanceByCurrency = balanceByCurrencyRepository.getByUserAccountAndCurrency(
                 userTransactionCommand.getToUser(),
                 userTransactionCommand.getCurrency()
@@ -74,7 +74,7 @@ public class BalanceByCurrencyService {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     balanceByCurrencyModel.getBalanceID(),
                     balanceByCurrencyModel.getUserAccount(),
-                    balanceByCurrencyModel.getBalance() + userTransactionCommand.getAmount() * 0.995,
+                    balanceByCurrencyModel.getBalance() + userTransactionCommand.getAmount() - deductionAmount,
                     balanceByCurrencyModel.getCurrency()
             ));
 
@@ -82,7 +82,7 @@ public class BalanceByCurrencyService {
             updateBalanceByCurrencyWithNewAmount(new BalanceByCurrency(
                     UUID.fromString("00000000-0000-0000-0000-000000000000"),
                     userTransactionCommand.getToUser(),
-                    userTransactionCommand.getAmount() * 0.995,
+                    userTransactionCommand.getAmount() - deductionAmount,
                     userTransactionCommand.getCurrency()
             ));
         }
