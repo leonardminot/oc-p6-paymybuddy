@@ -1,4 +1,4 @@
-TODO: mettre logo pay my buddy
+![Alt PayMyBuddy logo](./resources/paymybuddy_logo.png)
 
 # Readme - PayMyBuddy
 
@@ -6,7 +6,7 @@ TODO: mettre logo pay my buddy
 Le projet est développé sur une base Java + Spring Boot (avec Spring Security et Spring DATA JPA). L'interface utilisateur est réalisé avec Thymeleaf et utilise Bootstrap.
 La base de données utilisée est PostgreSQL.
 
-TODO: mettre schéma
+![Alt Stack utilisée](./resources/stack.png)
 
 > [!NOTE]
 > Il s'agit d'un prototype dans le but de démontrer l'intérêt de l'application auprès des utilisateurs. L'application n'est pas "Responsive" et embarque des fonctionnalités minimales pour le moment.
@@ -46,7 +46,7 @@ spring:
   datasource:
     username: <user>
     password: <password>
-    url: jdbc://localhost:5432/paymybuddy
+    url: jdbc:postgresql://localhost:5432/paymybuddy
 ```
 
 Pour :
@@ -57,7 +57,7 @@ spring:
   datasource:
     username: <user>
     password: <password>
-    url: jdbc//localhost:5432/paymybuddy_e2e
+    url: jdbc:postgresql://localhost:5432/paymybuddy_e2e
 ```
 
 > [!NOTE]
@@ -66,11 +66,11 @@ spring:
 ## Structure des données
 ### Diagramme UML
 
-TODO: Mettre schéma
+![Alt Diagramme UML](./resources/Minot_Leonard_1_uml_012024.png)
 
 ### Modèle d'implémentation Physique
 
-TODO: Mettre schéma
+![Alt Diagramme MPD](./resources/Minot_Leonard_2_mpd_012024.png)
 
 ## Remarques
 ### Fichiers application.yml

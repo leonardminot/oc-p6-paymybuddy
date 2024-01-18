@@ -18,9 +18,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Slf4j
 public class Fixture {
 
-
-
-
     static class StubDateProvider implements DateProvider {
 
         LocalDateTime now;
@@ -65,9 +62,11 @@ public class Fixture {
     public void givenNowIs(LocalDateTime now) {
         dateProvider.now = now;
     }
+
     public void givenBankAccountInDatabase(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);
     }
+
     public void givenTheTransactionInDatabase(BankTransaction existingBankTransaction) {
         bankTransactionRepository.save(existingBankTransaction);
 
@@ -82,6 +81,7 @@ public class Fixture {
     public void givenTheUserTransferInDatabase(Transfer transfer) {
         userTransferRepository.save(transfer);
     }
+
     public void whenRequestForCreateBankAccount(BankAccountCreationCommandDTO bankAccountCreationCommandDTO) {
         bankAccountService.create(bankAccountCreationCommandDTO);
     }
